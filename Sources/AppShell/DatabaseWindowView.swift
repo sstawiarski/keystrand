@@ -152,11 +152,12 @@ struct DatabaseWindowView: View {
                 .navigationSplitViewColumnWidth(min: 180, ideal: 210, max: 280)
         } detail: {
             detail
-                .inspector(isPresented: Binding(get: { inspector.isShown }, set: { inspector.setShown($0) })) {
-                    InspectorView(session: session)
-                        .inspectorColumnWidth(min: 260, ideal: 320, max: 480)
-                }
                 .toolbar { toolbarContent }
+        }
+        .inspector(isPresented: Binding(get: { inspector.isShown }, set: { inspector.setShown($0) })) {
+            InspectorView(session: session)
+                .inspectorColumnWidth(min: 260, ideal: 320, max: 480)
+                .toolbar { inspectorToolbarContent }
         }
         .navigationTitle(DatabaseWindowTitle.title(session: session))
         .navigationSubtitle(DatabaseWindowTitle.subtitle(session: session))
@@ -344,19 +345,40 @@ struct DatabaseWindowView: View {
         }
 
         ToolbarItemGroup(placement: .primaryAction) {
-            Toggle(isOn: Binding(get: { bottom.isShown(session.navigator) },
-                                 set: { bottom.setVisible($0, navigator: session.navigator) })) {
-                Label("Bottom Panel", systemImage: "rectangle.bottomthird.inset.filled")
+            bottomPanelToggle
+            if !inspector.isShown {
+                inspectorToggle
             }
-            .toggleStyle(.button)
-            .disabled(!connection.phase.showsBottomPanel)
-            .help(bottom.isShown(session.navigator) ? "Hide Bottom Panel (⇧⌘Y)" : "Show Bottom Panel (⇧⌘Y)")
-            Toggle(isOn: Binding(get: { inspector.isShown }, set: { inspector.setShown($0) })) {
-                Label("Inspector", systemImage: "sidebar.trailing")
-            }
-            .toggleStyle(.button)
-            .help(inspector.isShown ? "Hide Inspector (⌥⌘I)" : "Show Inspector (⌥⌘I)")
         }
+    }
+
+    /// Declared on the inspector content, so the toggle sits over the inspector column while it is open.
+    @ToolbarContentBuilder
+    private var inspectorToolbarContent: some ToolbarContent {
+        if inspector.isShown {
+            ToolbarSpacer(.flexible, placement: .primaryAction)
+            ToolbarItem(placement: .primaryAction) {
+                inspectorToggle
+            }
+        }
+    }
+
+    private var bottomPanelToggle: some View {
+        Toggle(isOn: Binding(get: { bottom.isShown(session.navigator) },
+                             set: { bottom.setVisible($0, navigator: session.navigator) })) {
+            Label("Bottom Panel", systemImage: "rectangle.bottomthird.inset.filled")
+        }
+        .toggleStyle(.button)
+        .disabled(!connection.phase.showsBottomPanel)
+        .help(bottom.isShown(session.navigator) ? "Hide Bottom Panel (⇧⌘Y)" : "Show Bottom Panel (⇧⌘Y)")
+    }
+
+    private var inspectorToggle: some View {
+        Toggle(isOn: Binding(get: { inspector.isShown }, set: { inspector.setShown($0) })) {
+            Label("Inspector", systemImage: "sidebar.trailing")
+        }
+        .toggleStyle(.button)
+        .help(inspector.isShown ? "Hide Inspector (⌥⌘I)" : "Show Inspector (⌥⌘I)")
     }
 
     // MARK: State sync

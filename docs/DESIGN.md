@@ -253,8 +253,12 @@ Apply these rules:
   Search "Create Index". Use the default style for other toolbar items.
 - Every toolbar item has a `Label` with a title (shown in the overflow menu and to VoiceOver) and a `.help` tooltip.
 - Check the toolbar order in a screenshot, as described in section 9.
-  If SwiftUI places section items after the AppShell group, declare AppShell's
-  items on the detail column's outermost view to preserve the required order.
+- AppShell declares items 6 to 9 on the detail column's outermost view, after
+  the section content, which keeps the required order. While the inspector is
+  shown, the inspector toggle moves out of group 9 and is declared on the
+  inspector content after a flexible `ToolbarSpacer`, so it sits at the
+  trailing edge over the inspector column, and the detail items end at the
+  column divider instead of straddling it.
 
 #### 2.3.3 Activity view (toolbar center)
 
@@ -281,7 +285,8 @@ Use the patterns from **Xcode** activity viewer. The capsule in the toolbar cent
 
 Use the patterns from **Xcode** inspectors and **Pages** inspector (segmented pane switcher at the top).
 
-- `.inspector(isPresented:)` on the detail column. Toggle: toolbar item 9, View > Show Inspector (⌥⌘I).
+- `.inspector(isPresented:)` on the `NavigationSplitView`, not on the detail column. Only that placement gives the
+  inspector its own toolbar section on macOS. Toggle: toolbar item 9, View > Show Inspector (⌥⌘I).
 - Content: `InspectorView` (AppShell) = `Picker` with `.pickerStyle(.segmented)`, `.labelsHidden()`, full width, padded
   12 pt, then the pane:
 
