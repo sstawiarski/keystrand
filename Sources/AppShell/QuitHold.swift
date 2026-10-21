@@ -95,7 +95,8 @@ final class QuitHoldController {
         if let monitor { NSEvent.removeMonitor(monitor) }
         monitor = nil
         hud.hide(after: .zero)
-        NSApp.terminate(nil)
+        // `.terminateLater` spins a nested run loop that cannot drain the main queue while a main-actor job runs.
+        NSApp.perform(#selector(NSApplication.terminate(_:)), with: nil, afterDelay: 0)
     }
 }
 
