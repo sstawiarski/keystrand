@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Git commit-msg hook: checks the subject against Conventional Commits.
+# scripts/bootstrap.sh points core.hooksPath at this folder.
+
+main() {
+  local root
+  root="$(git rev-parse --show-toplevel)"
+  "$root/scripts/check-commit-message.sh" "$1"
+}
+
+main "$@"

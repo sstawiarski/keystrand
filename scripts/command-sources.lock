@@ -1,0 +1,67 @@
+{
+    "core": {
+        "redis-7.2": {
+            "repo": "redis/redis",
+            "track": "^7\\.2\\.\\d+$",
+            "tag": "7.2.4",
+            "url": "https://codeload.github.com/redis/redis/tar.gz/refs/tags/7.2.4",
+            "sha256": "0a62b9ae89b4be4e8d40c0035c83a72cb6776f4b62fe53553981a57f0f4ff73d"
+        },
+        "redis-8": {
+            "repo": "redis/redis",
+            "track": "^8\\.\\d+\\.\\d+$",
+            "tag": "8.4.7",
+            "url": "https://codeload.github.com/redis/redis/tar.gz/refs/tags/8.4.7",
+            "sha256": "c84a8aeb16879c2c4a68c67072f27cd672b4e870ba19899f477cc521d606e32d"
+        },
+        "valkey-9": {
+            "repo": "valkey-io/valkey",
+            "track": "^9\\.\\d+\\.\\d+$",
+            "tag": "9.1.2",
+            "url": "https://codeload.github.com/valkey-io/valkey/tar.gz/refs/tags/9.1.2",
+            "sha256": "19c23908e7d57e8d91ef85b41f5646307582f10f4f0fb999bbf89ed24ec9c983"
+        }
+    },
+    "modules": {
+        "redisbloom": {
+            "repo": "RedisBloom/RedisBloom",
+            "track": "^v8\\.\\d+\\.\\d+$",
+            "ref": "v8.11.90",
+            "path": "commands.json",
+            "sha256": "74ed71514022a357ae07733d97d92587d39b3e7ef4cf8f375eb33969f03c0e3d",
+            "file": "redisbloom.json"
+        },
+        "redisearch": {
+            "repo": "RediSearch/RediSearch",
+            "track": "^v8\\.\\d+\\.\\d+$",
+            "ref": "3635ada5fed6aec58eba05c606ff3bc641b41c08",
+            "path": "commands.json",
+            "sha256": "848a4637cd40fbff521f92508087a306fd09c7dded9d75eca0a59f1db6066d52",
+            "file": "redisearch.json"
+        },
+        "redisgraph": {
+            "repo": "RedisGraph/RedisGraph",
+            "track": "^v2\\.\\d+\\.\\d+$",
+            "ref": "v2.12.10",
+            "path": "commands.json",
+            "sha256": "6af036ee23e6469a86488f25e2e8df86eb82d832dc321fdd2cb7ed02a82bbbd4",
+            "file": "redisgraph.json"
+        },
+        "redisjson": {
+            "repo": "RedisJSON/RedisJSON",
+            "track": "^v8\\.\\d+\\.\\d+$",
+            "ref": "v8.11.90",
+            "path": "commands.json",
+            "sha256": "3ffc11394b3d832d365c868f4d96b62997e55d3ec4cf6349b2ed925bb031891a",
+            "file": "redisjson.json"
+        },
+        "redistimeseries": {
+            "repo": "RedisTimeSeries/RedisTimeSeries",
+            "track": "^v8\\.\\d+\\.\\d+$",
+            "ref": "v8.11.90",
+            "path": "commands.json",
+            "sha256": "5c93386e535f45c8c4e336eb2c26a23041a0f8e751aed98631c2812b1a634d63",
+            "file": "redistimeseries.json"
+        }
+    }
+}
