@@ -1,9 +1,8 @@
-# replace: OWNER in both URLs with the GitHub owner of this repository.
 blank_issues_enabled: false
 contact_links:
   - name: Questions and ideas
-    url: https://github.com/OWNER/keystrand/discussions
+    url: https://github.com/sstawiarski/keystrand/discussions
     about: Ask a question or discuss an idea before opening an issue.
   - name: Report a security vulnerability
-    url: https://github.com/OWNER/keystrand/security/advisories/new
+    url: https://github.com/sstawiarski/keystrand/security/advisories/new
     about: Report security problems privately, not in a public issue.

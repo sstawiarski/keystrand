@@ -1,10 +1,10 @@
 class Keystrand < Formula
   desc "Native Redis and Valkey client for macOS"
-  homepage "https://github.com/OWNER/keystrand"
-  url "https://github.com/OWNER/keystrand/archive/refs/tags/v0.1.0.tar.gz"
+  homepage "https://github.com/sstawiarski/keystrand"
+  url "https://github.com/sstawiarski/keystrand/archive/refs/tags/v0.1.0.tar.gz"
   sha256 "0000000000000000000000000000000000000000000000000000000000000000"
   license all_of: ["MIT", "BSD-3-Clause", :cannot_represent]
-  head "https://github.com/OWNER/keystrand.git", branch: "main"
+  head "https://github.com/sstawiarski/keystrand.git", branch: "main"
 
   depends_on xcode: ["26.0", :build]
   depends_on "xcodegen" => :build

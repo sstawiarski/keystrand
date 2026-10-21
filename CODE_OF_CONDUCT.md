@@ -55,13 +55,10 @@ officially represent the community in public, including these situations:
 
 ## Report a problem
 
-<!-- replace: put the maintainer's conduct contact email below before
-publishing. -->
-
 Report abusive, harassing, or other unacceptable behavior privately to the
 community leaders who enforce this code. Use GitHub's **Report content** option
 on a comment, issue, or pull request. You can also use **Report abuse** on a
-user's profile or email REPLACE-WITH-CONDUCT-EMAIL.
+user's profile or email <keystrand@shawnstawiarski.com>.
 
 Community leaders review and investigate complaints promptly and fairly.
 They must protect the privacy and security of anyone who reports an incident.

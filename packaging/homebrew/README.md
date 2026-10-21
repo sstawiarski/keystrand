@@ -2,7 +2,7 @@
 
 `keystrand.rb` is a Homebrew formula that builds Keystrand from the source
 archive of a tagged GitHub Release. It belongs in a personal tap
-(`OWNER/homebrew-keystrand`). Homebrew's own repositories do not take it:
+(`sstawiarski/homebrew-keystrand`). Homebrew's own repositories do not take it:
 homebrew/core does not accept a formula whose main product is a macOS
 `.app`, and a homebrew/cask entry needs a prebuilt app, which Keystrand does
 not publish.
@@ -47,23 +47,22 @@ formula.
 Do this once, after the first `v*` tag has a GitHub Release.
 
 ```bash
-gh repo create OWNER/homebrew-keystrand --public --clone
+gh repo create sstawiarski/homebrew-keystrand --public --clone
 cd homebrew-keystrand
 mkdir Formula
 cp ../keystrand/packaging/homebrew/keystrand.rb Formula/keystrand.rb
 ```
 
-In `Formula/keystrand.rb`, replace `OWNER` in `homepage`, `url`, and `head`.
-Set the tag in `url` and its `sha256` as described in the next section.
-Commit and push.
+In `Formula/keystrand.rb`, set the tag in `url` and its `sha256` as described
+in the next section. Commit and push.
 
 Users install with:
 
 ```bash
-brew install OWNER/keystrand/keystrand
+brew install sstawiarski/keystrand/keystrand
 ```
 
-`brew install --HEAD OWNER/keystrand/keystrand` builds `main` instead.
+`brew install --HEAD sstawiarski/keystrand/keystrand` builds `main` instead.
 
 ## Release a new version
 
@@ -81,36 +80,36 @@ pull request through a fork, which a tap you push to directly does not need.
 2. Hash the source archive GitHub serves for the tag:
 
    ```bash
-   curl -fsSL https://github.com/OWNER/keystrand/archive/refs/tags/v0.2.0.tar.gz |
+   curl -fsSL https://github.com/sstawiarski/keystrand/archive/refs/tags/v0.2.0.tar.gz |
      shasum -a 256
    ```
 
-3. Edit the tapped formula. `brew tap OWNER/keystrand` clones the tap, and
+3. Edit the tapped formula. `brew tap sstawiarski/keystrand` clones the tap, and
    `brew edit` opens the formula in that clone:
 
    ```bash
-   brew tap OWNER/keystrand
-   brew edit OWNER/keystrand/keystrand
+   brew tap sstawiarski/keystrand
+   brew edit sstawiarski/keystrand/keystrand
    ```
 
    Change the tag in `url` and set `sha256` to the new hash. Copy any other
    change to `packaging/homebrew/keystrand.rb` in this repository, so both
-   copies stay the same apart from `OWNER`, the tag, and the hash.
+   copies stay the same apart from the tag and the hash.
 
 4. Check the formula, then remove the test install:
 
    ```bash
-   brew style OWNER/keystrand/keystrand
-   brew audit --strict --online --formula OWNER/keystrand/keystrand
-   brew install --build-from-source --formula OWNER/keystrand/keystrand
-   brew test OWNER/keystrand/keystrand
-   brew uninstall --formula OWNER/keystrand/keystrand
+   brew style sstawiarski/keystrand/keystrand
+   brew audit --strict --online --formula sstawiarski/keystrand/keystrand
+   brew install --build-from-source --formula sstawiarski/keystrand/keystrand
+   brew test sstawiarski/keystrand/keystrand
+   brew uninstall --formula sstawiarski/keystrand/keystrand
    ```
 
 5. Commit and push from the tap clone:
 
    ```bash
-   cd "$(brew --repository OWNER/keystrand)"
+   cd "$(brew --repository sstawiarski/keystrand)"
    git commit -am "keystrand 0.2.0"
    git push
    ```
