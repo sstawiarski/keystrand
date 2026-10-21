@@ -2336,16 +2336,20 @@ Check each requirement before you approve a UI change:
 macOS 26 icons combine background and foreground layers, depth, and a glass
 highlight inside the system's rounded-square shape. Use these layers for Keystrand:
 
-- **Background.** Fill a rounded square with a diagonal gradient from indigo
-  `#3A3A8C` at the top left to teal `#0D6F7E` at the bottom right. Add a soft
-  white radial glow in the upper left, fading from 22% to 0%.
-- **Foreground.** Center one horizontal key. Put a thick ring bow on the left
-  and a rounded shaft on the right. Fill the key with a gradient from white
-  `#FFFFFF` to `#D3E3F1`. Place three square cells under the shaft's end to
-  form the bit. Fill them with a mint gradient from `#A8F5E6` to `#5FD3C4`.
-- **Depth.** Add a soft navy shadow under the key at 35% opacity. Use blur of
-  about 3% of the icon size and a downward offset of about 1.5%. Add an inner
-  shadow along the key's lower edges.
+- **Background.** Fill a rounded square with a diagonal gradient from deep
+  indigo `#252951` at the top left to petrol teal `#073E4B` at the bottom
+  right. Add an indigo radial glow (`#9097FA`, 40%) in the upper left and a
+  teal radial glow (`#20DDB4`, 60%) in the lower right.
+- **Foreground.** Center one key at a 45-degree downward angle, with its ring
+  in the upper left and its bit in the lower right. Join three rounded teeth
+  to the shaft, with the last tooth slightly longer. Fill the entire key
+  with a continuous gradient from white `#FFFFFF` through `#DEF9F3` to mint
+  `#69DCC3`.
+- **Depth.** Place a teal underside (`#4B9D9B`) 10 icon units below the key.
+  Add a navy shadow (`#020E20`, 60%) with a blur of 26 units and a downward
+  offset of 22 units. Shade the lower edges and ring opening with a soft
+  inner shadow, and add a fine white bevel along the foreground outline.
+  All geometry uses the 1024 px canvas described below.
 - **Glass highlight.** Draw a 1 px inner white stroke at 18% opacity along the
   shape's top half.
 
@@ -2372,8 +2376,9 @@ each side, leaving an 824×824 shape. Draw continuous corners with radius
 `CGPath(roundedRect:cornerWidth:cornerHeight:)` is acceptable at that radius.
 Keep all pixels outside the shape transparent.
 
-For sizes ≤ 32 px, draw a heavier ring and shaft. Join two larger white cells
-to the shaft. Omit the inner shadow and edge stroke.
+For sizes ≤ 32 px, draw a heavier ring and shaft with two wider teeth. Keep
+the continuous white-to-mint fill. Omit the underside, shadows, bevel, and
+edge stroke.
 
 To check the icon:
 

@@ -14,12 +14,11 @@ let outputDirectory = URL(fileURLWithPath: CommandLine.arguments[1], isDirectory
 guard let colorSpace = CGColorSpace(name: CGColorSpace.sRGB) else { fatalError("sRGB color space unavailable") }
 
 enum Palette {
-    static let backgroundTop: UInt32 = 0x3A3A8C
-    static let backgroundBottom: UInt32 = 0x0D6F7E
+    static let backgroundTop: UInt32 = 0x252951
+    static let backgroundBottom: UInt32 = 0x073E4B
     static let glyphTop: UInt32 = 0xFFFFFF
-    static let glyphBottom: UInt32 = 0xD3E3F1
-    static let cellTop: UInt32 = 0xA8F5E6
-    static let cellBottom: UInt32 = 0x5FD3C4
+    static let glyphMiddle: UInt32 = 0xDEF9F3
+    static let glyphBottom: UInt32 = 0x69DCC3
 }
 
 func color(_ hex: UInt32, alpha: CGFloat = 1) -> CGColor {
@@ -46,99 +45,84 @@ func roundedRect(_ rect: CGRect, radius: CGFloat) -> CGPath {
     CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil)
 }
 
-struct KeyGlyph {
-    var body: CGPath
-    var cells: CGPath
-
-    var outline: CGPath { body.union(cells) }
-
-    func applying(_ transform: CGAffineTransform) -> KeyGlyph {
-        var transform = transform
-        guard let body = body.copy(using: &transform), let cells = cells.copy(using: &transform) else {
-            fatalError("cannot transform key")
-        }
-        return KeyGlyph(body: body, cells: cells)
-    }
-}
-
-/// A key laid along the x axis: a ring bow on the left, a shaft, and a row of square cells forming the bit.
-/// Small renders join two heavier cells to a thicker shaft so the silhouette survives at 16 px.
-func keyGlyph(small: Bool) -> KeyGlyph {
-    let bowCenter = CGPoint(x: -180, y: 0)
+/// Join the teeth before rotating so the key reads as one silhouette at every size.
+func keyGlyph(small: Bool) -> CGPath {
+    let bowCenter = CGPoint(x: -170, y: 0)
     let bowRadius: CGFloat = 150
-    let holeRadius: CGFloat = small ? 56 : 72
-    let shaftHalf: CGFloat = small ? 44 : 36
-    let shaftStart = bowCenter.x + bowRadius - 40
-    let shaftEnd: CGFloat = 300
-
-    let shaft = roundedRect(CGRect(x: shaftStart, y: -shaftHalf, width: shaftEnd - shaftStart, height: shaftHalf * 2),
-                            radius: shaftHalf * 0.5)
-    let body = circle(center: bowCenter, radius: bowRadius).union(shaft)
-        .subtracting(circle(center: bowCenter, radius: holeRadius))
-
-    let cellSide: CGFloat = small ? 80 : 70
-    let cellGap: CGFloat = small ? 24 : 18
-    let cellDrop: CGFloat = small ? -8 : 12
+    let holeRadius: CGFloat = small ? 65 : 76
+    let shaftHalf: CGFloat = small ? 48 : 40
+    let shaftEnd: CGFloat = 310
+    let shaft = roundedRect(CGRect(x: -70, y: -shaftHalf, width: shaftEnd + 70, height: shaftHalf * 2),
+                            radius: 18)
+    var outline = circle(center: bowCenter, radius: bowRadius).union(shaft)
     let count = small ? 2 : 3
-    let cells = CGMutablePath()
+    let toothWidth: CGFloat = small ? 86 : 62
+    let gap: CGFloat = small ? 35 : 25
+
     for index in 0..<count {
-        let x = shaftEnd - CGFloat(count - index) * (cellSide + cellGap) + cellGap
-        let rect = CGRect(x: x, y: -shaftHalf - cellDrop - cellSide, width: cellSide, height: cellSide)
-        cells.addPath(roundedRect(rect, radius: small ? 10 : 14))
+        let x = shaftEnd - CGFloat(count - index) * (toothWidth + gap) + gap
+        let depth: CGFloat = index == count - 1 ? 96 : 78
+        let tooth = roundedRect(CGRect(x: x, y: -shaftHalf - depth, width: toothWidth, height: depth + 20),
+                                radius: 12)
+        outline = outline.union(tooth)
     }
 
-    return KeyGlyph(body: body, cells: cells)
-}
-
-/// The key scaled up and centred on the canvas.
-func placedKey(small: Bool) -> KeyGlyph {
-    let scaled = keyGlyph(small: small).applying(CGAffineTransform(scaleX: 1.14, y: 1.14))
-    let bounds = scaled.outline.boundingBoxOfPath
-    return scaled.applying(CGAffineTransform(translationX: 512 - bounds.midX, y: 512 - bounds.midY))
-}
-
-func fill(_ path: CGPath, top: UInt32, bottom: UInt32, in context: CGContext) {
-    context.saveGState()
-    context.addPath(path)
-    context.clip()
-    let bounds = path.boundingBoxOfPath
-    context.drawLinearGradient(gradient([color(top), color(bottom)], [0, 1]),
-                               start: CGPoint(x: bounds.minX, y: bounds.maxY),
-                               end: CGPoint(x: bounds.maxX, y: bounds.minY),
-                               options: [.drawsBeforeStartLocation, .drawsAfterEndLocation])
-    context.restoreGState()
+    outline = outline.subtracting(circle(center: bowCenter, radius: holeRadius))
+    var rotation = CGAffineTransform(rotationAngle: -.pi / 4)
+    guard let rotated = outline.copy(using: &rotation) else { fatalError("cannot rotate key") }
+    let bounds = rotated.boundingBoxOfPath
+    var placement = CGAffineTransform(translationX: 512 - bounds.midX, y: 526 - bounds.midY)
+    guard let placed = rotated.copy(using: &placement) else { fatalError("cannot position key") }
+    return placed
 }
 
 /// Shadow geometry is in device pixels, so `scale` converts icon units to pixels.
-func drawGlyph(_ glyph: KeyGlyph, in context: CGContext, scale: CGFloat, small: Bool) {
+func drawGlyph(_ glyph: CGPath, in context: CGContext, scale: CGFloat, small: Bool) {
     context.saveGState()
-    context.setShadow(offset: CGSize(width: 0, height: -16 * scale), blur: 30 * scale,
-                      color: color(0x061A2E, alpha: small ? 0.25 : 0.35))
-    context.beginTransparencyLayer(auxiliaryInfo: nil)
-    fill(glyph.body, top: Palette.glyphTop, bottom: Palette.glyphBottom, in: context)
-    if small {
-        fill(glyph.cells, top: Palette.glyphTop, bottom: Palette.glyphBottom, in: context)
-    } else {
-        fill(glyph.cells, top: Palette.cellTop, bottom: Palette.cellBottom, in: context)
+    if !small {
+        context.setShadow(offset: CGSize(width: 0, height: -22 * scale), blur: 26 * scale,
+                          color: color(0x020E20, alpha: 0.6))
+        context.translateBy(x: 0, y: -10)
+        context.addPath(glyph)
+        context.setFillColor(color(0x4B9D9B))
+        context.fillPath()
     }
 
-    context.endTransparencyLayer()
     context.restoreGState()
 
-    guard !small else { return }
-    // Inner shadow along the lower edges: the area outside the glyph casts an upward shadow into it.
-    let outline = glyph.outline
     context.saveGState()
-    context.addPath(outline)
+    context.addPath(glyph)
     context.clip()
+    let bounds = glyph.boundingBoxOfPath
+    context.drawLinearGradient(
+        gradient([color(Palette.glyphTop), color(Palette.glyphMiddle), color(Palette.glyphBottom)], [0, 0.52, 1]),
+        start: CGPoint(x: bounds.minX, y: bounds.maxY),
+        end: CGPoint(x: bounds.maxX, y: bounds.minY),
+        options: [.drawsBeforeStartLocation, .drawsAfterEndLocation])
+
+    guard !small else {
+        context.restoreGState()
+        return
+    }
+
+    // The inverse silhouette shades both the outer edge and the inside of the ring.
     let inverse = CGMutablePath()
     inverse.addRect(CGRect(x: -1024, y: -1024, width: 3072, height: 3072))
-    inverse.addPath(outline)
-    context.setShadow(offset: CGSize(width: 0, height: 10 * scale), blur: 16 * scale,
-                      color: color(0x0B3550, alpha: 0.30))
+    inverse.addPath(glyph)
+    context.setShadow(offset: CGSize(width: 0, height: 5 * scale), blur: 9 * scale,
+                      color: color(0x155862, alpha: 0.24))
     context.addPath(inverse)
     context.setFillColor(color(0x000000))
     context.fillPath(using: .evenOdd)
+    context.restoreGState()
+
+    context.saveGState()
+    context.addPath(glyph)
+    context.clip()
+    context.addPath(glyph)
+    context.setStrokeColor(color(0xFFFFFF, alpha: 0.65))
+    context.setLineWidth(3)
+    context.strokePath()
     context.restoreGState()
 }
 
@@ -161,11 +145,14 @@ func drawIcon(pixels: Int) -> CGImage {
     context.drawLinearGradient(gradient([color(Palette.backgroundTop), color(Palette.backgroundBottom)], [0, 1]),
                                start: CGPoint(x: 250, y: 924), end: CGPoint(x: 774, y: 100),
                                options: [.drawsBeforeStartLocation, .drawsAfterEndLocation])
-    let glow = gradient([color(0xFFFFFF, alpha: 0.22), color(0xFFFFFF, alpha: 0)], [0, 1])
-    context.drawRadialGradient(glow, startCenter: CGPoint(x: 300, y: 800), startRadius: 0,
-                               endCenter: CGPoint(x: 300, y: 800), endRadius: 520, options: [])
+    let indigoGlow = gradient([color(0x9097FA, alpha: 0.40), color(0x9097FA, alpha: 0)], [0, 1])
+    context.drawRadialGradient(indigoGlow, startCenter: CGPoint(x: 195, y: 910), startRadius: 0,
+                               endCenter: CGPoint(x: 195, y: 910), endRadius: 820, options: [])
+    let tealGlow = gradient([color(0x20DDB4, alpha: 0.60), color(0x20DDB4, alpha: 0)], [0, 1])
+    context.drawRadialGradient(tealGlow, startCenter: CGPoint(x: 880, y: 160), startRadius: 0,
+                               endCenter: CGPoint(x: 880, y: 160), endRadius: 680, options: [])
 
-    drawGlyph(placedKey(small: small), in: context, scale: scale, small: small)
+    drawGlyph(keyGlyph(small: small), in: context, scale: scale, small: small)
     context.restoreGState()
 
     if !small {
