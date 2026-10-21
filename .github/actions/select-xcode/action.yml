@@ -1,0 +1,58 @@
+name: Select Xcode
+description: >-
+  Selects the newest non-beta Xcode on the runner whose major version is at least the
+  major version in .xcode-version. Falls back to the newest Xcode with a warning.
+
+inputs:
+  version-file:
+    description: File holding the minimum Xcode version, for example 27.1.
+    default: .xcode-version
+
+outputs:
+  version:
+    description: Version of the selected Xcode.
+    value: ${{ steps.select.outputs.version }}
+  path:
+    description: Path of the selected Xcode.app.
+    value: ${{ steps.select.outputs.path }}
+
+runs:
+  using: composite
+  steps:
+    - id: select
+      shell: bash
+      env:
+        VERSION_FILE: ${{ inputs.version-file }}
+      run: |
+        set -euo pipefail
+        pinned=$(tr -d '[:space:]' < "$VERSION_FILE")
+        pinned_major=${pinned%%.*}
+        candidates=()
+        while IFS=$'\t' read -r version app; do
+          candidates+=("$version"$'\t'"$app")
+        done < <(
+          for app in /Applications/Xcode*.app; do
+            # Version aliases are symlinks to the real bundles; betas are never selected.
+            [[ -L "$app" ]] && continue
+            [[ "$(basename "$app" | tr '[:upper:]' '[:lower:]')" == *beta* ]] && continue
+            version=$(plutil -extract CFBundleShortVersionString raw "$app/Contents/Info.plist" 2>/dev/null) || continue
+            printf '%s\t%s\n' "$version" "$app"
+          done | sort -t. -k1,1n -k2,2n -k3,3n
+        )
+        if (( ${#candidates[@]} == 0 )); then
+          echo "::error::No Xcode found in /Applications."
+          exit 1
+        fi
+        newest=${candidates[${#candidates[@]}-1]}
+        version=${newest%%$'\t'*}
+        app=${newest#*$'\t'}
+        if (( ${version%%.*} < pinned_major )); then
+          echo "::warning::No Xcode $pinned_major or newer on this runner (.xcode-version is $pinned); using Xcode $version."
+        fi
+        echo "Selecting Xcode $version at $app (.xcode-version: $pinned)"
+        sudo xcode-select --switch "$app"
+        echo "DEVELOPER_DIR=$app/Contents/Developer" >> "$GITHUB_ENV"
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+        echo "path=$app" >> "$GITHUB_OUTPUT"
+        xcodebuild -version
+        swift --version

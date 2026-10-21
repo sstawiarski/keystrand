@@ -1,0 +1,195 @@
+name: CI
+
+# Lint, build, and test on every pull request and every push to main.
+#
+# Runners: GitHub-hosted macOS runners are free for public repositories.
+# Private repositories spend the account's included minutes (2,000 a month on
+# the Free plan), and macOS minutes count at a higher rate than Linux.
+#
+# Xcode: the jobs run on the `xcode-27` image (macOS 27 with Xcode 27.x) and
+# .github/actions/select-xcode picks the newest non-beta Xcode whose major
+# version is at least the one in .xcode-version. The `macos-26` image only has
+# Xcode 26.x (Swift 6.2). On a runner without Xcode 27 the action warns and
+# falls back to the newest Xcode it finds, and the build fails if the code
+# needs Swift 6.4. To see what an image ships, read
+# images/macos/<image>-Readme.md in github.com/actions/runner-images, or the
+# "Select Xcode" step log, which prints `xcodebuild -version`.
+#
+# Warnings: the build job treats every Swift warning as an error, in the
+# package build and in the Xcode app build.
+#
+# Live tests: GitHub's macOS runners have no Docker, so the live-tests job
+# runs Homebrew's Redis 8 (with its modules) and Valkey 9 (no modules)
+# through `scripts/test-servers.sh native`. Tests that need a module the
+# server lacks skip themselves; KEYSTRAND_REQUIRE_LIVE=1 turns a missing
+# server into a failure.
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  HOMEBREW_NO_AUTO_UPDATE: "1"
+  HOMEBREW_NO_INSTALL_CLEANUP: "1"
+  HOMEBREW_NO_ENV_HINTS: "1"
+
+jobs:
+  lint:
+    runs-on: xcode-27
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Select Xcode
+        uses: ./.github/actions/select-xcode
+
+      - name: Install lint tools
+        run: brew install swiftformat ast-grep markdownlint-cli shellcheck ruff actionlint
+
+      - name: SwiftFormat and blank lines
+        run: scripts/format.sh --check
+
+      - name: ast-grep lint rules
+        run: ast-grep scan
+
+      - name: ast-grep rule tests
+        run: ast-grep test --include-off
+
+      - name: Live tests carry the live tag
+        run: |
+          if grep -rn --include='*.swift' 'RedisTestServer\.live(' Tests | grep -v '^Tests/TestSupport/' \
+            | grep -v '\.tags(\.live)'; then
+            echo "::error::Pair every RedisTestServer.live(...) gate with .tags(.live) on the same line."
+            exit 1
+          fi
+
+      - name: ShellCheck
+        run: |
+          # scripts/snapshot.sh is a zsh script.
+          files=()
+          while IFS= read -r -d '' file; do files+=("$file"); done \
+            < <(find scripts -name '*.sh' ! -name snapshot.sh -print0)
+          if [[ -d .githooks ]]; then
+            while IFS= read -r -d '' file; do files+=("$file"); done < <(find .githooks -type f -print0)
+          fi
+          shellcheck "${files[@]}"
+
+      - name: Commit message check self-test
+        run: scripts/check-commit-message.sh --self-test
+
+      - name: Ruff
+        run: ruff check scripts
+
+      - name: markdownlint
+        run: markdownlint '**/*.md' --dot --ignore .build --ignore dist --ignore .swiftpm --ignore .git
+
+      - name: actionlint
+        run: actionlint
+
+  build:
+    runs-on: xcode-27
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Select Xcode
+        uses: ./.github/actions/select-xcode
+
+      # No build cache: checkout gives every file a new modification time, so a
+      # restored .build/dev rebuilds everything anyway.
+      - name: Build the package
+        run: swift build --scratch-path .build/dev -Xswiftc -warnings-as-errors
+
+      - name: Install xcodegen
+        run: brew install xcodegen
+
+      - name: Build the app
+        run: |
+          xcodegen generate
+          xcodebuild -project Keystrand.xcodeproj -scheme Keystrand -configuration Debug \
+            -destination 'platform=macOS' -derivedDataPath .build/dd -quiet build \
+            SWIFT_TREAT_WARNINGS_AS_ERRORS=YES
+
+  unit-tests:
+    runs-on: xcode-27
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Select Xcode
+        uses: ./.github/actions/select-xcode
+
+      # SwiftPM cannot filter by tag, so KEYSTRAND_SKIP_LIVE=1 disables every
+      # test gated with RedisTestServer.live(...).
+      - name: Run the tests without servers
+        env:
+          KEYSTRAND_SKIP_LIVE: "1"
+        run: |
+          mkdir -p "$RUNNER_TEMP/test-results"
+          swift test --scratch-path .build/dev --xunit-output "$RUNNER_TEMP/test-results/unit.xml"
+
+      - name: Upload the test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: ${{ runner.temp }}/test-results/
+          if-no-files-found: ignore
+
+  live-tests:
+    runs-on: xcode-27
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Select Xcode
+        uses: ./.github/actions/select-xcode
+
+      # Both formulae install redis-* binaries, so Redis is installed unlinked
+      # and test-servers.sh runs it from Homebrew's opt/redis.
+      - name: Install Redis and Valkey
+        run: |
+          brew install redis
+          brew unlink redis
+          brew install valkey
+          "$(brew --prefix)/opt/redis/bin/redis-server" --version
+          valkey-server --version
+
+      - name: Start the test servers
+        run: scripts/test-servers.sh native start all
+
+      - name: Run the tests against the servers
+        env:
+          KEYSTRAND_REQUIRE_LIVE: "1"
+        run: |
+          mkdir -p "$RUNNER_TEMP/test-results"
+          swift test --scratch-path .build/dev --xunit-output "$RUNNER_TEMP/test-results/live.xml"
+
+      - name: Stop the test servers
+        if: always()
+        run: scripts/test-servers.sh native stop all
+
+      - name: Upload the test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-test-results
+          path: ${{ runner.temp }}/test-results/
+          if-no-files-found: ignore
+
+      - name: Upload the server logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-server-logs
+          path: .build/test-servers/*/server.log
+          if-no-files-found: ignore

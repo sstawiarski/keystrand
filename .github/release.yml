@@ -1,0 +1,27 @@
+# Categories for GitHub's generated release notes. Each pull request gets
+# one of these labels; see CONTRIBUTING.md.
+changelog:
+  exclude:
+    labels:
+      - internal
+  categories:
+    - title: Breaking changes
+      labels:
+        - breaking
+    - title: New features
+      labels:
+        - feature
+        - enhancement
+    - title: Bug fixes
+      labels:
+        - bug
+    - title: Documentation
+      labels:
+        - docs
+        - documentation
+    - title: Dependencies
+      labels:
+        - dependencies
+    - title: Other changes
+      labels:
+        - "*"

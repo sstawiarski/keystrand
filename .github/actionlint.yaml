@@ -1,0 +1,5 @@
+# actionlint settings. xcode-27 is a GitHub-hosted runner label that is newer
+# than the label list built into actionlint, so it is declared here.
+self-hosted-runner:
+  labels:
+    - xcode-27

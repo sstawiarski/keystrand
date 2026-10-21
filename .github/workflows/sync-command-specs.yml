@@ -1,0 +1,90 @@
+name: Sync command specs
+
+# Moves the pins in scripts/command-sources.lock to the newest upstream tags,
+# regenerates the bundled command specs, and opens a pull request when
+# anything changed.
+#
+# Opening the pull request needs the repository setting "Allow GitHub Actions
+# to create and approve pull requests" (Settings > Actions > General). A pull
+# request opened with GITHUB_TOKEN does not start other workflows; close and
+# reopen it to run CI.
+
+on:
+  schedule:
+    - cron: "23 6 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-command-specs
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      LOCK: scripts/command-sources.lock
+      SPECS: Sources/CommandSpecs/Resources/Commands
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Save the current pins and specs
+        run: |
+          mkdir -p "$RUNNER_TEMP/old"
+          cp "$LOCK" "$RUNNER_TEMP/old.lock"
+          cp "$SPECS"/*.json "$RUNNER_TEMP/old/"
+
+      - name: Resolve the newest tags
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 -I scripts/sync-command-specs.py resolve --write
+
+      - name: Regenerate the command specs
+        run: python3 -I scripts/make-redis-commands.py "$RUNNER_TEMP/cache"
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if [[ -z "$(git status --porcelain -- "$LOCK" "$SPECS")" ]]; then
+            echo "pins are current"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git status --short -- "$LOCK" "$SPECS"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open a pull request
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          branch="sync/command-specs-$(date -u +%Y-%m-%d)"
+          python3 -I scripts/sync-command-specs.py summarize \
+            --old-lock "$RUNNER_TEMP/old.lock" --new-lock "$LOCK" \
+            --old-dir "$RUNNER_TEMP/old" --new-dir "$SPECS" \
+            > "$RUNNER_TEMP/summary.md"
+          cat "$RUNNER_TEMP/summary.md" >> "$GITHUB_STEP_SUMMARY"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add -- "$LOCK" "$SPECS"
+          git commit -m "Sync command specs with upstream"
+          git push --force origin "$branch"
+
+          if gh pr view "$branch" --json number > /dev/null 2>&1; then
+            gh pr edit "$branch" --body-file "$RUNNER_TEMP/summary.md"
+          else
+            gh pr create --head "$branch" --title "Sync command specs with upstream" \
+              --body-file "$RUNNER_TEMP/summary.md"
+          fi
+
+          gh pr list --state open --json number,headRefName \
+            --jq ".[] | select(.headRefName | startswith(\"sync/command-specs-\")) | select(.headRefName != \"$branch\") | .number" |
+            while read -r number; do
+              gh pr close "$number" --delete-branch --comment "Superseded by the sync on $branch."
+            done

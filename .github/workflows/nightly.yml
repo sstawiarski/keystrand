@@ -1,0 +1,174 @@
+name: Nightly
+
+# Runs the test suite against each server version of the compatibility
+# matrix in docs/COMPATIBILITY.md, once a day and on demand.
+#
+# Servers: GitHub's macOS runners have no Docker, so every entry runs native
+# processes through `scripts/test-servers.sh native`. Homebrew has only the
+# newest Redis and Valkey, so redis-7.2 and valkey-8 are core builds from
+# source (scripts/build-server.sh, pinned tag and SHA-256, cached), without
+# modules. redis-8 is Homebrew's redis with its modules; valkey-9 is
+# Homebrew's valkey, without modules. Redis entries start Redis on 6390;
+# valkey-9 starts Valkey on 6392 and the cluster on 7001-7003. valkey-8 starts
+# only Valkey, because Valkey 8 has no numbered databases in cluster mode.
+#
+# Skips: KEYSTRAND_REQUIRE_LIVE=1 would fail every test of the servers an
+# entry does not start, so the tests run without it. Tests for absent servers
+# and modules skip, and the "Check the servers" step fails the job when a
+# started server does not answer, so a dead server cannot skip everything.
+#
+# To pin a newer source build, run `scripts/build-server.sh <server>
+# <version>` once; it prints the tarball's SHA-256.
+
+on:
+  schedule:
+    - cron: "23 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HOMEBREW_NO_AUTO_UPDATE: "1"
+  HOMEBREW_NO_INSTALL_CLEANUP: "1"
+  HOMEBREW_NO_ENV_HINTS: "1"
+
+jobs:
+  live-tests:
+    name: Live tests (${{ matrix.name }})
+    runs-on: xcode-27
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: redis-7.2
+            server: redis
+            source: build
+            version: "7.2.16"
+            sha256: 65fa69e66187cb5a4cf625bd587c743507e518749c5a0eec29c4f086495c8a7e
+            expect: "7.2."
+            targets: redis
+          - name: redis-8
+            server: redis
+            source: brew
+            expect: "8."
+            targets: redis
+          - name: valkey-8
+            server: valkey
+            source: build
+            version: "8.1.10"
+            sha256: c74e50cd83f6d398a3dc570e04ac2fe538249585d021f76ee2449bbf9ebd04ed
+            expect: "8.1."
+            targets: valkey
+          - name: valkey-9
+            server: valkey
+            source: brew
+            expect: "9."
+            targets: valkey cluster
+    env:
+      ENTRY: ${{ matrix.name }}
+      SERVER: ${{ matrix.server }}
+      SOURCE: ${{ matrix.source }}
+      SERVER_VERSION: ${{ matrix.version }}
+      SERVER_SHA256: ${{ matrix.sha256 }}
+      EXPECT: ${{ matrix.expect }}
+      TARGETS: ${{ matrix.targets }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Select Xcode
+        uses: ./.github/actions/select-xcode
+
+      - name: Cache the server build
+        if: matrix.source == 'build'
+        uses: actions/cache@v4
+        with:
+          path: .build/servers/${{ matrix.server }}-${{ matrix.version }}
+          key: server-${{ runner.os }}-${{ runner.arch }}-${{ matrix.name }}-${{ matrix.sha256 }}-${{ hashFiles('scripts/build-server.sh') }}
+
+      - name: Build the server from source
+        if: matrix.source == 'build'
+        run: scripts/build-server.sh "$SERVER" "$SERVER_VERSION" --sha256 "$SERVER_SHA256" >> "$GITHUB_ENV"
+
+      # One formula per entry, so the redis and valkey formulae never conflict.
+      - name: Install the server from Homebrew
+        if: matrix.source == 'brew'
+        run: brew install "$SERVER"
+
+      - name: Server version
+        run: |
+          if [[ "$SERVER" == redis ]]; then
+            server="${KEYSTRAND_REDIS_SERVER:-$(brew --prefix)/opt/redis/bin/redis-server}"
+            cli="${KEYSTRAND_REDIS_CLI:-$(brew --prefix)/opt/redis/bin/redis-cli}"
+          else
+            server="${KEYSTRAND_VALKEY_SERVER:-$(command -v valkey-server)}"
+            cli="${KEYSTRAND_VALKEY_CLI:-$(command -v valkey-cli)}"
+          fi
+          version="$("$server" --version)"
+          echo "$version"
+          echo "::notice title=$ENTRY::$version"
+          if [[ "$version" != *" v=$EXPECT"* ]]; then
+            echo "::error title=$ENTRY::Expected $SERVER $EXPECT*, got: $version"
+            exit 1
+          fi
+          echo "SERVER_CLI=$cli" >> "$GITHUB_ENV"
+
+      # A source-built Redis has no modules; an empty list also keeps the script
+      # from loading the modules of a Homebrew redis the runner may have.
+      - name: Start the test servers
+        run: |
+          if [[ "$SOURCE" == build ]]; then export KEYSTRAND_REDIS_MODULES=""; fi
+          read -r -a targets <<< "$TARGETS"
+          for target in "${targets[@]}"; do
+            scripts/test-servers.sh native start "$target"
+          done
+
+      - name: Check the servers
+        run: |
+          read -r -a targets <<< "$TARGETS"
+          for target in "${targets[@]}"; do
+            case "$target" in
+              redis) port=6390 ;;
+              valkey) port=6392 ;;
+              cluster) port=7001 ;;
+            esac
+            reply="$("$SERVER_CLI" -h 127.0.0.1 -p "$port" PING)"
+            if [[ "$reply" != PONG ]]; then
+              echo "::error title=$ENTRY::$target on port $port answered '$reply' to PING"
+              exit 1
+            fi
+            echo "$target on port $port: PONG"
+            "$SERVER_CLI" -h 127.0.0.1 -p "$port" MODULE LIST
+          done
+          if [[ " $TARGETS " == *" cluster "* ]]; then
+            "$SERVER_CLI" -h 127.0.0.1 -p 7001 CLUSTER INFO | grep -q 'cluster_state:ok' || {
+              echo "::error title=$ENTRY::The cluster is not in cluster_state:ok"
+              exit 1
+            }
+          fi
+
+      - name: Run the tests against the servers
+        run: |
+          mkdir -p "$RUNNER_TEMP/test-results"
+          swift test --scratch-path .build/dev --xunit-output "$RUNNER_TEMP/test-results/$ENTRY.xml"
+
+      - name: Stop the test servers
+        if: always()
+        run: scripts/test-servers.sh native stop all
+
+      - name: Upload the test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-test-results-${{ matrix.name }}
+          path: ${{ runner.temp }}/test-results/
+          if-no-files-found: ignore
+
+      - name: Upload the server logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-server-logs-${{ matrix.name }}
+          path: .build/test-servers/*/server.log
+          if-no-files-found: ignore

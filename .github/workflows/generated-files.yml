@@ -1,0 +1,56 @@
+name: Generated files
+
+# Runs every generator and fails when a checked-in generated file is stale:
+# the command specs, the sample data, the app icon, the public API reference
+# in docs/ARCHITECTURE.md section 11, and the xcodegen project.
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: generated-files-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: xcode-27
+    timeout-minutes: 45
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_INSTALL_CLEANUP: "1"
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Select Xcode
+        uses: ./.github/actions/select-xcode
+
+      - name: Install xcodegen
+        run: brew install xcodegen
+
+      - name: Cache command sources
+        uses: actions/cache@v4
+        with:
+          path: .build/command-sources
+          key: command-sources-${{ hashFiles('scripts/command-sources.lock') }}
+          restore-keys: command-sources-
+
+      - name: Check generated files
+        env:
+          CHECK_GENERATED_REPORT_DIR: ${{ runner.temp }}/check-generated
+        run: scripts/check-generated.sh
+
+      - name: Upload the diffs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-files-diff
+          path: |
+            ${{ runner.temp }}/check-generated/*.diff
+            ${{ runner.temp }}/check-generated/*.log
+          if-no-files-found: ignore

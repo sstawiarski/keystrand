@@ -1,0 +1,95 @@
+name: Commit style
+
+# Checks that the pull request title follows Conventional Commits and labels
+# the pull request for the release notes (.github/release.yml). Pull requests
+# are squash-merged, so the title becomes the commit on main; commit subjects
+# on the branch only get warnings.
+#
+# This is its own workflow because it must run when the title is edited, and
+# an `edited` run of the CI workflow would cancel or shadow the build and
+# test checks of the same commit.
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: commit-style-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  commit-style:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR: ${{ github.event.pull_request.number }}
+      BASE_REF: ${{ github.base_ref }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Check the pull request title
+        run: |
+          title=$(gh pr view "$PR" --json title -q .title)
+          scripts/check-commit-message.sh "$title"
+
+      - name: Check the commit subjects
+        run: |
+          while IFS= read -r line; do
+            sha=${line%% *}
+            subject=${line#* }
+            if ! scripts/check-commit-message.sh "$subject" 2>/dev/null; then
+              echo "::warning::Commit ${sha:0:12} is not a Conventional Commit: $subject. The squash merge uses the pull request title instead."
+            fi
+          done < <(git log --no-merges --format='%H %s' "origin/$BASE_REF..HEAD")
+
+      # A pull request from a fork gets a read-only token and cannot be labeled.
+      - name: Label the pull request
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          title=$(gh pr view "$PR" --json title -q .title)
+          body=$(gh pr view "$PR" --json body -q .body)
+          current=$(gh pr view "$PR" --json labels -q '.labels[].name')
+          type=${title%%[(!:]*}
+          case "$type" in
+            feat | perf) kind=feature ;;
+            fix) kind=bug ;;
+            docs) kind=docs ;;
+            *) kind=internal ;;
+          esac
+          wanted=("$kind")
+          if [[ "$title" =~ ^[a-z]+(\([a-z0-9-]+\))?!: ]] || grep -qE '^BREAKING[ -]CHANGE:' <<<"$body"; then
+            wanted+=(breaking)
+          fi
+          args=()
+          for label in breaking feature bug docs internal; do
+            has=false want=false
+            if grep -qxF "$label" <<<"$current"; then has=true; fi
+            for name in "${wanted[@]}"; do
+              if [[ "$name" == "$label" ]]; then want=true; fi
+            done
+            if [[ "$want" == true && "$has" == false ]]; then args+=(--add-label "$label"); fi
+            if [[ "$want" == false && "$has" == true ]]; then args+=(--remove-label "$label"); fi
+          done
+          if (( ${#args[@]} == 0 )); then
+            echo "Labels are up to date: ${wanted[*]}"
+            exit 0
+          fi
+          echo "gh pr edit $PR ${args[*]}"
+          if ! output=$(gh pr edit "$PR" "${args[@]}" 2>&1); then
+            echo "$output"
+            if grep -qi 'not found' <<<"$output"; then
+              echo "::notice::A release-note label is missing. Create them with:%0Agh label create breaking --color B60205%0Agh label create feature --color 0E8A16%0Agh label create bug --color D73A4A%0Agh label create docs --color 0075CA%0Agh label create internal --color EDEDED"
+              exit 0
+            fi
+            exit 1
+          fi
+          echo "Labels: ${wanted[*]}"

@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: xcode-27
+    timeout-minutes: 60
+    env:
+      HOMEBREW_BUNDLE_BREW_SKIP: redis valkey
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_INSTALL_CLEANUP: "1"
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # scripts/version.sh needs every commit and tag.
+          fetch-depth: 0
+
+      - name: Select Xcode
+        uses: ./.github/actions/select-xcode
+
+      - name: Install build tools
+        run: |
+          brew bundle install --file Brewfile --no-upgrade
+          scripts/bootstrap.sh --check
+
+      - name: Read version
+        id: version
+        run: |
+          version=$(scripts/version.sh)
+          build=$(scripts/version.sh --build)
+          if [[ "$version" != "${TAG#v}" ]]; then
+            echo "::error::scripts/version.sh printed $version, expected ${TAG#v}."
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "build=$build" >> "$GITHUB_OUTPUT"
+
+      - name: Build Release
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          BUILD: ${{ steps.version.outputs.build }}
+        run: |
+          xcodegen generate
+          xcodebuild -project Keystrand.xcodeproj -scheme Keystrand -configuration Release \
+            -destination 'platform=macOS' -derivedDataPath .build/dd -quiet build \
+            MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="$BUILD"
+          plist=.build/dd/Build/Products/Release/Keystrand.app/Contents/Info.plist
+          built=$(plutil -extract CFBundleShortVersionString raw "$plist")
+          [[ "$built" == "$VERSION" ]] || { echo "::error::The app reports version $built."; exit 1; }
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          flags=()
+          if [[ "$VERSION" == *-* ]]; then
+            flags+=(--prerelease)
+          fi
+          gh release create "$TAG" --verify-tag --generate-notes --title "Keystrand $VERSION" "${flags[@]}"
