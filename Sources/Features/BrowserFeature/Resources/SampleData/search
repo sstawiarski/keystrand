@@ -1,0 +1,5 @@
+FT.CREATE idx:library_books ON HASH PREFIX 1 library:books: SCHEMA title TEXT WEIGHT 2 SORTABLE author TEXT SORTABLE genre TAG SEPARATOR , year NUMERIC SORTABLE pages NUMERIC available NUMERIC branch TAG
+
+FT.CREATE idx:library_catalog ON JSON PREFIX 1 library:catalog: SCHEMA $.title AS title TEXT WEIGHT 2 $.authors[*] AS authors TAG $.genres[*] AS genres TAG $.published AS published NUMERIC SORTABLE $.pages AS pages NUMERIC $.rating.average AS rating NUMERIC SORTABLE $.formats[*].type AS formats TAG
+
+FT.CREATE "idx:library_programs" ON JSON PREFIX 1 "library:programs:" SCHEMA "$.title" AS "title" TEXT "$.audience" AS "audience" TAG "$.branch" AS "branch" TAG "$.location" AS "location" GEO "$.capacity" AS "capacity" NUMERIC "$.description" AS "description" TEXT

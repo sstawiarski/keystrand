@@ -1,0 +1,112 @@
+name: Keystrand
+
+options:
+  bundleIdPrefix: app.keystrand
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+packages:
+  KeystrandKit:
+    path: .
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+    SWIFT_EMIT_LOC_STRINGS: YES
+    MARKETING_VERSION: 0.0.0-dev
+    CURRENT_PROJECT_VERSION: 0
+
+targets:
+  Keystrand:
+    type: application
+    platform: macOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: Keystrand
+        type: syncedFolder
+      - path: LICENSE
+        buildPhase: resources
+      - path: THIRD_PARTY_NOTICES.md
+        buildPhase: resources
+      - path: LICENSES
+        type: folder
+        buildPhase: resources
+    dependencies:
+      - package: KeystrandKit
+        product: AppShell
+    info:
+      path: Config/Info.plist
+      properties:
+        CFBundleName: Keystrand
+        CFBundleDisplayName: Keystrand
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        LSMinimumSystemVersion: "26.0"
+        LSApplicationCategoryType: public.app-category.developer-tools
+        NSHumanReadableCopyright: "Copyright © 2026 Shawn Stawiarski."
+        NSPrincipalClass: NSApplication
+        # Redis Software discovery accepts self-signed HTTPS certificates on
+        # hosts the user enters. ATS rejects those even with a custom trust
+        # delegate, and an exception domain cannot name an arbitrary host.
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+        CFBundleURLTypes:
+          - CFBundleURLName: app.keystrand.Keystrand
+            CFBundleTypeRole: Viewer
+            CFBundleURLSchemes:
+              - keystrand
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.keystrand.Keystrand
+        PRODUCT_NAME: Keystrand
+        INFOPLIST_FILE: Config/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_APP_SANDBOX: NO
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGNING_ALLOWED: YES
+        CODE_SIGNING_REQUIRED: NO
+        DEVELOPMENT_TEAM: ""
+        COMBINE_HIDPI_IMAGES: YES
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/../Frameworks"
+
+schemes:
+  Keystrand:
+    build:
+      targets:
+        Keystrand: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: false
+      targets:
+        - package: KeystrandKit/RESPTests
+        - package: KeystrandKit/RedisClientTests
+        - package: KeystrandKit/FormattersTests
+        - package: KeystrandKit/CommandSpecsTests
+        - package: KeystrandKit/RedisCoreTests
+        - package: KeystrandKit/RedisUITests
+        - package: KeystrandKit/ConnectionsFeatureTests
+        - package: KeystrandKit/BrowserFeatureTests
+        - package: KeystrandKit/KeyTypesBasicFeatureTests
+        - package: KeystrandKit/KeyTypesAdvancedFeatureTests
+        - package: KeystrandKit/WorkbenchFeatureTests
+        - package: KeystrandKit/CLIFeatureTests
+        - package: KeystrandKit/AnalyticsFeatureTests
+        - package: KeystrandKit/MonitoringFeatureTests
+        - package: KeystrandKit/VectorSearchFeatureTests
+        - package: KeystrandKit/SettingsFeatureTests
+        - package: KeystrandKit/AppShellTests
+    profile:
+      config: Release
+    archive:
+      config: Release

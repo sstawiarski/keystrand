@@ -1,0 +1,187 @@
+SET library:config:name "Riverbend Public Library"
+SET library:config:opening_hours "Mon-Thu 09:00-20:00; Fri-Sat 09:00-17:00; Sun 12:00-17:00"
+SET library:config:loan_policy '{"loan_days":21,"renewals":2,"max_items":15,"daily_fine":0.25,"fine_cap":10.0,"holds":{"max_active":10,"pickup_days":7}}'
+SET library:announcement "The Riverside branch is closed on Monday while new carpet is installed." EX 604800
+SET library:cache:search:catalog:austen "{\"query\":\"austen\",\"hits\":[1,25,26,43],\"took_ms\":4}" EX 3600
+SET library:locks:checkout:terminal-3 "member:1004" EX 900
+SET library:covers:thumb:1 "\x89PNG\x0d\x0a\x1a\x0a\x00\x00\x00\x0dIHDR\x00\x00\x00\x06\x00\x00\x00\x09\x08\x02\x00\x00\x00\x9e\xf8\xca\xca\x00\x00\x00\x11IDATx\xdac\xe8\xd27EC\x0c\x83T\x08\x00\xd7\xe725+\x88\x09\xfe\x00\x00\x00\x00IEND\xaeB`\x82"
+SET library:covers:thumb:2 "\x89PNG\x0d\x0a\x1a\x0a\x00\x00\x00\x0dIHDR\x00\x00\x00\x06\x00\x00\x00\x09\x08\x02\x00\x00\x00\x9e\xf8\xca\xca\x00\x00\x00\x11IDATx\xdac\x90\xf7\xabDC\x0c\x83T\x08\x00\x22\xb50\x85\xd3c\x81s\x00\x00\x00\x00IEND\xaeB`\x82"
+SET library:shelves:café-corner "Newspapers, magazines and the community notice board"
+SET "library:legacy:\xc0\xffrecord" "Imported from the old catalogue system; the key name is not valid UTF-8"
+SET library:legacy:barcode_scan "\x02RB-0001-\x00\x1f\xfe\xff\x03"
+SET library:stats:visits:2025-10-14 342
+SET library:stats:visits:2025-10-15 422
+SET library:stats:visits:2025-10-16 442
+SET library:stats:visits:2025-10-17 363
+SET library:stats:visits:2025-10-18 503
+SET library:stats:visits:2025-10-19 306
+SET library:stats:visits:2025-10-20 338
+SET library:stats:checkouts:total 48213
+
+HSET library:books:1 title "Pride and Prejudice" author "Jane Austen" year 1813 genre "fiction,romance" pages 432 copies 3 available 0 shelf "E19" branch central
+HSET library:books:2 title "Moby-Dick" author "Herman Melville" year 1851 genre "fiction,adventure" pages 720 copies 1 available 1 shelf "A3" branch lakeview
+HSET library:books:3 title "Frankenstein" author "Mary Shelley" year 1818 genre "fiction,horror,science_fiction" pages 280 copies 2 available 0 shelf "E2" branch hillcrest
+HSET library:books:4 title "Dracula" author "Bram Stoker" year 1897 genre "fiction,horror" pages 418 copies 6 available 0 shelf "F20" branch northgate
+HSET library:books:5 title "The Time Machine" author "H. G. Wells" year 1895 genre "fiction,science_fiction" pages 118 copies 4 available 2 shelf "H19" branch northgate
+HSET library:books:6 title "Middlemarch" author "George Eliot" year 1871 genre "fiction" pages 880 copies 3 available 0 shelf "B22" branch northgate
+HSET library:books:7 title "Jane Eyre" author "Charlotte Bronte" year 1847 genre "fiction,romance" pages 532 copies 4 available 4 shelf "H13" branch lakeview
+HSET library:books:8 title "Great Expectations" author "Charles Dickens" year 1861 genre "fiction" pages 544 copies 1 available 1 shelf "D15" branch central
+HSET library:books:9 title "War and Peace" author "Leo Tolstoy" year 1869 genre "fiction,historical" pages 1296 copies 4 available 2 shelf "B13" branch northgate
+HSET library:books:10 title "Anna Karenina" author "Leo Tolstoy" year 1878 genre "fiction,romance" pages 864 copies 4 available 0 shelf "E22" branch hillcrest
+HSET library:books:11 title "The Count of Monte Cristo" author "Alexandre Dumas" year 1844 genre "fiction,adventure" pages 1276 copies 3 available 2 shelf "A8" branch northgate
+HSET library:books:12 title "Little Women" author "Louisa May Alcott" year 1868 genre "fiction,young_adult" pages 449 copies 5 available 3 shelf "G24" branch northgate
+HSET library:books:13 title "The Adventures of Sherlock Holmes" author "Arthur Conan Doyle" year 1892 genre "fiction,mystery" pages 307 copies 3 available 3 shelf "E11" branch riverside
+HSET library:books:14 title "Treasure Island" author "Robert Louis Stevenson" year 1883 genre "fiction,adventure,children" pages 292 copies 3 available 3 shelf "G9" branch hillcrest
+HSET library:books:15 title "The Picture of Dorian Gray" author "Oscar Wilde" year 1890 genre "fiction,horror" pages 254 copies 2 available 0 shelf "A21" branch northgate
+HSET library:books:16 title "Wuthering Heights" author "Emily Bronte" year 1847 genre "fiction,romance" pages 416 copies 2 available 0 shelf "F14" branch northgate
+HSET library:books:17 title "Crime and Punishment" author "Fyodor Dostoevsky" year 1866 genre "fiction" pages 671 copies 1 available 0 shelf "H1" branch hillcrest
+HSET library:books:18 title "Walden" author "Henry David Thoreau" year 1854 genre "nonfiction,nature" pages 352 copies 1 available 0 shelf "A13" branch northgate
+HSET library:books:19 title "Leaves of Grass" author "Walt Whitman" year 1855 genre "poetry" pages 464 copies 2 available 1 shelf "F22" branch northgate
+HSET library:books:20 title "The Call of the Wild" author "Jack London" year 1903 genre "fiction,adventure" pages 172 copies 1 available 0 shelf "H9" branch northgate
+HSET library:books:21 title "Alice's Adventures in Wonderland" author "Lewis Carroll" year 1865 genre "fiction,children,fantasy" pages 192 copies 2 available 0 shelf "E6" branch lakeview
+HSET library:books:22 title "Twenty Thousand Leagues Under the Seas" author "Jules Verne" year 1870 genre "fiction,science_fiction,adventure" pages 448 copies 3 available 3 shelf "G9" branch riverside
+HSET library:books:23 title "The War of the Worlds" author "H. G. Wells" year 1898 genre "fiction,science_fiction" pages 287 copies 2 available 0 shelf "G1" branch riverside
+HSET library:books:24 title "Heart of Darkness" author "Joseph Conrad" year 1899 genre "fiction" pages 96 copies 3 available 2 shelf "C1" branch riverside
+HSET library:books:25 title "Emma" author "Jane Austen" year 1815 genre "fiction,romance" pages 474 copies 4 available 4 shelf "B12" branch riverside
+HSET library:books:26 title "Persuasion" author "Jane Austen" year 1817 genre "fiction,romance" pages 249 copies 3 available 0 shelf "G13" branch central
+HSET library:books:27 title "The Scarlet Letter" author "Nathaniel Hawthorne" year 1850 genre "fiction,historical" pages 238 copies 3 available 0 shelf "G7" branch central
+HSET library:books:28 title "Les Mis\xc3\xa9rables" author "Victor Hugo" year 1862 genre "fiction,historical" pages 1463 copies 2 available 0 shelf "E8" branch lakeview
+HSET library:books:29 title "Don Quixote" author "Miguel de Cervantes" year 1605 genre "fiction,adventure" pages 1072 copies 5 available 1 shelf "B9" branch lakeview
+HSET library:books:30 title "A Tale of Two Cities" author "Charles Dickens" year 1859 genre "fiction,historical" pages 489 copies 5 available 2 shelf "B18" branch lakeview
+
+HSET library:members:1001 name "Ada Whitfield" email "ada@example.org" card_type adult home_branch central joined 2024-08-28 active_loans 5 fines_due 1.75
+HSET library:members:1002 name "Bram Okafor" email "bram@example.org" card_type adult home_branch riverside joined 2024-03-28 active_loans 7 fines_due 0.00
+HSET library:members:1003 name "Carmen Ruiz" email "carmen@example.org" card_type senior home_branch hillcrest joined 2020-11-21 active_loans 6 fines_due 1.00
+HSET library:members:1004 name "Dev Patel" email "dev@example.org" card_type student home_branch central joined 2015-07-20 active_loans 4 fines_due 1.25
+HSET library:members:1005 name "Elin Sorensen" email "elin@example.org" card_type adult home_branch lakeview joined 2016-11-12 active_loans 4 fines_due 0.25
+HSET library:members:1006 name "Farah Haddad" email "farah@example.org" card_type adult home_branch northgate joined 2015-02-03 active_loans 1 fines_due 0.50
+HSET library:members:1007 name "Gus Lindqvist" email "gus@example.org" card_type child home_branch riverside joined 2012-08-12 active_loans 7 fines_due 1.00
+HSET library:members:1008 name "Hana Mori" email "hana@example.org" card_type student home_branch central joined 2023-11-22 active_loans 5 fines_due 1.75
+HSET library:members:1009 name "Ivo Novak" email "ivo@example.org" card_type senior home_branch eastfield joined 2023-01-03 active_loans 0 fines_due 1.00
+HSET library:members:1010 name "June Abernathy" email "june@example.org" card_type adult home_branch hillcrest joined 2015-12-10 active_loans 7 fines_due 2.00
+HSET library:members:1011 name "Kofi Mensah" email "kofi@example.org" card_type adult home_branch central joined 2020-01-09 active_loans 6 fines_due 1.50
+HSET library:members:1012 name "Lena Petrova" email "lena@example.org" card_type child home_branch lakeview joined 2015-07-09 active_loans 8 fines_due 2.00
+HSET "library:members:\xfe\xed-import" name "Legacy Card" note "Binary key name from a migrated system"
+
+HSET library:branches:central name "Central Library" address "100 Main Street" phone 555-0111 opens 09:00 closes 20:00
+HSET library:branches:riverside name "Riverside Branch" address "42 River Road" phone 555-0185 opens 10:00 closes 18:00
+HSET library:branches:hillcrest name "Hillcrest Branch" address "7 Summit Avenue" phone 555-0193 opens 10:00 closes 18:00
+HSET library:branches:northgate name "Northgate Branch" address "1550 Northgate Parkway" phone 555-0172 opens 09:30 closes 19:00
+HSET library:branches:lakeview name "Lakeview Branch" address "318 Shoreline Drive" phone 555-0159 opens 10:00 closes 17:00
+HSET library:branches:eastfield name "Eastfield Bookmobile Depot" address "9 Depot Lane" phone 555-0145 opens 08:00 closes 16:00
+GEOADD library:branches:locations -93.265 44.9778 central -93.2471 44.9686 riverside -93.2902 44.9855 hillcrest -93.2733 45.0109 northgate -93.3089 44.9479 lakeview -93.2118 44.9731 eastfield
+
+HSET library:sessions:de04968c6018 member_id 1008 device "web catalogue" started_at 2025-10-20T09:14:00Z
+EXPIRE library:sessions:de04968c6018 900
+HSET library:sessions:96c71081c218 member_id 1002 device "iPhone app" started_at 2025-10-20T10:15:00Z
+EXPIRE library:sessions:96c71081c218 1800
+HSET library:sessions:5eb5ca0573ea member_id 1006 device "web catalogue" started_at 2025-10-20T11:26:00Z
+EXPIRE library:sessions:5eb5ca0573ea 3600
+HSET library:sessions:799c763e24c4 member_id 1008 device "web catalogue" started_at 2025-10-20T12:26:00Z
+EXPIRE library:sessions:799c763e24c4 7200
+HSET library:sessions:55b165586902 member_id 1001 device "web catalogue" started_at 2025-10-20T13:39:00Z
+EXPIRE library:sessions:55b165586902 86400
+HSET library:sessions:4c72510621a7 member_id 1006 device "self-checkout kiosk" started_at 2025-10-20T14:41:00Z
+EXPIRE library:sessions:4c72510621a7 172800
+HSET library:sessions:7fe25b099818 member_id 1005 device "iPhone app" started_at 2025-10-20T15:38:00Z
+EXPIRE library:sessions:7fe25b099818 604800
+HSET library:sessions:9076d517e2b9 member_id 1007 device "web catalogue" started_at 2025-10-20T16:05:00Z
+EXPIRE library:sessions:9076d517e2b9 2592000
+
+RPUSH library:holds:books:3 1012 1005 1002 1010
+RPUSH library:holds:books:12 1007 1002 1011 1008 1010
+RPUSH library:holds:books:21 1005 1002 1010
+LPUSH library:returns:dropbox book:15 book:21 book:12 book:22 book:27 book:15 book:6 book:7 book:11
+RPUSH library:activity:recent "Ada Whitfield renewed Middlemarch" "Hillcrest received 12 new large-print titles" "Dev Patel placed a hold on Frankenstein" "Story time moved to the community room" "Kofi Mensah returned The Time Machine" "Riverside self-checkout kiosk restarted"
+
+SADD library:genres adventure biography children fantasy fiction historical history horror mystery nature nonfiction poetry romance science science_fiction young_adult
+SADD library:members:1001:favorites 2 7 21 8 9 25
+SADD library:members:1004:favorites 21 9 10 6 4
+SADD library:members:1008:favorites 23 6 19 7
+SADD library:collections:staff_picks book:8 book:22 book:29 book:13
+SADD library:collections:book_club book:7 book:2 book:10 book:17
+SADD library:collections:large_print book:6 book:17 book:21 book:12 book:20 book:3
+
+ZADD library:rankings:checkouts:2025-10 44 book:1 117 book:2 131 book:3 79 book:4 8 book:5 25 book:6 130 book:7 133 book:8 66 book:9 19 book:10 7 book:11 125 book:12 82 book:13 40 book:14 33 book:15 125 book:16 12 book:17 109 book:18 29 book:19 77 book:20 124 book:21 82 book:22 110 book:23 91 book:24 136 book:25 89 book:26 15 book:27 125 book:28 76 book:29 115 book:30
+ZADD library:loans:due 1762300800 loan:5001 1761436800 loan:5002 1760745600 loan:5003 1761004800 loan:5004 1761696000 loan:5005 1760572800 loan:5006 1761350400 loan:5007 1761004800 loan:5008 1761436800 loan:5009 1761177600 loan:5010 1762387200 loan:5011 1761004800 loan:5012 1760832000 loan:5013 1761177600 loan:5014 1761436800 loan:5015
+ZADD library:challenges:summer_reading 1765 1001 1173 1002 4160 1003 1809 1004 1918 1005 334 1006 3616 1007 2358 1008 3667 1009 1929 1010 3426 1011 4004 1012
+
+XADD library:events:circulation 1760918793700-0 action checkout member 1007 book 27 branch lakeview
+XADD library:events:circulation 1760920823466-0 action checkout member 1009 book 17 branch riverside
+XADD library:events:circulation 1760922285744-0 action renew member 1012 book 5 branch hillcrest
+XADD library:events:circulation 1760924491271-0 action hold member 1001 book 3 branch northgate
+XADD library:events:circulation 1760926084870-0 action checkout member 1003 book 16 branch northgate
+XADD library:events:circulation 1760927666925-0 action checkout member 1009 book 22 branch hillcrest
+XADD library:events:circulation 1760930007683-0 action renew member 1004 book 27 branch northgate
+XADD library:events:circulation 1760931525557-0 action checkout member 1006 book 15 branch riverside
+XADD library:events:circulation 1760933309992-0 action checkout member 1004 book 4 branch hillcrest
+XADD library:events:circulation 1760935288163-0 action hold member 1008 book 8 branch lakeview
+XADD library:events:circulation 1760936480624-0 action checkout member 1004 book 1 branch hillcrest
+XADD library:events:circulation 1760938801217-0 action checkout member 1003 book 8 branch lakeview
+XADD library:events:circulation 1760940783769-0 action hold member 1003 book 27 branch central
+XADD library:events:circulation 1760941872488-0 action checkout member 1002 book 13 branch riverside
+XADD library:events:circulation 1760944496289-0 action hold member 1007 book 18 branch central
+XADD library:events:circulation 1760945722308-0 action hold member 1009 book 11 branch riverside
+XADD library:events:circulation 1760948020755-0 action checkout member 1009 book 1 branch northgate
+XADD library:events:circulation 1760949332503-0 action renew member 1002 book 12 branch central
+XADD library:events:circulation 1760951687535-0 action hold member 1002 book 21 branch riverside
+XADD library:events:circulation 1760952853274-0 action hold member 1010 book 20 branch central
+XGROUP CREATE library:events:circulation notifications 0
+XGROUP CREATE library:events:circulation analytics $
+XREADGROUP GROUP notifications email-worker COUNT 6 STREAMS library:events:circulation >
+XREADGROUP GROUP notifications sms-worker COUNT 3 STREAMS library:events:circulation >
+XACK library:events:circulation notifications 1760918793700-0 1760920823466-0 1760922285744-0
+XADD library:events:door_counter * branch central entered 50 exited 8
+XADD library:events:door_counter * branch riverside entered 37 exited 53
+XADD library:events:door_counter * branch hillcrest entered 42 exited 13
+XADD library:events:door_counter * branch northgate entered 45 exited 6
+XADD library:events:door_counter * branch lakeview entered 14 exited 6
+XADD library:events:door_counter * branch central entered 39 exited 17
+XADD library:events:door_counter * branch riverside entered 54 exited 53
+XADD library:events:door_counter * branch hillcrest entered 58 exited 15
+
+PFADD library:visitors:unique:2025-10-18 visitor:0785 visitor:0078 visitor:0053 visitor:0637 visitor:0754 visitor:0692 visitor:0040 visitor:0456 visitor:0013 visitor:0154 visitor:0201 visitor:0108 visitor:0767 visitor:0838 visitor:0661 visitor:0769 visitor:0597 visitor:0328 visitor:0336 visitor:0522 visitor:0221 visitor:0116 visitor:0727 visitor:0333 visitor:0241 visitor:0166 visitor:0098 visitor:0754 visitor:0507 visitor:0014 visitor:0228 visitor:0433 visitor:0463 visitor:0105 visitor:0317 visitor:0283 visitor:0096 visitor:0212 visitor:0460 visitor:0113 visitor:0080 visitor:0768 visitor:0110 visitor:0498 visitor:0775 visitor:0137 visitor:0892 visitor:0261 visitor:0432 visitor:0222 visitor:0810 visitor:0508 visitor:0106 visitor:0247 visitor:0153 visitor:0889 visitor:0568 visitor:0605 visitor:0752 visitor:0799
+PFADD library:visitors:unique:2025-10-19 visitor:0314 visitor:0386 visitor:0058 visitor:0363 visitor:0378 visitor:0189 visitor:0660 visitor:0423 visitor:0812 visitor:0837 visitor:0136 visitor:0631 visitor:0366 visitor:0099 visitor:0694 visitor:0866 visitor:0050 visitor:0115 visitor:0124 visitor:0878 visitor:0453 visitor:0006 visitor:0257 visitor:0106 visitor:0832 visitor:0196 visitor:0659 visitor:0281 visitor:0623 visitor:0068 visitor:0809 visitor:0900 visitor:0486 visitor:0368 visitor:0480 visitor:0762 visitor:0590 visitor:0134 visitor:0061 visitor:0486 visitor:0177 visitor:0334 visitor:0237 visitor:0840 visitor:0392 visitor:0041 visitor:0370 visitor:0874 visitor:0577 visitor:0397 visitor:0751 visitor:0686 visitor:0478 visitor:0893 visitor:0706 visitor:0759 visitor:0212 visitor:0501 visitor:0763 visitor:0595
+PFADD library:visitors:unique:2025-10-20 visitor:0732 visitor:0224 visitor:0533 visitor:0199 visitor:0226 visitor:0216 visitor:0389 visitor:0859 visitor:0365 visitor:0319 visitor:0038 visitor:0257 visitor:0463 visitor:0615 visitor:0413 visitor:0610 visitor:0414 visitor:0242 visitor:0164 visitor:0517 visitor:0283 visitor:0263 visitor:0180 visitor:0635 visitor:0646 visitor:0421 visitor:0234 visitor:0277 visitor:0799 visitor:0292 visitor:0603 visitor:0616 visitor:0246 visitor:0028 visitor:0697 visitor:0054 visitor:0146 visitor:0117 visitor:0330 visitor:0637 visitor:0344 visitor:0378 visitor:0690 visitor:0440 visitor:0592 visitor:0229 visitor:0862 visitor:0795 visitor:0652 visitor:0779 visitor:0027 visitor:0639 visitor:0205 visitor:0089 visitor:0397 visitor:0866 visitor:0497 visitor:0124 visitor:0003 visitor:0323
+
+SETBIT library:members:active:2025-10 1 1
+SETBIT library:members:active:2025-10 2 1
+SETBIT library:members:active:2025-10 8 1
+SETBIT library:members:active:2025-10 10 1
+SETBIT library:members:active:2025-10 14 1
+SETBIT library:members:active:2025-10 16 1
+SETBIT library:members:active:2025-10 18 1
+SETBIT library:members:active:2025-10 19 1
+SETBIT library:members:active:2025-10 20 1
+SETBIT library:members:active:2025-10 21 1
+SETBIT library:members:active:2025-10 22 1
+SETBIT library:members:active:2025-10 27 1
+SETBIT library:members:active:2025-10 28 1
+SETBIT library:members:active:2025-10 30 1
+SETBIT library:members:active:2025-10 31 1
+SETBIT library:members:active:2025-10 32 1
+SETBIT library:members:active:2025-10 33 1
+SETBIT library:members:active:2025-10 35 1
+SETBIT library:branches:eastfield:open_days:2025-10 0 1
+SETBIT library:branches:eastfield:open_days:2025-10 1 1
+SETBIT library:branches:eastfield:open_days:2025-10 2 1
+SETBIT library:branches:eastfield:open_days:2025-10 3 1
+SETBIT library:branches:eastfield:open_days:2025-10 4 1
+SETBIT library:branches:eastfield:open_days:2025-10 7 1
+SETBIT library:branches:eastfield:open_days:2025-10 8 1
+SETBIT library:branches:eastfield:open_days:2025-10 9 1
+SETBIT library:branches:eastfield:open_days:2025-10 10 1
+SETBIT library:branches:eastfield:open_days:2025-10 11 1
+SETBIT library:branches:eastfield:open_days:2025-10 14 1
+SETBIT library:branches:eastfield:open_days:2025-10 15 1
+SETBIT library:branches:eastfield:open_days:2025-10 16 1
+SETBIT library:branches:eastfield:open_days:2025-10 17 1
+SETBIT library:branches:eastfield:open_days:2025-10 18 1
+SETBIT library:branches:eastfield:open_days:2025-10 21 1
+SETBIT library:branches:eastfield:open_days:2025-10 22 1
+SETBIT library:branches:eastfield:open_days:2025-10 23 1
+SETBIT library:branches:eastfield:open_days:2025-10 24 1
+SETBIT library:branches:eastfield:open_days:2025-10 25 1
+SETBIT library:branches:eastfield:open_days:2025-10 28 1
+SETBIT library:branches:eastfield:open_days:2025-10 29 1
+SETBIT library:branches:eastfield:open_days:2025-10 30 1

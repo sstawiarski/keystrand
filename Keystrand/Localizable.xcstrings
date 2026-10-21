@@ -1,0 +1,3119 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    " " : {
+
+    },
+    "  %lld %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "  %1$lld %2$@"
+          }
+        }
+      }
+    },
+    "\"…\"" : {
+
+    },
+    "#%lld" : {
+
+    },
+    "$" : {
+
+    },
+    "%@\n%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@\n%2$@"
+          }
+        }
+      }
+    },
+    "%@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "%@ (%lld pending)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$lld pending)"
+          }
+        }
+      }
+    },
+    "%@ (%lld)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$lld)"
+          }
+        }
+      }
+    },
+    "%@ B" : {
+
+    },
+    "%@ is disconnected." : {
+
+    },
+    "%@ isn't in the app bundle." : {
+
+    },
+    "%@ keys · %@ expiring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ keys · %2$@ expiring"
+          }
+        }
+      }
+    },
+    "%@ matches" : {
+
+    },
+    "%@ – %@ · %@ running time" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ – %2$@ · %3$@ running time"
+          }
+        }
+      }
+    },
+    "%@ — %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ — %2$@"
+          }
+        }
+      }
+    },
+    "%@%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$@"
+          }
+        }
+      }
+    },
+    "%@%@%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$@%3$@"
+          }
+        }
+      }
+    },
+    "%@%@%@%@%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$@%3$@%4$@%5$@"
+          }
+        }
+      }
+    },
+    "%@: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@"
+          }
+        }
+      }
+    },
+    "%@:%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@:%2$lld"
+          }
+        }
+      }
+    },
+    "%lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "%lld result(s)" : {
+
+    },
+    "%lld results" : {
+
+    },
+    "%lld." : {
+
+    },
+    "*" : {
+
+    },
+    "* or milliseconds" : {
+
+    },
+    "*Unknown format*" : {
+
+    },
+    "+" : {
+
+    },
+    "-" : {
+
+    },
+    "." : {
+
+    },
+    ".stock" : {
+
+    },
+    ".stock < 10 and .brand == \"acme\"" : {
+
+    },
+    "0" : {
+
+    },
+    "0 = no limit" : {
+
+    },
+    "0.12, 0.5, 0.33 or a FP32 blob" : {
+
+    },
+    "0.2" : {
+
+    },
+    "10" : {
+
+    },
+    "128" : {
+
+    },
+    "30" : {
+
+    },
+    "60000" : {
+
+    },
+    ":" : {
+
+    },
+    ": " : {
+
+    },
+    "== != < <= > >=" : {
+
+    },
+    "A short press of ⌘Q shows a reminder instead of quitting. Quit in the menu bar or the Dock still quits at once." : {
+
+    },
+    "A to Z" : {
+
+    },
+    "A value is saved. Type to replace it." : {
+
+    },
+    "Acknowledge the message (XACK)" : {
+
+    },
+    "Acknowledgements" : {
+
+    },
+    "Acknowledge…" : {
+
+    },
+    "Action" : {
+
+    },
+    "Actions" : {
+
+    },
+    "Add" : {
+
+    },
+    "Add %@" : {
+
+    },
+    "Add Condition" : {
+
+    },
+    "Add Database" : {
+
+    },
+    "Add Database (⌘N)" : {
+
+    },
+    "Add Database…" : {
+
+    },
+    "Add Entry…" : {
+
+    },
+    "Add Field…" : {
+
+    },
+    "Add New…" : {
+
+    },
+    "Add Tag" : {
+
+    },
+    "Add a Redis database with a connection URL, discover Sentinel primary groups, or import connections from a file." : {
+
+    },
+    "Add a field to the index schema" : {
+
+    },
+    "Add a sample to start the series." : {
+
+    },
+    "Add an entry to start the stream." : {
+
+    },
+    "Add at least one field to generate the FT.CREATE command." : {
+
+    },
+    "Added" : {
+
+    },
+    "Address" : {
+
+    },
+    "Admin Password" : {
+
+    },
+    "Admin Username" : {
+
+    },
+    "After adding, show the range that contains the new element" : {
+
+    },
+    "Aggregate" : {
+
+    },
+    "Aggregation" : {
+
+    },
+    "Algorithm" : {
+
+    },
+    "Alias" : {
+
+    },
+    "All (AND)" : {
+
+    },
+    "All Groups" : {
+
+    },
+    "All Tips Hidden" : {
+
+    },
+    "All Types" : {
+
+    },
+    "Analyze" : {
+
+    },
+    "Analyze Database" : {
+
+    },
+    "Analyzing Database…" : {
+
+    },
+    "Any (OR)" : {
+
+    },
+    "Appearance" : {
+
+    },
+    "Append to the end" : {
+
+    },
+    "Apply" : {
+
+    },
+    "Arguments" : {
+
+    },
+    "Ascending" : {
+
+    },
+    "Attribute" : {
+
+    },
+    "Attributes" : {
+
+    },
+    "Attributes (Optional)" : {
+
+    },
+    "Authentication" : {
+
+    },
+    "Auto Claim" : {
+
+    },
+    "Auto Claim…" : {
+
+    },
+    "Auto Refresh" : {
+
+    },
+    "Auto refresh" : {
+
+    },
+    "Automatic (IPv4 and IPv6)" : {
+
+    },
+    "Automatic uses IPv4 and IPv6. IPv4 or IPv6 forces that address family when the host name resolves to both." : {
+
+    },
+    "Back" : {
+
+    },
+    "Back to All Tutorials" : {
+
+    },
+    "Back to Indexes" : {
+
+    },
+    "Back to Keys (⌘[)" : {
+
+    },
+    "Back to Search Results" : {
+
+    },
+    "Backfill" : {
+
+    },
+    "Bottom Panel" : {
+
+    },
+    "Browse Dataset" : {
+
+    },
+    "Browser" : {
+
+    },
+    "Bucket" : {
+
+    },
+    "Bucket duration in milliseconds" : {
+
+    },
+    "CA Certificate" : {
+
+    },
+    "CLI" : {
+
+    },
+    "CLI command input" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Change Database" : {
+
+    },
+    "Change the range or show empty indexes." : {
+
+    },
+    "Change the time range or the value filter." : {
+
+    },
+    "Change to Unicode" : {
+
+    },
+    "Channel" : {
+
+    },
+    "Channels or glob-style patterns separated by spaces; * subscribes to all channels" : {
+
+    },
+    "Chart" : {
+
+    },
+    "Chart Options" : {
+
+    },
+    "Checking the database for tips" : {
+
+    },
+    "Choose" : {
+
+    },
+    "Choose File…" : {
+
+    },
+    "Choose Index" : {
+
+    },
+    "Choose Logical Database" : {
+
+    },
+    "Choose a database in the Redis Databases window." : {
+
+    },
+    "Choose an Index" : {
+
+    },
+    "Claim" : {
+
+    },
+    "Claim the message for another consumer (XCLAIM)" : {
+
+    },
+    "Claim “%@”" : {
+
+    },
+    "Claim…" : {
+
+    },
+    "Clear" : {
+
+    },
+    "Clear (⌘K)" : {
+
+    },
+    "Clear Menu" : {
+
+    },
+    "Clear Messages" : {
+
+    },
+    "Clear Recent Searches" : {
+
+    },
+    "Clear Result" : {
+
+    },
+    "Clear Results…" : {
+
+    },
+    "Clear Slow Log" : {
+
+    },
+    "Clear Slow Log…" : {
+
+    },
+    "Clear all results of this database" : {
+
+    },
+    "Clear the Profiler output" : {
+
+    },
+    "Clear the results and show every element" : {
+
+    },
+    "Client" : {
+
+    },
+    "Client Certificate" : {
+
+    },
+    "Clients" : {
+
+    },
+    "Clone Database…" : {
+
+    },
+    "Close %@" : {
+
+    },
+    "Close Without Saving" : {
+
+    },
+    "Closing the last window quits Keystrand instead of leaving it running in the background. If a database is still connected, Keystrand asks first." : {
+
+    },
+    "Cluster" : {
+
+    },
+    "Cluster Host" : {
+
+    },
+    "Cluster Port" : {
+
+    },
+    "Cluster details are available only for databases in cluster mode." : {
+
+    },
+    "Collapse" : {
+
+    },
+    "Collapse All" : {
+
+    },
+    "Collapsed" : {
+
+    },
+    "Columns" : {
+
+    },
+    "Combine conditions" : {
+
+    },
+    "Command" : {
+
+    },
+    "Command Helper" : {
+
+    },
+    "Commands per pipeline" : {
+
+    },
+    "Commands/s" : {
+
+    },
+    "Comparison" : {
+
+    },
+    "Completed" : {
+
+    },
+    "Configure the Slow Log" : {
+
+    },
+    "Configure…" : {
+
+    },
+    "Connect" : {
+
+    },
+    "Connecting to %@…" : {
+
+    },
+    "Connecting…" : {
+
+    },
+    "Connection" : {
+
+    },
+    "Connection Failed" : {
+
+    },
+    "Connection Lost" : {
+
+    },
+    "Connection Scripts (%lld)" : {
+
+    },
+    "Connection Settings…" : {
+
+    },
+    "Connection Type" : {
+
+    },
+    "Connection URL" : {
+
+    },
+    "Consumer" : {
+
+    },
+    "Consumer Groups" : {
+
+    },
+    "Consumers" : {
+
+    },
+    "Consumers appear after they read from this group." : {
+
+    },
+    "Consumers of %@" : {
+
+    },
+    "Context" : {
+
+    },
+    "Copy" : {
+
+    },
+    "Copy Address" : {
+
+    },
+    "Copy Channel" : {
+
+    },
+    "Copy Command" : {
+
+    },
+    "Copy Command Name" : {
+
+    },
+    "Copy Commands" : {
+
+    },
+    "Copy Consumer Name" : {
+
+    },
+    "Copy Element" : {
+
+    },
+    "Copy Element Name" : {
+
+    },
+    "Copy Entry ID" : {
+
+    },
+    "Copy Entry as JSON" : {
+
+    },
+    "Copy Example Key" : {
+
+    },
+    "Copy Field" : {
+
+    },
+    "Copy Group Name" : {
+
+    },
+    "Copy Host and Port" : {
+
+    },
+    "Copy Index" : {
+
+    },
+    "Copy Key Name" : {
+
+    },
+    "Copy Last Delivered ID" : {
+
+    },
+    "Copy Line" : {
+
+    },
+    "Copy Member" : {
+
+    },
+    "Copy Message" : {
+
+    },
+    "Copy Name" : {
+
+    },
+    "Copy Node ID" : {
+
+    },
+    "Copy Path" : {
+
+    },
+    "Copy Pattern" : {
+
+    },
+    "Copy Query" : {
+
+    },
+    "Copy Raw MONITOR Line" : {
+
+    },
+    "Copy Result" : {
+
+    },
+    "Copy Row" : {
+
+    },
+    "Copy Score" : {
+
+    },
+    "Copy Syntax" : {
+
+    },
+    "Copy System Info" : {
+
+    },
+    "Copy Timestamp" : {
+
+    },
+    "Copy Value" : {
+
+    },
+    "Copy as TS.ADD" : {
+
+    },
+    "Create Index" : {
+
+    },
+    "Create Index…" : {
+
+    },
+    "Create a copy of this database connection" : {
+
+    },
+    "Create a group to let several consumers share this stream." : {
+
+    },
+    "Create a search index from sample data or your existing keys" : {
+
+    },
+    "Create an index to search your data." : {
+
+    },
+    "Current database" : {
+
+    },
+    "Cursor ID: %@" : {
+
+    },
+    "Custom" : {
+
+    },
+    "Custom (%@)" : {
+
+    },
+    "Custom Format" : {
+
+    },
+    "Custom Refresh Rate" : {
+
+    },
+    "Custom formats use date-fns tokens such as yyyy, MM, dd, HH, mm, ss and SSS." : {
+
+    },
+    "Custom…" : {
+
+    },
+    "DISTANCE_METRIC: how closeness is measured (Euclidean, inner product or cosine)." : {
+
+    },
+    "Data Type" : {
+
+    },
+    "Database" : {
+
+    },
+    "Database Index" : {
+
+    },
+    "Database Name from Provider" : {
+
+    },
+    "Database Not Found" : {
+
+    },
+    "Databases" : {
+
+    },
+    "Date and Time" : {
+
+    },
+    "Decompression" : {
+
+    },
+    "Decompression Format" : {
+
+    },
+    "Default" : {
+
+    },
+    "Default results" : {
+
+    },
+    "Defaults" : {
+
+    },
+    "Delete Certificate…" : {
+
+    },
+    "Delete Consumer…" : {
+
+    },
+    "Delete Group…" : {
+
+    },
+    "Delete Index…" : {
+
+    },
+    "Delete Key" : {
+
+    },
+    "Delete Keys" : {
+
+    },
+    "Delete Keys Matching Filter…" : {
+
+    },
+    "Delete Keys in Folder…" : {
+
+    },
+    "Delete Key…" : {
+
+    },
+    "Delete Query…" : {
+
+    },
+    "Delete Range…" : {
+
+    },
+    "Delete Report…" : {
+
+    },
+    "Delete Sample…" : {
+
+    },
+    "Delete every element from the start index to the end index (ARDELRANGE)" : {
+
+    },
+    "Delete samples between two timestamps (TS.DEL)" : {
+
+    },
+    "Delete “%@” from Keystrand" : {
+
+    },
+    "Delete…" : {
+
+    },
+    "Delimiters" : {
+
+    },
+    "Delivery Count" : {
+
+    },
+    "Descending" : {
+
+    },
+    "Development" : {
+
+    },
+    "Development: data changes skip the usual confirmations." : {
+
+    },
+    "Discard Field Changes?" : {
+
+    },
+    "Discard and Load" : {
+
+    },
+    "Discard the Profiler Log?" : {
+
+    },
+    "Disconnect" : {
+
+    },
+    "Disconnected" : {
+
+    },
+    "Discover Redis Software Databases…" : {
+
+    },
+    "Discover Sentinel Databases…" : {
+
+    },
+    "Distance metric" : {
+
+    },
+    "Docs" : {
+
+    },
+    "Docs: %@ (max ID %@) · Records: %@ · Terms: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Docs: %1$@ (max ID %2$@) · Records: %3$@ · Terms: %4$@"
+          }
+        }
+      }
+    },
+    "Don't ask again for this database" : {
+
+    },
+    "Done" : {
+
+    },
+    "Double-click the chart to reset the zoom." : {
+
+    },
+    "Double-click to set the last delivered ID" : {
+
+    },
+    "Drag across the chart to zoom in." : {
+
+    },
+    "Duplicate Policy" : {
+
+    },
+    "Duplicate policy" : {
+
+    },
+    "Each extra scan adds load on the server and keeps more keys in memory." : {
+
+    },
+    "Each member needs a numeric score. Existing members get the new score." : {
+
+    },
+    "Edit Anyway" : {
+
+    },
+    "Edit Database…" : {
+
+    },
+    "Edit Field…" : {
+
+    },
+    "Edit Score" : {
+
+    },
+    "Edit Series…" : {
+
+    },
+    "Edit Value" : {
+
+    },
+    "Edit Value…" : {
+
+    },
+    "Edit a Non-Unicode Value?" : {
+
+    },
+    "Edit retention, duplicate policy and labels (TS.ALTER)" : {
+
+    },
+    "Editor" : {
+
+    },
+    "Element" : {
+
+    },
+    "Element name" : {
+
+    },
+    "Elements" : {
+
+    },
+    "Empty" : {
+
+    },
+    "Empty buckets" : {
+
+    },
+    "Empty the editor once commands run" : {
+
+    },
+    "Enable automatic data decompression" : {
+
+    },
+    "Encoding" : {
+
+    },
+    "End" : {
+
+    },
+    "End timestamp in milliseconds; empty or + for the latest sample" : {
+
+    },
+    "Endpoint" : {
+
+    },
+    "Enter a Query" : {
+
+    },
+    "Enter a database index from 0 to %lld." : {
+
+    },
+    "Enter a pattern and click Run." : {
+
+    },
+    "Enter a refresh rate between %@ and 999.9 seconds." : {
+
+    },
+    "Enter a vector or an element to search" : {
+
+    },
+    "Enter an element index and press Return." : {
+
+    },
+    "Entries" : {
+
+    },
+    "Entry ID" : {
+
+    },
+    "Entry ID format is incorrect." : {
+
+    },
+    "Environment" : {
+
+    },
+    "Environments" : {
+
+    },
+    "Equals %@. -1 disables the Slow Log, 0 logs every command." : {
+
+    },
+    "Error" : {
+
+    },
+    "Errors" : {
+
+    },
+    "Errors (%@)" : {
+
+    },
+    "Estimate" : {
+
+    },
+    "Estimated from the keys scanned so far." : {
+
+    },
+    "Every" : {
+
+    },
+    "Exact compares whole values, Match finds substrings, Glob uses * ? [ ] and Regex uses regular expressions." : {
+
+    },
+    "Examples" : {
+
+    },
+    "Exclude from Index" : {
+
+    },
+    "Executing command…" : {
+
+    },
+    "Expand" : {
+
+    },
+    "Expand All" : {
+
+    },
+    "Expanded" : {
+
+    },
+    "Expand…" : {
+
+    },
+    "Expected Keys" : {
+
+    },
+    "Explain" : {
+
+    },
+    "Explain Command" : {
+
+    },
+    "Exploration factor (EF)" : {
+
+    },
+    "Export %lld Databases…" : {
+
+    },
+    "Export Connections (⇧⌘E)" : {
+
+    },
+    "Export Connections…" : {
+
+    },
+    "Export…" : {
+
+    },
+    "Extrapolate the sampled results to the whole database" : {
+
+    },
+    "FLAT compares against every vector and returns exact results. HNSW walks a graph for faster, approximate results on large sets." : {
+
+    },
+    "Field" : {
+
+    },
+    "Field TTL is in seconds. Leave it empty for no limit." : {
+
+    },
+    "Field name" : {
+
+    },
+    "Field name or glob pattern. Press Return to filter." : {
+
+    },
+    "Fields" : {
+
+    },
+    "File" : {
+
+    },
+    "Fill" : {
+
+    },
+    "Filter" : {
+
+    },
+    "Filter Syntax" : {
+
+    },
+    "Filter by Group" : {
+
+    },
+    "Filter entries by timestamp" : {
+
+    },
+    "Filter: %@" : {
+
+    },
+    "Filtered by %@" : {
+
+    },
+    "Filters are expressions evaluated against each element's JSON attributes." : {
+
+    },
+    "Find" : {
+
+    },
+    "Find Keys with This Prefix" : {
+
+    },
+    "Find Next" : {
+
+    },
+    "Find Previous" : {
+
+    },
+    "Find Similar" : {
+
+    },
+    "Find Similar Elements" : {
+
+    },
+    "Find…" : {
+
+    },
+    "Force claim" : {
+
+    },
+    "Force standalone connection" : {
+
+    },
+    "Format" : {
+
+    },
+    "Formatters" : {
+
+    },
+    "From" : {
+
+    },
+    "Full-text, vector and hybrid search at in-memory speed." : {
+
+    },
+    "Get Info" : {
+
+    },
+    "Get Info (⌘I)" : {
+
+    },
+    "Group" : {
+
+    },
+    "Group Name" : {
+
+    },
+    "Group Results" : {
+
+    },
+    "Group samples into time buckets (AGGREGATION)" : {
+
+    },
+    "Group the results of a run into one section; grouped results are shown as text" : {
+
+    },
+    "Grouped" : {
+
+    },
+    "Grouped combines every command of a run into one result. Silent shows only errors." : {
+
+    },
+    "HEX" : {
+
+    },
+    "HH:mm:ss d MMM yyyy" : {
+
+    },
+    "Hash" : {
+
+    },
+    "Hash Value" : {
+
+    },
+    "Head" : {
+
+    },
+    "Hide Bottom Panel" : {
+
+    },
+    "Hide Bottom Panel (⇧⌘Y)" : {
+
+    },
+    "Hide CLI" : {
+
+    },
+    "Hide Index Info" : {
+
+    },
+    "Hide Inspector" : {
+
+    },
+    "Hide Inspector (⌥⌘I)" : {
+
+    },
+    "Hide Key List" : {
+
+    },
+    "Hide Profiler" : {
+
+    },
+    "Hide Tip" : {
+
+    },
+    "Hide the chart" : {
+
+    },
+    "Higher values are more accurate and slower" : {
+
+    },
+    "Hold ⌘Q to Quit" : {
+
+    },
+    "Hold ⌘Q to quit" : {
+
+    },
+    "Host" : {
+
+    },
+    "Hosting Provider" : {
+
+    },
+    "Hosting provider: %@" : {
+
+    },
+    "Hostname or IP address" : {
+
+    },
+    "Hostname, IP address, or connection URL" : {
+
+    },
+    "IP Protocol" : {
+
+    },
+    "IPv4" : {
+
+    },
+    "IPv6" : {
+
+    },
+    "Identifier" : {
+
+    },
+    "Idle Time (ms)" : {
+
+    },
+    "Idle for %@ ms" : {
+
+    },
+    "Ignore case (NOCASE)" : {
+
+    },
+    "Ignore separators in first N characters" : {
+
+    },
+    "Import Connections…" : {
+
+    },
+    "Import Failed" : {
+
+    },
+    "Imported %@ of %@ commands" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Imported %1$@ of %2$@ commands"
+          }
+        }
+      }
+    },
+    "Importing…" : {
+
+    },
+    "In a cluster, every node keeps its own Slow Log settings." : {
+
+    },
+    "Include %@" : {
+
+    },
+    "Include in Index" : {
+
+    },
+    "Include keys without a TTL" : {
+
+    },
+    "Include passwords" : {
+
+    },
+    "Index" : {
+
+    },
+    "Index Info" : {
+
+    },
+    "Index Name" : {
+
+    },
+    "Index name" : {
+
+    },
+    "Index: %@" : {
+
+    },
+    "Indexes" : {
+
+    },
+    "Insert At" : {
+
+    },
+    "Insert Template" : {
+
+    },
+    "Inspector" : {
+
+    },
+    "Inspector Pane" : {
+
+    },
+    "JSON" : {
+
+    },
+    "JSON Value" : {
+
+    },
+    "JSON value" : {
+
+    },
+    "Jump to Latest" : {
+
+    },
+    "Keep Editing" : {
+
+    },
+    "Keep Scripts for %@" : {
+
+    },
+    "Keep up the good work." : {
+
+    },
+    "Key" : {
+
+    },
+    "Key Actions" : {
+
+    },
+    "Key Name" : {
+
+    },
+    "Key Name Format" : {
+
+    },
+    "Key Pattern" : {
+
+    },
+    "Key Policy" : {
+
+    },
+    "Key Type" : {
+
+    },
+    "Key name or pattern" : {
+
+    },
+    "Key prefix, for example bike:" : {
+
+    },
+    "Keyboard Shortcuts" : {
+
+    },
+    "Keys" : {
+
+    },
+    "Keys analyzed of the keys in the database" : {
+
+    },
+    "Keys scanned per iteration. Values below 500 are raised to 500." : {
+
+    },
+    "Keys starting with this prefix are indexed." : {
+
+    },
+    "Keys to scan" : {
+
+    },
+    "Keyspace" : {
+
+    },
+    "Keystrand loads the dataset and creates the index needed to search it." : {
+
+    },
+    "Label" : {
+
+    },
+    "Labels" : {
+
+    },
+    "Language" : {
+
+    },
+    "Large document: nested values load when expanded. Save the whole document to a file." : {
+
+    },
+    "Last Delivered" : {
+
+    },
+    "Last Delivered ID" : {
+
+    },
+    "Learn About Pipelining" : {
+
+    },
+    "Learn More" : {
+
+    },
+    "Leave blank to search the whole array" : {
+
+    },
+    "Leave empty for no limit. A TTL of 0 deletes the key." : {
+
+    },
+    "Left" : {
+
+    },
+    "Left axis label" : {
+
+    },
+    "Left axis scale" : {
+
+    },
+    "Length" : {
+
+    },
+    "Library" : {
+
+    },
+    "License Texts" : {
+
+    },
+    "Limit" : {
+
+    },
+    "Limit (LIMIT)" : {
+
+    },
+    "Line" : {
+
+    },
+    "Linear" : {
+
+    },
+    "List" : {
+
+    },
+    "List Value" : {
+
+    },
+    "Listing every document needs a numeric field in the index, and this one has none. Type a query to match against key values." : {
+
+    },
+    "Load" : {
+
+    },
+    "Load All" : {
+
+    },
+    "Load More" : {
+
+    },
+    "Load Sample Data…" : {
+
+    },
+    "Load into Editor" : {
+
+    },
+    "Load into the query editor" : {
+
+    },
+    "Load the whole value to choose a format" : {
+
+    },
+    "Loading overview" : {
+
+    },
+    "Loading…" : {
+
+    },
+    "Log" : {
+
+    },
+    "Log commands slower than" : {
+
+    },
+    "Logic" : {
+
+    },
+    "Logical Database" : {
+
+    },
+    "Logical Databases" : {
+
+    },
+    "Logical database" : {
+
+    },
+    "Looking for Local Databases…" : {
+
+    },
+    "MEMORY USAGE was skipped because this key is too big to measure safely." : {
+
+    },
+    "MIT License · Help > Acknowledgements for third-party notices" : {
+
+    },
+    "Make Searchable…" : {
+
+    },
+    "Manage Tags…" : {
+
+    },
+    "Match" : {
+
+    },
+    "Matched: %@" : {
+
+    },
+    "Max length" : {
+
+    },
+    "Maximum" : {
+
+    },
+    "Maximum distance (EPSILON)" : {
+
+    },
+    "Member" : {
+
+    },
+    "Member name or glob pattern. Press Return to filter." : {
+
+    },
+    "Members" : {
+
+    },
+    "Membership" : {
+
+    },
+    "Memory" : {
+
+    },
+    "Message" : {
+
+    },
+    "Messages published to matching channels appear here." : {
+
+    },
+    "Metrics" : {
+
+    },
+    "Milliseconds" : {
+
+    },
+    "Minimum" : {
+
+    },
+    "Mode" : {
+
+    },
+    "Modules" : {
+
+    },
+    "More" : {
+
+    },
+    "Name" : {
+
+    },
+    "Network In" : {
+
+    },
+    "Network Out" : {
+
+    },
+    "New" : {
+
+    },
+    "New Analysis Report" : {
+
+    },
+    "New Key (⇧⌘N)" : {
+
+    },
+    "New Key…" : {
+
+    },
+    "New Report" : {
+
+    },
+    "Next" : {
+
+    },
+    "No" : {
+
+    },
+    "No Command" : {
+
+    },
+    "No Consumer Groups" : {
+
+    },
+    "No Consumers" : {
+
+    },
+    "No Database Selected" : {
+
+    },
+    "No Databases" : {
+
+    },
+    "No Elements" : {
+
+    },
+    "No Elements in Range" : {
+
+    },
+    "No Entries" : {
+
+    },
+    "No Fields" : {
+
+    },
+    "No Filter Set" : {
+
+    },
+    "No Indexes" : {
+
+    },
+    "No Key Selected" : {
+
+    },
+    "No Keys" : {
+
+    },
+    "No Keys to Analyze" : {
+
+    },
+    "No Matching Databases" : {
+
+    },
+    "No Matching Elements" : {
+
+    },
+    "No Members" : {
+
+    },
+    "No Messages Yet" : {
+
+    },
+    "No Namespaces" : {
+
+    },
+    "No Node Details" : {
+
+    },
+    "No Pending Messages" : {
+
+    },
+    "No Primary Groups" : {
+
+    },
+    "No Reports" : {
+
+    },
+    "No Results" : {
+
+    },
+    "No Results Yet" : {
+
+    },
+    "No Samples" : {
+
+    },
+    "No Samples in Range" : {
+
+    },
+    "No Saved Queries" : {
+
+    },
+    "No Similar Elements" : {
+
+    },
+    "No Slow Log Entries" : {
+
+    },
+    "No Tips" : {
+
+    },
+    "No Tips Yet" : {
+
+    },
+    "No data to display" : {
+
+    },
+    "No element matches the query and filter." : {
+
+    },
+    "No limit" : {
+
+    },
+    "No profile data to display." : {
+
+    },
+    "No results found." : {
+
+    },
+    "Node" : {
+
+    },
+    "None" : {
+
+    },
+    "Not Subscribed" : {
+
+    },
+    "Not a Cluster" : {
+
+    },
+    "Notices Unavailable" : {
+
+    },
+    "Number" : {
+
+    },
+    "OK" : {
+
+    },
+    "ON_DUPLICATE override for this sample" : {
+
+    },
+    "On duplicate" : {
+
+    },
+    "On: ARGETRANGE shows gaps as Empty. Off: ARSCAN lists populated indexes only." : {
+
+    },
+    "One key this tip applies to:" : {
+
+    },
+    "Only Hash and JSON keys can be indexed." : {
+
+    },
+    "Only return elements within this distance (0–1)" : {
+
+    },
+    "Open" : {
+
+    },
+    "Open %lld Databases" : {
+
+    },
+    "Open Database Analysis" : {
+
+    },
+    "Open Recent" : {
+
+    },
+    "Open Tree View" : {
+
+    },
+    "Open Workbench" : {
+
+    },
+    "Open in Browser" : {
+
+    },
+    "Open in Editor" : {
+
+    },
+    "Open in Workbench" : {
+
+    },
+    "Open the" : {
+
+    },
+    "Operation" : {
+
+    },
+    "Operators" : {
+
+    },
+    "Optional" : {
+
+    },
+    "Optional Parameters" : {
+
+    },
+    "Options" : {
+
+    },
+    "Order" : {
+
+    },
+    "Other Ways to Add" : {
+
+    },
+    "Other…" : {
+
+    },
+    "Overview refresh failed: %@" : {
+
+    },
+    "Overwrite" : {
+
+    },
+    "Overwrite Duplicate Keys?" : {
+
+    },
+    "PHONETIC: also match words that sound alike in the chosen language." : {
+
+    },
+    "Page" : {
+
+    },
+    "Password" : {
+
+    },
+    "Passwords, private keys, passphrases and connection scripts are written to the file as plain text. Without them, the file has no secrets and no scripts." : {
+
+    },
+    "Pattern" : {
+
+    },
+    "Patterns" : {
+
+    },
+    "Pending" : {
+
+    },
+    "Phonetic matcher" : {
+
+    },
+    "Pick an index, then type a query to match against key values." : {
+
+    },
+    "Pipeline" : {
+
+    },
+    "Points" : {
+
+    },
+    "Port" : {
+
+    },
+    "Prefix" : {
+
+    },
+    "Prefixes" : {
+
+    },
+    "Press Return to apply the format" : {
+
+    },
+    "Press Return to filter. Use * ? [ ] for patterns; other text looks up an exact member." : {
+
+    },
+    "Preview" : {
+
+    },
+    "Previous" : {
+
+    },
+    "Previously generated reports" : {
+
+    },
+    "Primary Group" : {
+
+    },
+    "Processed" : {
+
+    },
+    "Production" : {
+
+    },
+    "Production: data changes ask for confirmation first." : {
+
+    },
+    "Profile" : {
+
+    },
+    "Profile Command" : {
+
+    },
+    "Profiler" : {
+
+    },
+    "Profiler Unavailable" : {
+
+    },
+    "Profiling decreases throughput and may affect the clients of this database." : {
+
+    },
+    "Progress" : {
+
+    },
+    "Pub/Sub" : {
+
+    },
+    "Publish" : {
+
+    },
+    "Publish the message to the channel" : {
+
+    },
+    "Publish to This Channel" : {
+
+    },
+    "Quantization" : {
+
+    },
+    "Query" : {
+
+    },
+    "Query Center" : {
+
+    },
+    "Query Library" : {
+
+    },
+    "Query Library…" : {
+
+    },
+    "Quit when the last window closes" : {
+
+    },
+    "Range" : {
+
+    },
+    "Range end" : {
+
+    },
+    "Range start" : {
+
+    },
+    "Rank" : {
+
+    },
+    "Raw Mode" : {
+
+    },
+    "Read More" : {
+
+    },
+    "Recent Searches" : {
+
+    },
+    "Reconnect" : {
+
+    },
+    "Records" : {
+
+    },
+    "Redis Command Reference" : {
+
+    },
+    "Redis Databases" : {
+
+    },
+    "Redis Search Not Available" : {
+
+    },
+    "Redis Search Version Too Old" : {
+
+    },
+    "Redis Search adds querying, secondary indexes, full-text and vector search." : {
+
+    },
+    "Refresh" : {
+
+    },
+    "Refresh (⌘R)" : {
+
+    },
+    "Refresh Every" : {
+
+    },
+    "Refresh Indexes" : {
+
+    },
+    "Refresh Key" : {
+
+    },
+    "Refresh Keys" : {
+
+    },
+    "Refresh failed" : {
+
+    },
+    "Remove" : {
+
+    },
+    "Remove %lld Databases…" : {
+
+    },
+    "Remove %lld Elements…" : {
+
+    },
+    "Remove Condition" : {
+
+    },
+    "Remove Databases (⌫)" : {
+
+    },
+    "Remove Elements…" : {
+
+    },
+    "Remove Element…" : {
+
+    },
+    "Remove Entry…" : {
+
+    },
+    "Remove Field" : {
+
+    },
+    "Remove Field…" : {
+
+    },
+    "Remove File" : {
+
+    },
+    "Remove From" : {
+
+    },
+    "Remove Member…" : {
+
+    },
+    "Remove Tag" : {
+
+    },
+    "Remove from Recents" : {
+
+    },
+    "Remove…" : {
+
+    },
+    "Removing several elements at once requires Redis 6.2 or later." : {
+
+    },
+    "Rename Key…" : {
+
+    },
+    "Rename…" : {
+
+    },
+    "Replace" : {
+
+    },
+    "Replica" : {
+
+    },
+    "Replicas" : {
+
+    },
+    "Report" : {
+
+    },
+    "Report Unavailable" : {
+
+    },
+    "Report empty buckets (EMPTY)" : {
+
+    },
+    "Required" : {
+
+    },
+    "Requires TLS client authentication" : {
+
+    },
+    "Reset" : {
+
+    },
+    "Reset Onboarding" : {
+
+    },
+    "Reset Settings…" : {
+
+    },
+    "Reset Without Saving" : {
+
+    },
+    "Reset settings" : {
+
+    },
+    "Reset the query" : {
+
+    },
+    "Reset the search form" : {
+
+    },
+    "Restores General, Workbench, Browser and auto-refresh settings. Saved databases are not affected." : {
+
+    },
+    "Resubscribe" : {
+
+    },
+    "Result" : {
+
+    },
+    "Result Actions" : {
+
+    },
+    "Result View" : {
+
+    },
+    "Result view" : {
+
+    },
+    "Results" : {
+
+    },
+    "Results: %lld" : {
+
+    },
+    "Retention" : {
+
+    },
+    "Retention (ms)" : {
+
+    },
+    "Retry" : {
+
+    },
+    "Return values (WITHVALUES)" : {
+
+    },
+    "Revert" : {
+
+    },
+    "Right" : {
+
+    },
+    "Right axis label" : {
+
+    },
+    "Right axis scale" : {
+
+    },
+    "Run" : {
+
+    },
+    "Run %@?" : {
+
+    },
+    "Run (⌘↩)" : {
+
+    },
+    "Run Again" : {
+
+    },
+    "Run Commands" : {
+
+    },
+    "Run Commands?" : {
+
+    },
+    "Run Database Analysis to get more tips" : {
+
+    },
+    "Run Database Analysis?" : {
+
+    },
+    "Run TS.RANGE / TS.REVRANGE" : {
+
+    },
+    "Run VSIM" : {
+
+    },
+    "Run an operation to see its result." : {
+
+    },
+    "Run commands to see their results here. New to Redis? Try a tutorial." : {
+
+    },
+    "Run the command" : {
+
+    },
+    "Run this query" : {
+
+    },
+    "Running commands…" : {
+
+    },
+    "Running this tutorial's commands writes to this database. Continue?" : {
+
+    },
+    "Running time counts only the time the Profiler was not paused" : {
+
+    },
+    "Running · %@" : {
+
+    },
+    "SSH Tunnel" : {
+
+    },
+    "Sample" : {
+
+    },
+    "Sample Value" : {
+
+    },
+    "Sample data cannot be loaded into a production database." : {
+
+    },
+    "Sample indexes cannot be edited" : {
+
+    },
+    "Sample up to 10,000 keys for a memory breakdown and tips on saving space." : {
+
+    },
+    "Samples" : {
+
+    },
+    "Samples up to 10,000 keys on each shard, breaks down their memory use, and suggests ways to reduce it." : {
+
+    },
+    "Samples up to 10,000 keys, breaks down their memory use, and suggests ways to reduce it." : {
+
+    },
+    "Save" : {
+
+    },
+    "Save (⌘S)" : {
+
+    },
+    "Save Full Log…" : {
+
+    },
+    "Save Log" : {
+
+    },
+    "Save Log…" : {
+
+    },
+    "Save Query…" : {
+
+    },
+    "Save a copy of the full Profiler log" : {
+
+    },
+    "Save a query from the editor to add it here." : {
+
+    },
+    "Save report to a file" : {
+
+    },
+    "Save the editor content or open a saved query" : {
+
+    },
+    "Save to File…" : {
+
+    },
+    "Saved" : {
+
+    },
+    "Saved queries appear in the Query Library of this database." : {
+
+    },
+    "Saving Log" : {
+
+    },
+    "Scan More" : {
+
+    },
+    "Scan more keys or search for an exact key name." : {
+
+    },
+    "Scanned" : {
+
+    },
+    "Scanning…" : {
+
+    },
+    "Score" : {
+
+    },
+    "Search" : {
+
+    },
+    "Search Indexes" : {
+
+    },
+    "Search Options" : {
+
+    },
+    "Search Shortcuts" : {
+
+    },
+    "Search Your Data" : {
+
+    },
+    "Search by" : {
+
+    },
+    "Search the Array" : {
+
+    },
+    "Search values" : {
+
+    },
+    "Seconds" : {
+
+    },
+    "See Index Definition" : {
+
+    },
+    "Select a Key" : {
+
+    },
+    "Select a key to see its details." : {
+
+    },
+    "Select a result to show the indexes around it" : {
+
+    },
+    "Select logical database" : {
+
+    },
+    "Select the databases to add." : {
+
+    },
+    "Sentinel" : {
+
+    },
+    "Separate" : {
+
+    },
+    "Separate several delimiters with commas." : {
+
+    },
+    "Server" : {
+
+    },
+    "Server Name" : {
+
+    },
+    "Server default" : {
+
+    },
+    "Set" : {
+
+    },
+    "Set Field TTL…" : {
+
+    },
+    "Set Last Delivered ID" : {
+
+    },
+    "Set Last Delivered ID…" : {
+
+    },
+    "Set TTL…" : {
+
+    },
+    "Set Value" : {
+
+    },
+    "Set a pattern or key type in the Browser first." : {
+
+    },
+    "Set the delimiter in the Browser's tree view to customize the namespaces shown here." : {
+
+    },
+    "Sets the batch size for pipelined commands. 0 or 1 sends each command separately." : {
+
+    },
+    "Show" : {
+
+    },
+    "Show %@" : {
+
+    },
+    "Show %lld More (%lld of %lld Hidden)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Show %1$lld More (%2$lld of %3$lld Hidden)"
+          }
+        }
+      }
+    },
+    "Show All Databases" : {
+
+    },
+    "Show All Databases (⌘0)" : {
+
+    },
+    "Show All Elements" : {
+
+    },
+    "Show All Indexes" : {
+
+    },
+    "Show All Tutorials" : {
+
+    },
+    "Show Bottom Panel" : {
+
+    },
+    "Show Bottom Panel (⇧⌘Y)" : {
+
+    },
+    "Show CLI" : {
+
+    },
+    "Show Database Info" : {
+
+    },
+    "Show Details" : {
+
+    },
+    "Show Documentation" : {
+
+    },
+    "Show Hidden Tips" : {
+
+    },
+    "Show Index Info" : {
+
+    },
+    "Show Inspector" : {
+
+    },
+    "Show Inspector (⌥⌘I)" : {
+
+    },
+    "Show JSON…" : {
+
+    },
+    "Show Key List" : {
+
+    },
+    "Show No Expiry" : {
+
+    },
+    "Show Profiler" : {
+
+    },
+    "Show TTL" : {
+
+    },
+    "Show Tip" : {
+
+    },
+    "Show Value" : {
+
+    },
+    "Show View Options" : {
+
+    },
+    "Show command" : {
+
+    },
+    "Show empty indexes" : {
+
+    },
+    "Show hidden tips" : {
+
+    },
+    "Show hidden tips to see them again." : {
+
+    },
+    "Show neighbouring indexes" : {
+
+    },
+    "Show raw output" : {
+
+    },
+    "Show the added element" : {
+
+    },
+    "Show the chart" : {
+
+    },
+    "Show the query editor or the Query Library" : {
+
+    },
+    "Show the schema as a table or as the FT.CREATE command" : {
+
+    },
+    "Show the summary or the tips of the selected report" : {
+
+    },
+    "Show the whole stream" : {
+
+    },
+    "Showing %lld of %lld loaded points" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Showing %1$lld of %2$lld loaded points"
+          }
+        }
+      }
+    },
+    "Showing the first %@ bytes of %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Showing the first %1$@ bytes of %2$@"
+          }
+        }
+      }
+    },
+    "Silent" : {
+
+    },
+    "Similar Elements" : {
+
+    },
+    "Similarity" : {
+
+    },
+    "Size" : {
+
+    },
+    "Snooze" : {
+
+    },
+    "Sort By" : {
+
+    },
+    "Sort Folders" : {
+
+    },
+    "Sorted Set Value" : {
+
+    },
+    "Staircase" : {
+
+    },
+    "Start" : {
+
+    },
+    "Start ID" : {
+
+    },
+    "Start New" : {
+
+    },
+    "Start Profiler" : {
+
+    },
+    "Start Profiler on a Production Database?" : {
+
+    },
+    "Start timestamp in milliseconds; empty or - for the earliest sample" : {
+
+    },
+    "State" : {
+
+    },
+    "Statistics" : {
+
+    },
+    "Status" : {
+
+    },
+    "Stop" : {
+
+    },
+    "Stop (⌘.)" : {
+
+    },
+    "Stop the Profiler, delete its log, and start over" : {
+
+    },
+    "Stop the running analysis" : {
+
+    },
+    "Stop waiting for the reply; the CLI connection is re-created (⌘.)" : {
+
+    },
+    "Stream Value" : {
+
+    },
+    "String" : {
+
+    },
+    "String Value" : {
+
+    },
+    "Subscribe" : {
+
+    },
+    "Subscribe to channels in" : {
+
+    },
+    "Subscribe to the channels matching the patterns" : {
+
+    },
+    "Subscribing…" : {
+
+    },
+    "Success" : {
+
+    },
+    "Summary" : {
+
+    },
+    "Switch Database" : {
+
+    },
+    "Switch Database (⌘O)" : {
+
+    },
+    "Switch Database…" : {
+
+    },
+    "Switch index or show all indexes" : {
+
+    },
+    "System" : {
+
+    },
+    "TLS" : {
+
+    },
+    "TTL" : {
+
+    },
+    "TTL (s)" : {
+
+    },
+    "TYPE: numeric type of each vector component." : {
+
+    },
+    "Tags" : {
+
+    },
+    "Tail" : {
+
+    },
+    "Terms" : {
+
+    },
+    "Text" : {
+
+    },
+    "Text Options" : {
+
+    },
+    "The database is disconnected." : {
+
+    },
+    "The edited value repeats a key, so the last value wins: %@." : {
+
+    },
+    "The full output is being written to %@" : {
+
+    },
+    "The log file has %@ lines that have not been saved." : {
+
+    },
+    "The logical database to use in Browser and Workbench." : {
+
+    },
+    "The pane keeps the newest %@ lines. Turn on Save Log before starting to keep everything." : {
+
+    },
+    "The query is added to the Query Library of this index." : {
+
+    },
+    "There is no other consumer to claim the message." : {
+
+    },
+    "This Sentinel isn't monitoring any primary groups." : {
+
+    },
+    "This cluster didn't report any primary nodes." : {
+
+    },
+    "This consumer has acknowledged every message it read." : {
+
+    },
+    "This database has no keys of this type." : {
+
+    },
+    "This database is empty." : {
+
+    },
+    "This database was removed from Keystrand." : {
+
+    },
+    "This user has no permission to run MONITOR." : {
+
+    },
+    "Time" : {
+
+    },
+    "Time Series Options" : {
+
+    },
+    "Time Zone" : {
+
+    },
+    "Time range relative to the last sample" : {
+
+    },
+    "Time series chart" : {
+
+    },
+    "Time unit" : {
+
+    },
+    "Timeout" : {
+
+    },
+    "Timestamp" : {
+
+    },
+    "Timestamp-sequence (for example 1700000000000-0) or * to generate one" : {
+
+    },
+    "Tips show up here as you browse keys and run commands. An analysis can find more." : {
+
+    },
+    "Title" : {
+
+    },
+    "To" : {
+
+    },
+    "To change them, connect redis-cli to one node and set slowlog-log-slower-than and slowlog-max-len there with CONFIG SET." : {
+
+    },
+    "Too large" : {
+
+    },
+    "Total Keys" : {
+
+    },
+    "Total Memory" : {
+
+    },
+    "Transfer idle pending messages of the group to a consumer (XAUTOCLAIM)" : {
+
+    },
+    "Tree" : {
+
+    },
+    "Tree view is unavailable when key names are shown as HEX." : {
+
+    },
+    "Try Again" : {
+
+    },
+    "Try Sample Data…" : {
+
+    },
+    "Turn off Size if large keys make the list slow to load." : {
+
+    },
+    "Tutorial Unavailable" : {
+
+    },
+    "Type" : {
+
+    },
+    "Type a command in the CLI or search to see its documentation." : {
+
+    },
+    "UTC" : {
+
+    },
+    "Unable to Open Database" : {
+
+    },
+    "Unchanged" : {
+
+    },
+    "Unicode" : {
+
+    },
+    "Unique identifier for this vector" : {
+
+    },
+    "Unit" : {
+
+    },
+    "Unread" : {
+
+    },
+    "Unspecified" : {
+
+    },
+    "Unsubscribe" : {
+
+    },
+    "Unsubscribe from all patterns" : {
+
+    },
+    "Upload Commands from File…" : {
+
+    },
+    "Upload Data" : {
+
+    },
+    "Upload a text file with one Redis command per line, for example SET key value. Only run files you trust." : {
+
+    },
+    "Use Existing Data…" : {
+
+    },
+    "Use SNI" : {
+
+    },
+    "Use SSH tunnel" : {
+
+    },
+    "Use Sample Data…" : {
+
+    },
+    "Use Selection for Find" : {
+
+    },
+    "Use TLS" : {
+
+    },
+    "Use right Y axis" : {
+
+    },
+    "Use the Workbench tutorials to load sample data." : {
+
+    },
+    "User" : {
+
+    },
+    "Username" : {
+
+    },
+    "Value" : {
+
+    },
+    "Value (%@)" : {
+
+    },
+    "Value format" : {
+
+    },
+    "Value format: %@" : {
+
+    },
+    "Value to count" : {
+
+    },
+    "Values (Redis Search)" : {
+
+    },
+    "Values from" : {
+
+    },
+    "Vector" : {
+
+    },
+    "Vector (%lld values)" : {
+
+    },
+    "Vector Options" : {
+
+    },
+    "Vector Search uses Redis Search commands introduced in version 2.0. Redis 6 and later include a compatible version." : {
+
+    },
+    "Vector Set Options" : {
+
+    },
+    "Vector Set Value" : {
+
+    },
+    "Vector type" : {
+
+    },
+    "Vector, e.g. 0.12, 0.5, 0.33" : {
+
+    },
+    "Verify TLS certificate" : {
+
+    },
+    "Version" : {
+
+    },
+    "View" : {
+
+    },
+    "View Consumers" : {
+
+    },
+    "View Index" : {
+
+    },
+    "View Pending Messages" : {
+
+    },
+    "View as List or Tree" : {
+
+    },
+    "Waiting for commands…" : {
+
+    },
+    "Watch each command the server receives as it happens. Profiling lowers throughput, so avoid it on production." : {
+
+    },
+    "Weight" : {
+
+    },
+    "When the Slow Log is full, the oldest entry is removed for each new one. This changes the server configuration." : {
+
+    },
+    "Write the full output to a log file you can save after pausing. The file is deleted when the Profiler is reset." : {
+
+    },
+    "X axis label" : {
+
+    },
+    "Y Axes" : {
+
+    },
+    "Yes" : {
+
+    },
+    "You changed the index fields. Loading another key replaces them with the fields of that key." : {
+
+    },
+    "You're viewing this value as %@. Saving re-encodes it, which can change the stored bytes. To edit the exact stored text, switch to Unicode." : {
+
+    },
+    "Your Redis Software cluster has no databases." : {
+
+    },
+    "Z to A" : {
+
+    },
+    "[%@] " : {
+
+    },
+    "[db%lld]" : {
+
+    },
+    "and %lld more" : {
+
+    },
+    "and or not" : {
+
+    },
+    "as List" : {
+
+    },
+    "as Tree" : {
+
+    },
+    "db%lld" : {
+
+    },
+    "db%lld (current)" : {
+
+    },
+    "in [ … ]" : {
+
+    },
+    "max" : {
+
+    },
+    "min" : {
+
+    },
+    "ms" : {
+
+    },
+    "seconds" : {
+
+    },
+    "to" : {
+
+    },
+    "to follow messages across every channel of this database." : {
+
+    },
+    "to watch every request the server receives." : {
+
+    },
+    "v. %@" : {
+
+    },
+    "± %lld" : {
+
+    },
+    "·" : {
+
+    },
+    "· last %@ of %@ lines" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "· last %1$@ of %2$@ lines"
+          }
+        }
+      }
+    },
+    "—" : {
+
+    },
+    "•" : {
+
+    },
+    "••••••••" : {
+
+    },
+    "◦" : {
+
+    }
+  },
+  "version" : "1.0"
+}

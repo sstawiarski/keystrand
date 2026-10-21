@@ -1,0 +1,41 @@
+{
+  "files": [
+    {
+      "path": "common"
+    },
+    {
+      "path": "json",
+      "modules": [
+        "rejson",
+        "json"
+      ]
+    },
+    {
+      "path": "search",
+      "modules": [
+        "search",
+        "searchlight",
+        "ft",
+        "ftl"
+      ]
+    },
+    {
+      "path": "timeseries",
+      "modules": [
+        "timeseries"
+      ]
+    },
+    {
+      "path": "bloom",
+      "modules": [
+        "bf"
+      ]
+    },
+    {
+      "path": "vectorset",
+      "modules": [
+        "vectorset"
+      ]
+    }
+  ]
+}

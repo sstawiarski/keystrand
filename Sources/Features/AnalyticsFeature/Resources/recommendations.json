@@ -1,0 +1,868 @@
+{
+  "luaScript": {
+    "id": "luaScript",
+    "title": "Reuse Lua scripts instead of generating new ones",
+    "badges": [
+      "code_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "This server has a large number of cached Lua scripts. Redis compiles and keeps every distinct script body it receives through "
+      },
+      {
+        "type": "code",
+        "value": "EVAL"
+      },
+      {
+        "type": "span",
+        "value": " until it restarts or you run "
+      },
+      {
+        "type": "code-link",
+        "value": {
+          "href": "https://redis.io/docs/latest/commands/script-flush/",
+          "name": "SCRIPT FLUSH"
+        }
+      },
+      {
+        "type": "span",
+        "value": ", so scripts that embed changing values grow the cache without limit. Write each script once, pass the parts that vary through "
+      },
+      {
+        "type": "code",
+        "value": "KEYS"
+      },
+      {
+        "type": "span",
+        "value": " and "
+      },
+      {
+        "type": "code",
+        "value": "ARGV"
+      },
+      {
+        "type": "span",
+        "value": ", and call it by its SHA1 digest with "
+      },
+      {
+        "type": "code-link",
+        "value": {
+          "href": "https://redis.io/docs/latest/commands/evalsha/",
+          "name": "EVALSHA"
+        }
+      },
+      {
+        "type": "span",
+        "value": "."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/develop/programmability/eval-intro/",
+          "name": "Scripting with Lua"
+        }
+      }
+    ]
+  },
+  "useSmallerKeys": {
+    "id": "useSmallerKeys",
+    "title": "Shorten long key names",
+    "badges": [
+      "code_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "In a database this size, key names alone take a noticeable share of memory, because Redis stores every name in full and long shared prefixes repeat millions of times. Abbreviating prefixes, for example "
+      },
+      {
+        "type": "code",
+        "value": "u:1001"
+      },
+      {
+        "type": "span",
+        "value": " instead of "
+      },
+      {
+        "type": "code",
+        "value": "user_profile:1001"
+      },
+      {
+        "type": "span",
+        "value": ", keeps names readable while saving bytes on every key."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/operate/oss_and_stack/management/optimization/memory-optimization/",
+          "name": "Memory optimization"
+        }
+      }
+    ]
+  },
+  "bigHashes": {
+    "id": "bigHashes",
+    "title": "Split large hashes into smaller buckets",
+    "badges": [
+      "code_changes",
+      "configuration_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "This hash has thousands of fields. A hash that large can't use the compact listpack encoding, always lives on a single shard, and makes whole-hash commands such as "
+      },
+      {
+        "type": "code",
+        "value": "HGETALL"
+      },
+      {
+        "type": "span",
+        "value": " block the server while they run. Spread its fields over several smaller hashes, for example by adding a bucket number computed from the field name to the key, so that each bucket stays small."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/develop/data-types/hashes/",
+          "name": "Hashes"
+        }
+      }
+    ]
+  },
+  "avoidLogicalDatabases": {
+    "id": "avoidLogicalDatabases",
+    "title": "Keep your data in one logical database",
+    "badges": [
+      "code_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "This server stores keys in more than one numbered database. Numbered databases share the same process, memory limit and command thread, so they don't isolate workloads from each other, and Redis Cluster only supports database 0. Use key prefixes or ACL key patterns to separate data sets, or run a separate instance when you need real isolation."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/commands/select/",
+          "name": "The SELECT command"
+        }
+      }
+    ]
+  },
+  "combineSmallStringsToHashes": {
+    "id": "combineSmallStringsToHashes",
+    "title": "Group small strings into hashes",
+    "badges": [
+      "code_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "Many keys here hold only a few bytes. Every top-level key carries fixed overhead for its key object and dictionary entry, which can be larger than the value itself. Storing related values as fields of one hash, such as "
+      },
+      {
+        "type": "code",
+        "value": "HSET user:1001 name Ada city Paris"
+      },
+      {
+        "type": "span",
+        "value": " instead of separate "
+      },
+      {
+        "type": "code",
+        "value": "user:1001:name"
+      },
+      {
+        "type": "span",
+        "value": " and "
+      },
+      {
+        "type": "code",
+        "value": "user:1001:city"
+      },
+      {
+        "type": "span",
+        "value": " keys, lets Redis pack them into a single compact listpack. If the values need their own expiry, use "
+      },
+      {
+        "type": "code-link",
+        "value": {
+          "href": "https://redis.io/docs/latest/commands/hexpire/",
+          "name": "HEXPIRE"
+        }
+      },
+      {
+        "type": "span",
+        "value": ", available from Redis 7.4."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/operate/oss_and_stack/management/optimization/memory-optimization/",
+          "name": "Memory optimization"
+        }
+      }
+    ]
+  },
+  "increaseSetMaxIntsetEntries": {
+    "id": "increaseSetMaxIntsetEntries",
+    "title": "Raise set-max-intset-entries for integer sets",
+    "badges": [
+      "configuration_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "Redis stores a set of integers as a sorted array called an intset until the set grows past "
+      },
+      {
+        "type": "code",
+        "value": "set-max-intset-entries"
+      },
+      {
+        "type": "span",
+        "value": " (512 by default). Past that point it becomes a hash table, which needs several times more memory. If your integer sets are only somewhat over the limit, raising it, for example with "
+      },
+      {
+        "type": "code",
+        "value": "CONFIG SET set-max-intset-entries 1024"
+      },
+      {
+        "type": "span",
+        "value": ", keeps them compact. Lookups in an intset are binary searches, so a much larger limit trades CPU for memory."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/operate/oss_and_stack/management/optimization/memory-optimization/",
+          "name": "Memory optimization"
+        }
+      }
+    ]
+  },
+  "hashHashtableToZiplist": {
+    "id": "hashHashtableToZiplist",
+    "title": "Keep small hashes in the compact encoding",
+    "badges": [
+      "configuration_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "Small hashes are stored as a listpack (named ziplist before Redis 7), a single flat allocation that is far smaller than a hash table. A hash switches to a hash table once it has more fields than "
+      },
+      {
+        "type": "code",
+        "value": "hash-max-listpack-entries"
+      },
+      {
+        "type": "span",
+        "value": " or a value longer than "
+      },
+      {
+        "type": "code",
+        "value": "hash-max-listpack-value"
+      },
+      {
+        "type": "span",
+        "value": ", and this hash is over the field limit. If most of your hashes are just above it, raise the limit with "
+      },
+      {
+        "type": "code",
+        "value": "CONFIG SET hash-max-listpack-entries 256"
+      },
+      {
+        "type": "span",
+        "value": ". Hashes that were already converted stay as hash tables until they are rewritten or reloaded; "
+      },
+      {
+        "type": "code-link",
+        "value": {
+          "href": "https://redis.io/docs/latest/commands/object-encoding/",
+          "name": "OBJECT ENCODING"
+        }
+      },
+      {
+        "type": "span",
+        "value": " shows which encoding a key uses."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/operate/oss_and_stack/management/optimization/memory-optimization/",
+          "name": "Memory optimization"
+        }
+      }
+    ]
+  },
+  "compressionForList": {
+    "id": "compressionForList",
+    "title": "Compress the inner nodes of long lists",
+    "badges": [
+      "configuration_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "Long lists are stored as a chain of listpack nodes. When "
+      },
+      {
+        "type": "code",
+        "value": "list-compress-depth"
+      },
+      {
+        "type": "span",
+        "value": " is 1 or more, Redis compresses every node except that many at each end of the list, so queues and stacks that mostly push and pop at the ends keep their speed while the middle takes less memory. The default of "
+      },
+      {
+        "type": "code",
+        "value": "0"
+      },
+      {
+        "type": "span",
+        "value": " turns compression off; try "
+      },
+      {
+        "type": "code",
+        "value": "CONFIG SET list-compress-depth 1"
+      },
+      {
+        "type": "span",
+        "value": "."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/develop/data-types/lists/",
+          "name": "Lists"
+        }
+      }
+    ]
+  },
+  "bigStrings": {
+    "id": "bigStrings",
+    "title": "Break up large string values",
+    "badges": [
+      "configuration_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "This string is larger than 100 KB. Reading or writing it sends the whole value through the command thread and the network in one step, which adds latency for every other client. Split large blobs into chunks, keep the payload in object storage with only its metadata in Redis, or, if the value is structured, store it as a JSON document so you can read and change single fields."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/develop/data-types/strings/",
+          "name": "Strings"
+        }
+      }
+    ]
+  },
+  "zSetHashtableToZiplist": {
+    "id": "zSetHashtableToZiplist",
+    "title": "Keep small sorted sets in the compact encoding",
+    "badges": [
+      "configuration_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "A sorted set stays in the compact listpack encoding while it has at most "
+      },
+      {
+        "type": "code",
+        "value": "zset-max-listpack-entries"
+      },
+      {
+        "type": "span",
+        "value": " members and no member longer than "
+      },
+      {
+        "type": "code",
+        "value": "zset-max-listpack-value"
+      },
+      {
+        "type": "span",
+        "value": ". Larger sorted sets switch to a skiplist plus a hash table, which costs much more memory per member. This sorted set is past the member limit. If your sorted sets are only slightly larger, raising the limit, for example with "
+      },
+      {
+        "type": "code",
+        "value": "CONFIG SET zset-max-listpack-entries 256"
+      },
+      {
+        "type": "span",
+        "value": ", keeps them compact, at the cost of slower inserts as each listpack grows."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/operate/oss_and_stack/management/optimization/memory-optimization/",
+          "name": "Memory optimization"
+        }
+      }
+    ]
+  },
+  "bigSets": {
+    "id": "bigSets",
+    "title": "Use a Bloom filter or HyperLogLog for very large sets",
+    "badges": [
+      "configuration_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "This set has more than a thousand members. If you only use it to check whether an item was seen before, or to count distinct items, a probabilistic structure gives the answer in a small, fixed amount of memory. A Bloom filter tests membership with a false-positive rate you choose, and HyperLogLog counts unique items in about 12 KB with an error near 1%. Keep the set when you need to list or remove exact members."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/develop/data-types/probabilistic/",
+          "name": "Probabilistic data types"
+        }
+      }
+    ]
+  },
+  "bigAmountOfConnectedClients": {
+    "id": "bigAmountOfConnectedClients",
+    "title": "Reuse connections instead of opening new ones",
+    "badges": [
+      "code_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "This server has more than 100 connected clients. Every connection uses server memory and costs a TCP handshake, plus a TLS handshake when encryption is on, and opening one per request can run into "
+      },
+      {
+        "type": "code",
+        "value": "maxclients"
+      },
+      {
+        "type": "span",
+        "value": " under load. Create a client or a connection pool when your application starts and share it across requests. "
+      },
+      {
+        "type": "code-link",
+        "value": {
+          "href": "https://redis.io/docs/latest/commands/client-list/",
+          "name": "CLIENT LIST"
+        }
+      },
+      {
+        "type": "span",
+        "value": " shows which hosts hold the open connections."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/develop/clients/pools-and-muxing/",
+          "name": "Connection pools and multiplexing"
+        }
+      }
+    ]
+  },
+  "setPassword": {
+    "id": "setPassword",
+    "title": "Require a password for every user",
+    "badges": [
+      "configuration_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "At least one ACL user, often "
+      },
+      {
+        "type": "code",
+        "value": "default"
+      },
+      {
+        "type": "span",
+        "value": ", can log in without a password, so anyone who can reach this port gets that user's permissions. Add a strong password with "
+      },
+      {
+        "type": "code-link",
+        "value": {
+          "href": "https://redis.io/docs/latest/commands/acl-setuser/",
+          "name": "ACL SETUSER"
+        }
+      },
+      {
+        "type": "span",
+        "value": ", for example "
+      },
+      {
+        "type": "code",
+        "value": "ACL SETUSER default >long-random-secret"
+      },
+      {
+        "type": "span",
+        "value": ", which also clears the nopass flag. Keep the server off public networks as well."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/",
+          "name": "Access control lists"
+        }
+      }
+    ]
+  },
+  "RTS": {
+    "id": "RTS",
+    "title": "Store timestamped data as a time series",
+    "badges": [
+      "configuration_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "This sorted set appears to hold timestamps. The time series data type, part of Redis 8, stores samples in compressed chunks, drops old data with a retention period, and answers range queries with built-in aggregation, such as averages per minute with "
+      },
+      {
+        "type": "code-link",
+        "value": {
+          "href": "https://redis.io/docs/latest/commands/ts.range/",
+          "name": "TS.RANGE"
+        }
+      },
+      {
+        "type": "span",
+        "value": ". Compaction rules can also roll raw samples up into hourly or daily series automatically."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/develop/data-types/timeseries/",
+          "name": "Time series"
+        }
+      }
+    ]
+  },
+  "redisVersion": {
+    "id": "redisVersion",
+    "title": "Upgrade to Redis 8",
+    "badges": [
+      "upgrade"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "This server runs Redis 7.2 or older. Redis 8 is faster on many common commands, adds features such as per-field expiry for hashes, and ships JSON, time series, probabilistic types and the query engine in the core distribution. Read the release notes for breaking changes and test the upgrade on a copy of your data first."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/develop/whats-new/8-0/",
+          "name": "What's new in Redis 8"
+        }
+      }
+    ]
+  },
+  "searchIndexes": {
+    "id": "searchIndexes",
+    "title": "Replace hand-built indexes with the query engine",
+    "badges": [
+      "upgrade"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "This sorted set seems to hold the names of hash or JSON keys, the usual shape of a secondary index kept up to date by application code. Such indexes need an extra write on every change and drift easily. An index created with "
+      },
+      {
+        "type": "code-link",
+        "value": {
+          "href": "https://redis.io/docs/latest/commands/ft.create/",
+          "name": "FT.CREATE"
+        }
+      },
+      {
+        "type": "span",
+        "value": " is maintained by Redis itself as keys change, and "
+      },
+      {
+        "type": "code-link",
+        "value": {
+          "href": "https://redis.io/docs/latest/commands/ft.search/",
+          "name": "FT.SEARCH"
+        }
+      },
+      {
+        "type": "span",
+        "value": " can then filter by numeric ranges, tags, full text and vectors."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/develop/ai/search-and-query/",
+          "name": "Search and query"
+        }
+      }
+    ]
+  },
+  "searchJSON": {
+    "id": "searchJSON",
+    "title": "Create a search index for your JSON documents",
+    "content": [
+      {
+        "type": "span",
+        "value": "This database has JSON documents but no search indexes. With "
+      },
+      {
+        "type": "code",
+        "value": "FT.CREATE idx:doc ON JSON PREFIX 1 doc: SCHEMA $.name AS name TEXT"
+      },
+      {
+        "type": "span",
+        "value": " you choose which JSON paths to index. Redis keeps the index current on every write, so "
+      },
+      {
+        "type": "code",
+        "value": "FT.SEARCH"
+      },
+      {
+        "type": "span",
+        "value": " and "
+      },
+      {
+        "type": "code",
+        "value": "FT.AGGREGATE"
+      },
+      {
+        "type": "span",
+        "value": " can filter, sort and group documents without scanning keys."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/develop/data-types/json/indexing_json/",
+          "name": "Indexing JSON documents"
+        }
+      }
+    ]
+  },
+  "stringToJson": {
+    "id": "stringToJson",
+    "title": "Store JSON text as a JSON document",
+    "content": [
+      {
+        "type": "span",
+        "value": "This string holds JSON text. Changing one field of a string means reading the whole value, editing it in your application and writing it back. The JSON data type stores the parsed document, so "
+      },
+      {
+        "type": "code-link",
+        "value": {
+          "href": "https://redis.io/docs/latest/commands/json.set/",
+          "name": "JSON.SET"
+        }
+      },
+      {
+        "type": "span",
+        "value": " and "
+      },
+      {
+        "type": "code-link",
+        "value": {
+          "href": "https://redis.io/docs/latest/commands/json.get/",
+          "name": "JSON.GET"
+        }
+      },
+      {
+        "type": "span",
+        "value": " can work on a single path, numbers can be incremented in place, and the documents can be indexed for queries."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/develop/data-types/json/",
+          "name": "JSON"
+        }
+      }
+    ]
+  },
+  "searchVisualization": {
+    "id": "searchVisualization",
+    "title": "View query results in Workbench",
+    "content": [
+      {
+        "type": "span",
+        "value": "Workbench runs the same commands as the CLI and presents the replies in a more readable form: "
+      },
+      {
+        "type": "code",
+        "value": "FT.SEARCH"
+      },
+      {
+        "type": "span",
+        "value": " and "
+      },
+      {
+        "type": "code",
+        "value": "FT.AGGREGATE"
+      },
+      {
+        "type": "span",
+        "value": " results as tables, "
+      },
+      {
+        "type": "code",
+        "value": "FT.PROFILE"
+      },
+      {
+        "type": "span",
+        "value": " and "
+      },
+      {
+        "type": "code",
+        "value": "FT.EXPLAIN"
+      },
+      {
+        "type": "span",
+        "value": " output as plan trees, and "
+      },
+      {
+        "type": "code",
+        "value": "TS.RANGE"
+      },
+      {
+        "type": "span",
+        "value": " and "
+      },
+      {
+        "type": "code",
+        "value": "TS.MRANGE"
+      },
+      {
+        "type": "span",
+        "value": " samples as charts. Open Workbench from the sidebar and paste the command there."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/commands/ft.search/",
+          "name": "Querying with FT.SEARCH"
+        }
+      }
+    ]
+  },
+  "searchHash": {
+    "id": "searchHash",
+    "title": "Create a search index for your hashes",
+    "badges": [
+      "code_changes",
+      "configuration_changes"
+    ],
+    "content": [
+      {
+        "type": "span",
+        "value": "Many hashes here look like records with several fields, and the database has no search indexes. An index such as "
+      },
+      {
+        "type": "code",
+        "value": "FT.CREATE idx:user ON HASH PREFIX 1 user: SCHEMA name TEXT age NUMERIC"
+      },
+      {
+        "type": "span",
+        "value": " lets you find records by their field values with "
+      },
+      {
+        "type": "code",
+        "value": "FT.SEARCH"
+      },
+      {
+        "type": "span",
+        "value": " instead of scanning keys or keeping lookup sets by hand. Redis updates the index whenever a matching hash is written."
+      },
+      {
+        "type": "spacer",
+        "value": "m"
+      },
+      {
+        "type": "link",
+        "value": {
+          "href": "https://redis.io/docs/latest/develop/ai/search-and-query/indexing/",
+          "name": "Indexing data"
+        }
+      }
+    ]
+  }
+}

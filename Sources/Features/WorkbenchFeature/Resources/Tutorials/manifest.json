@@ -1,0 +1,47 @@
+{
+  "id": "tutorials",
+  "type": "group",
+  "label": "Tutorials",
+  "args": { "withBorder": true, "initialIsOpen": true },
+  "children": [
+    {
+      "id": "ds",
+      "type": "group",
+      "label": "Data structures",
+      "summary": "The core Redis data types and the JSON, time series, and probabilistic types",
+      "args": { "initialIsOpen": true },
+      "children": [
+        { "id": "ds-strings", "type": "internal-link", "label": "Strings", "summary": "Values, counters, conditional writes, and expiring keys", "args": { "path": "/ds/strings.md" } },
+        { "id": "ds-hashes", "type": "internal-link", "label": "Hashes", "summary": "Field-value records, including per-field expiration", "args": { "path": "/ds/hashes.md" } },
+        { "id": "ds-lists", "type": "internal-link", "label": "Lists", "summary": "Queues, stacks, and capped feeds", "args": { "path": "/ds/lists.md" } },
+        { "id": "ds-sets", "type": "internal-link", "label": "Sets and sorted sets", "summary": "Unique members, set algebra, and leaderboards", "args": { "path": "/ds/sets.md" } },
+        { "id": "ds-streams", "type": "internal-link", "label": "Streams", "summary": "Append-only logs and consumer groups", "args": { "path": "/ds/streams.md" } },
+        { "id": "ds-json-intro", "type": "internal-link", "label": "JSON", "summary": "Store, query, and update JSON documents (JSON data type)", "args": { "path": "/ds/json.md" } },
+        { "id": "ds-ts-intro", "type": "internal-link", "label": "Time series", "summary": "Samples, labels, compaction, and range queries (time series data type)", "args": { "path": "/ds/time-series.md" } },
+        { "id": "ds-prob-intro", "type": "internal-link", "label": "Probabilistic data structures", "summary": "HyperLogLog, Bloom and Cuckoo filters, Count-min sketch, and Top-K", "args": { "path": "/ds/probabilistic.md" } }
+      ]
+    },
+    {
+      "id": "sq",
+      "type": "group",
+      "label": "Search and query",
+      "summary": "Secondary indexes, queries, aggregations, and vector search with Redis Search",
+      "args": { "initialIsOpen": false },
+      "children": [
+        { "id": "sq-intro", "type": "internal-link", "label": "Indexes and queries", "summary": "FT.CREATE plus full-text, tag, numeric, and geo queries", "args": { "path": "/sq/indexing.md" } },
+        { "id": "sq-aggregations", "type": "internal-link", "label": "Aggregations", "summary": "Group, reduce, compute, and sort with FT.AGGREGATE", "args": { "path": "/sq/aggregations.md" } },
+        { "id": "vss-intro", "type": "internal-link", "label": "Vector search", "summary": "KNN, hybrid, and range vector queries, plus vector sets", "args": { "path": "/sq/vectors.md" } }
+      ]
+    },
+    {
+      "id": "ks",
+      "type": "group",
+      "label": "Working in Keystrand",
+      "summary": "How tutorials work with the Workbench, CLI, Browser, and Tips",
+      "args": { "initialIsOpen": false },
+      "children": [
+        { "id": "ks-workbench", "type": "internal-link", "label": "Workbench, CLI, Browser, and Tips", "summary": "Run tutorial code, script syntax, and where to see the results", "args": { "path": "/keystrand/workbench.md" } }
+      ]
+    }
+  ]
+}

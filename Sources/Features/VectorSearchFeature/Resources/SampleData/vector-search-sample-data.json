@@ -1,0 +1,161 @@
+{
+  "datasets": [
+    {
+      "id": "trail-guides",
+      "displayName": "Trail guides",
+      "indexName": "idx:trails_vss",
+      "indexPrefix": "trail:",
+      "collectionName": "trails",
+      "fields": [
+        {
+          "id": "name",
+          "name": "name",
+          "value": "Kestrel Creek Path",
+          "type": "LTEXT"
+        },
+        {
+          "id": "region",
+          "name": "region",
+          "value": "Cascade Range",
+          "type": "LTAG"
+        },
+        {
+          "id": "difficulty",
+          "name": "difficulty",
+          "value": "hard",
+          "type": "LTAG"
+        },
+        {
+          "id": "features",
+          "name": "features",
+          "value": "river,hot_springs,views,wildlife",
+          "type": "LTAG"
+        },
+        {
+          "id": "distance_km",
+          "name": "distance_km",
+          "value": 11.8,
+          "type": "LNUMERIC"
+        },
+        {
+          "id": "elevation_gain_m",
+          "name": "elevation_gain_m",
+          "value": 880,
+          "type": "LNUMERIC"
+        },
+        {
+          "id": "description",
+          "name": "description",
+          "value": "The sound of moving water stays with you on Kestrel Creek Path, a pleasant river",
+          "type": "LTEXT"
+        },
+        {
+          "id": "description_embedding",
+          "name": "description_embedding",
+          "value": "HNSW, FLOAT32, 64, COSINE",
+          "type": "LVECTOR"
+        }
+      ],
+      "sampleQueries": [
+        {
+          "name": "Basic semantic search",
+          "description": "Finds the 3 trails whose descriptions are closest in meaning to \"An easy family walk to a waterfall.\" Returns the distance score with the name, difficulty, and description. A lower score means a closer match.",
+          "query": "FT.SEARCH idx:trails_vss \"*=>[KNN 3 @description_embedding $query_vector AS score]\" RETURN 4 score name difficulty description PARAMS 2 query_vector \"\\xfc\\xd49\\xbe\\xd2\\xefw=|\\xd0\\xa2\\xbd\\xfe\\xc2z\\xbe\\xba\\xdf\\x20\\xbe\\xfb\\x9a\\x01>\\x15\\xd7\\xe7\\xbd\\xef\\xc5d\\xbdC\\x20:\\xbe\\x8a\\xaab\\xbe\\xcc\\xa8%\\xbe\\x87\\x85\\xa7=97\\x0f\\xbeY!V=G$\\x90<\\x0e\\xc0\\x20>9\\x19V>x\\xf9\\xac=\\xb3\\xf1\\x9e\\xbc\\xb3\\x98B=\\xc8\\xb4\\xd5\\xbd@\\xff\\x10>\\xb5\\xdb=>\\x09\\x19\\xb3=\\x27\\xcdR>\\xae\\xfe\\x22>\\xa7\\xad/\\xbd\\x9a\\xcd\\x8a\\xbc\\x8b\\xb6`=\\x7f\\xe8\\x22\\xbd\\xf6\\xe9\\xf6\\xbc\\x1cj\\xd2<\\xcaT\\xc3=\\xa8\\xb6\\xf1<\\xc4qM\\xbd\\x06\\xceo\\xbd\\xb5\\x08\\x1a>\\x02\\x27\\x86\\xbd?(>=\\xf5\\xf3\\x00>\\xe9\\xaf\\x94<z\\xdd\\xdb\\xbd\\x12D\\xba=\\x19\\xcaS>\\x82W\\x9b\\xbdS\\x9c\\xad<\\xfa\\x12n\\xbd\\x913\\xb7\\xbd\\xce\\x15\\x87>\\x0d\\x05\\xc1==rX=w\\xb8\\x14>O\\xac\\x08;\\xa72\\x00;\\xa9V\\xcd=\\xacL\\xdd<u\\xe8\\x0e>\\x03e\\xe4=\\xa0\\xc9\\xbf\\xbd\\x95pP\\xbe\\xf1\\xf1x\\xbd\\x16Ef>\\x7f\\xe1E\\xbe:\\x91_>\" SORTBY score DIALECT 2"
+        },
+        {
+          "name": "Intent search",
+          "description": "Searches for \"A long, steep climb to a summit with big views for experienced hikers.\" The query never says \"hard\" or \"strenuous\", yet the closest trails are demanding summit routes, because the embedding captures intent rather than exact keywords.",
+          "query": "FT.SEARCH idx:trails_vss \"*=>[KNN 3 @description_embedding $query_vector AS score]\" RETURN 5 score name difficulty elevation_gain_m description PARAMS 2 query_vector \"{1(=$\\x99U\\xbeja\\x0e<\\xd4U\\xa0=S\\xb2\\xa2<\\x84\\xf6\\xea=\\xa0?\\x8e\\xbd\\xbc\\x9c\\xc8\\xbdT\\x9dt>\\x01\\xd3\\x11\\xbe\\xb0\\xd7\\x19=%,\\xe1=\\xdd{\\x0d\\xbe\\x86\\x88\\xe0\\xbd\\x88X\\xd8\\xbd\\xdd\\x1c\\x15>\\xbd\\xc4\\x91<\\xf8a\\xf7\\xbd\\x190&=)\\x09\\xad\\xbd\\x0e%\\xe2\\xbd*kG>\\x1a~\\xca=\\xfbS\\xa4=\\x92\\xaf\\xcd=\\xe8\\x15>\\xbe\\x11\\x8b\\x08\\xbdZ\\x88\\x87=\\x9d\\xe3\\x91<\\x02\\x0e\\xe6\\xbdR6\\x07>\\x1b\\xd5b>m7m\\xbe\\x80U\\xb4\\xbd]\\x9aG\\xbe\\xbb\\x98\\xcd;\\xb0L9\\xbeY\\x16\\x15<\\x0b\\xe8\\x08>\\xc1\\x12\\x80=;\\xc0i\\xbdt\\xf8p\\xbe\\xf4\\xc6\\xe5\\xbc\\x9d\\x0d\\xa6\\xbd\\x17\\xd85<\\xcd\\xc5%\\xbd\\x07UE>\\xa1\\xba\\x15\\xbe\\xa4\\x0e\\xe6=\\xf5\\xd3\\xaa\\xbc?\\x84\\xb8\\xbd\\x20.\\xdc\\xbd\\xd0\\x92\\xa3<\\x0dZ%>\\xf2;\\xd4\\xbc\\x9d\\xd9V\\xbe\\xca5\\x85;\\xf3<\\xd7\\xbd\\x96\\x80h=me\\xca\\xbd\\x90\\xc9z\\xbe\\x93Hd\\xbe\\x99\\x86$>\\xc2:a\\xbd\" SORTBY score DIALECT 2"
+        },
+        {
+          "name": "Dog walk search",
+          "description": "Finds trails similar to \"A shady forest loop where I can bring my dog.\" Shows how the embedding groups trails by what they offer, such as shade, forest, and dog-friendly paths.",
+          "query": "FT.SEARCH idx:trails_vss \"*=>[KNN 5 @description_embedding $query_vector AS score]\" RETURN 4 score name region features PARAMS 2 query_vector \"\\xfd\\xad:\\xbe\\xdc\\xddq=\\xc4\\x8c\\xe1\\xbc\\xcb\\xe3\\xe6=\\xecd\\x03>\\xc0[\\x1c>\\xbb\\x0c\\x9b=\\xd9\\xa7!\\xbeG\\x10\\xdc=\\xa8o\\xe6\\xbd%~\\x9a=D\\xa7b\\xbd\\x8e\\xb3T\\xbet\\x7f4>\\x1d\\xef\\x0a=T-\\xa1=\\x0b\\x96s=\\xad*K\\xbbC\\x9b\\xd7=Q\\x87\\x85<_iO\\xbe\\xa3z\\xef\\xbd\\x1e=x=\\xd5\\xea0>\\x1a\\x90\\xe9=`\\xe3\\xb9=\\x0dD\\xb8=\\x9b\\x98\\xc4=\\xb0\\xc4\\x96\\xbd\\xf1Q\\xb4=\\xd5\\x27\\xb6\\xbd\\x8f\\xd7u=\\x06b2=\\xd7\\xf2\\x03\\xbd\\xd25\\x0f>\\x922\\xbc=n\\xc7\\x99=h\\xea\\xe8=\\xdc\\xf4\\x8d\\xbd\\xb3\\x9d\\xb4=$\\xc8\\x15>\\xa2W\\x81=\\xbc\\x1a_>\\xc9\\xf9\\xf7=\\xd6\\xbaF>\\x9aG$>\\x8d2\\xba=\\xba+\\x8f\\xbe\\xbd\\xf5B\\xbe\\xad\\x12\\xca<0\\xb9\\x8b\\xbd4\\xa3\\xc4=\\xcb4r>\\xfdrA>b\\xe9v\\xbd\\x1f\\x8d\\x16=\\xcc(\\x92<\\xfd\\x85O>U&\\x16=\\x99\\xac\\x10>\\xef\\xc3.\\xbd\\x2222=*\\x94\\x8f\\xbe\\xde\\xd2\\xa6\\xbd\" SORTBY score DIALECT 2"
+        },
+        {
+          "name": "Hybrid search (vector + filters)",
+          "description": "Combines semantic search with attribute filters. Searches for \"A quiet lake for a swim on a summer afternoon\" but only among easy or moderate trails shorter than 10 km. The filters run before KNN and narrow the candidate set.",
+          "query": "FT.SEARCH idx:trails_vss \"(@difficulty:{easy|moderate} @distance_km:[0 10])=>[KNN 3 @description_embedding $query_vector AS score]\" RETURN 5 score name difficulty distance_km description PARAMS 2 query_vector \"\\x20U\\xec=\\xcc}\\x9a=vn\\x81\\xbcV0\\xeb\\xbd\\x94(\\xf9=K\\xe2\\xcc\\xbd\\x8f@\\x12>z\\x9b+\\xbe\\x0c\\x9c\\xb1\\xbd\\xd6\\x1do\\xbe\\xdf$\\xab\\xbc}%E\\xbe\\x02\\xe9\\x0b\\xbe\\xc5\\xc3o<\\xb1e?=\\xc1^d\\xbd\\x15\\xdcF=\\x19\\xe7==\\x8f\\xd1\\x91=Rm\\x05\\xbe\\x09\\x8b\\x08>=\\x04\\x27\\xbez\\xe6\\xc3=\\x05e7>\\x02\\x1b\\xb6=\\xead\\x1e>\\xd4\\xc9\\xca\\xbdbT\\x11>\\xdbN-\\xbe\\xa5\\x92\\xac\\xbd\\x0f\\xbe8\\xbe\\x8b&p>\\x14z\\xca=J{\\x00>\\x1b\\x99Y=\\x7f\\xd0\\x98=\\xe6L\\xef\\xbd\\x949\\xc4=\\xdd\\xa8$\\xbd\\xa3M\\x03>4\\xf3\\xe3<\\x0fd\\xd3=P\\xe2\\xe8<\\xfc\\xa2\\xa8\\xbd\\xdd\\xb4\\xb4=\\xcc\\xc3\\xea=\\x0f5i>\\xa6@)>\\xdeo\\x01>0\\xae\\xa1=\\x01\\x86\\x06\\xbd\\x1b\\x86#>\\xb5w1\\xbe\\x86\\xa0i\\xbe3\\xee\\x0a>\\x95\\xe0\\x06\\xbd\\x0a\\x91~\\xbe\\xe4\\xb4l\\xbex\\x0f0=~5h<\\xb3A\\xbe\\xbdx{\\xa7<\\x83\\xbbL\\xbbrPS\\xbd\" SORTBY score DIALECT 2"
+        }
+      ]
+    },
+    {
+      "id": "recipe-ideas",
+      "displayName": "Recipe ideas",
+      "indexName": "idx:recipes_vss",
+      "indexPrefix": "recipe:",
+      "collectionName": "recipes",
+      "fields": [
+        {
+          "id": "title",
+          "name": "title",
+          "value": "Chicken Green Curry",
+          "type": "LTEXT"
+        },
+        {
+          "id": "cuisine",
+          "name": "cuisine",
+          "value": "Thai",
+          "type": "LTAG"
+        },
+        {
+          "id": "course",
+          "name": "course",
+          "value": "main",
+          "type": "LTAG"
+        },
+        {
+          "id": "tags",
+          "name": "tags",
+          "value": "gluten_free, dairy_free, high_protein, quick, spicy, make_ahead",
+          "type": "LTAG"
+        },
+        {
+          "id": "summary",
+          "name": "summary",
+          "value": "Chicken Green Curry is a creamy curry of chicken thighs simmered in coconut milk",
+          "type": "LTEXT"
+        },
+        {
+          "id": "minutes",
+          "name": "minutes",
+          "value": 30,
+          "type": "LNUMERIC"
+        },
+        {
+          "id": "embedding",
+          "name": "embedding",
+          "value": "FLAT, FLOAT32, 64, COSINE",
+          "type": "LVECTOR"
+        }
+      ],
+      "sampleQueries": [
+        {
+          "name": "Basic semantic search",
+          "description": "Finds the 3 recipes closest in meaning to \"A warming bowl of soup for a cold evening.\" Returns the title, summary, and distance score. The matches are soups and stews even when their summaries use different words.",
+          "query": "FT.SEARCH idx:recipes_vss \"*=>[KNN 3 @embedding $vec AS score]\" PARAMS 2 vec \"\\xfcH7\\xbd\\x83\\x99\\xe7\\xbd\\xc6TS\\xbe#\\xe3#\\xbe\\x0dq\\x1e\\xbe}[D\\xbe)\\x8d\\xde=\\x0e\\xc0\\x81>t\\xce\\x5c\\xbeY\\x82(\\xbe\\xda\\x84T\\xbcc\\x27\\xb6\\xbd\\x87\\xc4\\x1e\\xbe\\x27_\\xe0=\\x1e\\x13r\\xbev\\x9b\\xf5<\\xe3\\xfeq\\xbe\\x8b\\xb0\\xd8=\\xef\\xd3(\\xbe\\xc88\\x16\\xbeWY\\xc0\\xbb\\x16\\xd72=\\xb3/\\xf4\\xbc\\xe5\\x9c\\x0c\\xbe(\\xef=>\\xe2\\xc1\\x20\\xbcR\\xaa\\xff\\xbd\\xae\\x86\\x01>\\x81\\x9d]>L\\x81*=\\x98b\\x9f\\xbc\\xa0+7;lI.=\\x84E\\xf2\\xbds\\xe2\\xb4=\\xae~\\x01\\xbd(L\\xaa=\\xa9\\x19\\x16:\\x0a)\\xa4=\\xd9?Q>h\\x0f7<\\x85\\xf4\\xaf\\xbd\\x04n\\x1a=Wy\\x0b>F\\x92/<\\xf4\\xb2\\xa5\\xbc\\xf5\\x9c*>\\x07\\xf2F=D5\\x1e>l)\\xbd\\xbc\\x13\\xc5\\x87\\xbb\\x10\\x02f>\\xdf\\x81\\xa1\\xbc\\xd0\\xb2W\\xbd\\x10%\\x19\\xbe>s1=\\xe3\\x85!\\xbe_\\x20K\\xbeR\\x27@=\\x08$\\xc3\\xbcl\\x7f\\x1b>rJ\\x03\\xbe==\\xa7\\xbd,I\\xc8\\xbb\" SORTBY score RETURN 3 title summary score DIALECT 2"
+        },
+        {
+          "name": "Cuisine-filtered semantic search",
+          "description": "Restricts the search to Italian recipes with a tag filter, then ranks them by similarity to \"Quick weeknight pasta with lots of vegetables.\" Pre-filtering narrows the candidates before KNN runs.",
+          "query": "FT.SEARCH idx:recipes_vss \"@cuisine:{Italian} =>[KNN 5 @embedding $vec AS score]\" PARAMS 2 vec \"\\xb5\\x12u=\\xdd\\xa2\\xdf=\\x8e\\xc4\\xbf=A\\xfc\\xe2\\xbd1v\\x02=|\\xdf\\xb3\\xbd\\xf2\\x91\\xd0=\\x88A\\x81\\xbem\\xe9\\x90>\\x0bJ\\x11>p\\x18J\\xbe\\x8eP\\x81=m\\x96)>TK\\x27\\xbe\\xef\\x02\\x92\\xbdN\\xf8\\xa4\\xbd-4~\\xbc\\x17\\xca\\x0c\\xbd\\xf1m\\x0d\\xbe\\xb3\\x90X\\xbbe\\xa4\\xc7=\\xa9\\x20\\x92\\xbd\\x09{\\x96\\xbc\\x0e\\x99P>\\xdaz\\xf6\\xbd\\x1b\\x98\\xf9\\xbd8:\\xe5=8\\x98\\xe5=\\x8c5\\x9e\\xbc-\\x02!=p\\xfa\\x86\\xbdU\\xa3?\\xbd\\xa2I\\x82\\xbd\\xd3\\xed\\x1a\\xbe\\xb3R\\x86\\xbb\\xfe\\xfeh\\xbe\\xf6u\\xd9<\\x8e\\xb4>>\\x98{\\xbc\\xbd\\xa0\\x8a\\x86:\\x86\\x861\\xbeE\\x0c\\xae=\\xeb\\xb8@\\xbdXM?<\\xa5\\xba\\x22\\xbd\\xc9\\xc9\\xc3\\xbd\\x9d\\x92p>\\xf4\\xd0\\x05\\xbe\\x96\\x91M\\xbei\\x02\\x06\\xbd\\x96j\\x82\\xbb\\x18%\\x14\\xbej\\xbb\\x0f\\xbe\\xca\\xb7\\xd6\\xbb~\\xab$\\xbe(\\x83b\\xbe\\xa6\\xa4\\xba=\\xdb\\xd4\\x20>\\xfd\\x90X>\\xd5\\xe6\\x8c\\xbd\\x15\\xa0E=T\\x96\\x1e<%\\x03Y>tU#\\xbc\" SORTBY score RETURN 4 title cuisine minutes score DIALECT 2"
+        },
+        {
+          "name": "More like this",
+          "description": "Uses the stored embedding of recipe:028 (Chicken Tikka Masala) as the query vector, so the results are the dishes most similar to it. This is how content-based recommendations work without generating new embeddings.",
+          "query": "FT.SEARCH idx:recipes_vss \"*=>[KNN 5 @embedding $vec AS score]\" PARAMS 2 vec \"\\xda\\xac\\xfa<\\xa9\\xfb\\x20\\xbe\\xfc\\x18s>;\\x8d\\xf4\\xbd\\xaaH\\x85\\xbc\\xab!\\x11>\\xf8S\\xe3\\xbdB`e=/\\x8bi>u\\xcd\\xe4\\xbc\\xa4\\xa5r=\\x07_\\x98\\xbbB`\\xe5;[\\x99p=\\x16\\x18\\xb2<6\\xc8$=z\\xfc>\\xbe#\\x10\\xaf\\xbd\\x06L\\x00\\xbe\\xbd\\x8c\\xa2=u\\x93\\xd8=f1Q>[\\x94\\xd9\\xbb(\\xb8\\xd8=\\xfd\\xf65>\\xd8*\\x81=\\x89^F\\xbdg\\xb8a>\\x17\\x82\\x1c>\\xd1W\\x90\\xbdd#\\x90\\xbd\\xd7/\\x98=nn\\x8c=\\xda\\x20\\x93<\\x13\\x27\\x17\\xbe\\x00R\\x1b\\xbdW\\xb2\\xe3\\xbd\\x9f<\\x0c\\xbe\\xf7\\xcc\\x92\\xba6\\xcd\\xbb\\xbd\\xb2c#=D\\x86\\x95=z\\xc2\\xc2>V\\x9f\\xab<\\xaf\\x99<\\xbe\\x054\\x91=]P_<\\x01\\xfb\\x88\\xbe\\x00o\\xc1=2\\xe6\\xae\\xbd\\x11\\xc7\\xba<\\xb7(\\x13>\\xc4\\x08\\xe1=\\x99\\x9e0<\\xcd\\xaff>k}\\x11=\\xafZ\\x19\\xbd\\x0f\\x0b5<\\x10\\xafK\\xbe\\xf42\\x8a<\\xd3\\xde\\xe0\\xbc\\x9e)t>\\x86U\\xfc=\\x8d\\xee\\xa0=\" SORTBY score RETURN 3 title cuisine score DIALECT 2"
+        },
+        {
+          "name": "Multi-filter hybrid search",
+          "description": "Combines a diet tag and a time range with vector search. Finds vegetarian recipes that take 30 minutes or less and match \"Something fresh and crunchy for a hot summer day.\"",
+          "query": "FT.SEARCH idx:recipes_vss \"(@tags:{vegetarian} @minutes:[0 30]) =>[KNN 5 @embedding $vec AS score]\" PARAMS 2 vec \"\\x898\\xbc=\\xa9h\\xdf<\\x1aH\\x8c=\\xca\\x1dz=\\xce-e\\xbd4/\\xa4\\xbd,\\xeb\\xd4=)\\xaf\\x89\\xbda\\x98A=?\\x0a!\\xbd\\xb4\\x05\\x0e\\xbe\\xd5\\x85\\xa3\\xbd\\x88m}=\\x85\\xa9\\x0e=sE\\x9a>\\xd9\\x95\\xba\\xbd<\\xbf\\xa1=$\\xa05>\\xebD\\x1a\\xbd5\\x0b\\x9b=\\x10\\xddx>y\\xd9==\\xba\\xa3E\\xbe41n\\xbe\\xd1\\xbc\\xac=\\xdeh6>\\x16\\xb9/\\xbe\\xc6<\\x19>\\xa9c\\xef=\\xac/\\xc9\\xbd\\xa4\\x1a\\x99<Q\\xc3\\x1c>\\xa7\\x87\\xf9\\xbd\\xf8\\xe3\\xbc=e\\x18\\xe2<\\x9d\\xfb\\x16>]\\xe1F\\xbd\\xed\\xbe\\xbe<\\x20\\xe05\\xbd\\xb7\\x05\\xb8=\\x1a\\x92\\x1c\\xbdY\\x02\\xf1=Q\\xa1z>\\x8d\\x5c{\\xbd\\xbb\\xa0\\x83\\xbe\\xa4G\\xea=J\\x0d,>G\\xe2Z\\xbd\\x02,\\xc4=\\xee\\x15\\x20=c3\\x00>|[\\x0e\\xbe6\\xd9\\xdd<||J>\\xf9)/>\\xc1P!>N!g\\xbd|\\xfa\\x0f>\\xf3\\xe6\\xc0=\\xab\\xb3\\xfc=\\x11c\\x9e=\\x0bq\\xa19f_U>\\x9d\\xe3\\x8b=\" SORTBY score RETURN 4 title tags minutes score DIALECT 2"
+        },
+        {
+          "name": "Diet-aware search",
+          "description": "Filters to recipes tagged vegan or gluten_free, then ranks them by similarity to \"A rich chocolate dessert.\" A tag filter with | matches any of the listed values.",
+          "query": "FT.SEARCH idx:recipes_vss \"@tags:{vegan|gluten_free} =>[KNN 5 @embedding $vec AS score]\" PARAMS 2 vec \"\\xcdnY>\\xfbf\\xe0=\\xabO\\x08\\xbe\\xec\\xa1\\xfa\\xbd\\xdf\\xb6\\xf7=\\xb6\\x9a\\xcb<pO\\x18:\\xf1\\x07v\\xbc\\x11\\xa9\\x1b>\\x80\\x0d\\x1e\\xbc\\x9a\\xc0\\x15>\\x0cAP\\xbd\\xe5\\xdeT>\\xdfZ5\\xbe\\x03\\xb4\\x18\\xbe\\x1f\\xaf\\xaa\\xbdu\\x22\\x11=\\x986\\xdc=\\xa2\\x99\\xff=\\xb5\\x82\\x83\\xbe\\xfc\\xdeG\\xbe\\xea\\x909=Z^j=e[\\xa3=w\\x19K>\\xec/e\\xbd\\xa4\\x1b\\xda<\\xeamP<\\xc7f\\x9c\\xbd:\\xfd\\x81>\\x9d\\xccW=\\xa9\\x19\\x1b>\\xb10Z\\xbc\\xbc\\x04@\\xbe\\xfaj\\x83\\xbd,.(\\xbeG\\x1aN\\xbe\\xda\\x8a\\x02>\\xd3\\x15\\xf6<~\\xea\\xfc<b\\x7f\\xef=;\\xb0^>4$`<T\\xf3\\x0e\\xbe\\xda\\xf5\\xf4\\xbd\\xed\\xbd\\xc5=\\x03\\xe6\\xf5\\xbd\\xc4s\\xa8<\\x9f\\xff\\x19\\xbe\\xae\\xb7\\xcd=\\xadlT\\xbe\\xfb\\xad\\x96;T\\xc2\\xca\\xbdI3\\x8f\\xbb\\x19\\x22a=\\xc2\\xa7\\x27\\xbe\\xa8\\x9f\\x01>Fb\\xa0\\xbc\\xa5\\xe3\\x99\\xbd\\xb7:\\xc1:\\xcf\\x5c:\\xbeD\\xf8\\x12\\xbe\\x9b\\x8f\\xa6\\xbd5\\xa7\\x0a\\xbe\" SORTBY score RETURN 3 title tags score DIALECT 2"
+        }
+      ]
+    }
+  ]
+}
