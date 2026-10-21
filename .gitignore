@@ -1,0 +1,12 @@
+.build/
+dist/
+*.xcodeproj
+Config/
+xcuserdata/
+.swiftpm/
+.DS_Store
+.idea/
+/.claude/
+/.codex/
+__pycache__/
+.ruff_cache/
