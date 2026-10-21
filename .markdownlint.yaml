@@ -1,0 +1,2 @@
+# Markdownlint rules: the defaults, without line length (tables and code blocks run long).
+MD013: false

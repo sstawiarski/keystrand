@@ -1,0 +1,38 @@
+id: no-observable-object
+snapshots:
+  "@EnvironmentObject var settings: SettingsStore\n":
+    labels:
+    - source: "@EnvironmentObject"
+      style: primary
+      start: 0
+      end: 18
+  "@ObservedObject var model: Model\n":
+    labels:
+    - source: "@ObservedObject"
+      style: primary
+      start: 0
+      end: 15
+  "@Published var count = 0\n":
+    labels:
+    - source: "@Published"
+      style: primary
+      start: 0
+      end: 10
+  "@StateObject private var model = Model()\n":
+    labels:
+    - source: "@StateObject"
+      style: primary
+      start: 0
+      end: 12
+  "final class Model: NSObject, Combine.ObservableObject {}\n":
+    labels:
+    - source: Combine.ObservableObject
+      style: primary
+      start: 29
+      end: 53
+  "final class Model: ObservableObject {}\n":
+    labels:
+    - source: ObservableObject
+      style: primary
+      start: 19
+      end: 35

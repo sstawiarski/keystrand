@@ -1,0 +1,23 @@
+id: no-observable-object
+valid:
+  - |
+    @MainActor @Observable final class Model {}
+  - |
+    @State private var model = Model()
+  - |
+    @Bindable var model: Model
+  - |
+    @Environment(AppServices.self) private var services
+invalid:
+  - |
+    final class Model: ObservableObject {}
+  - |
+    final class Model: NSObject, Combine.ObservableObject {}
+  - |
+    @Published var count = 0
+  - |
+    @StateObject private var model = Model()
+  - |
+    @ObservedObject var model: Model
+  - |
+    @EnvironmentObject var settings: SettingsStore

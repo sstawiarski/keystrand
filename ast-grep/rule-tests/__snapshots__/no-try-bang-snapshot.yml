@@ -1,0 +1,8 @@
+id: no-try-bang
+snapshots:
+  let data = try! JSONEncoder().encode(value):
+    labels:
+    - source: try! JSONEncoder().encode(value)
+      style: primary
+      start: 11
+      end: 43

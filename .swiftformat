@@ -1,0 +1,4 @@
+# Only blank-line rules are on, so SwiftFormat changes nothing else.
+--swift-version 6.2
+--rules blankLineAfterImports,blankLinesAroundMark,consecutiveBlankLines
+--exclude .build,.claude,.codex,dist

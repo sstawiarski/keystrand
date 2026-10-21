@@ -1,0 +1,7 @@
+id: no-xctest
+valid:
+  - import Testing
+  - "@testable import RedisCore"
+invalid:
+  - import XCTest
+  - import class XCTest.XCTestCase

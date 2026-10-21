@@ -1,0 +1,10 @@
+id: no-xctest
+language: swift
+severity: error
+message: Write tests with Swift Testing, not XCTest.
+note: Use `@Test`, `#expect`, and `#require`. Shared helpers are in `Tests/TestSupport`.
+rule:
+  kind: import_declaration
+  has:
+    kind: identifier
+    regex: ^XCTest\b

@@ -1,0 +1,57 @@
+id: unsafe-sendable-needs-comment
+snapshots:
+  ? |
+    extension Transport: @unchecked Sendable {}
+  : labels:
+    - source: 'extension Transport: @unchecked Sendable {}'
+      style: primary
+      start: 0
+      end: 43
+    - source: '@unchecked'
+      style: secondary
+      start: 21
+      end: 31
+  ? |
+    final class IdentityCache: @unchecked Sendable {}
+  : labels:
+    - source: 'final class IdentityCache: @unchecked Sendable {}'
+      style: primary
+      start: 0
+      end: 49
+    - source: '@unchecked'
+      style: secondary
+      start: 27
+      end: 37
+  ? |
+    let first = 1
+    nonisolated(unsafe) var shared = 0
+  : labels:
+    - source: nonisolated(unsafe) var shared = 0
+      style: primary
+      start: 14
+      end: 48
+    - source: nonisolated(unsafe)
+      style: secondary
+      start: 14
+      end: 33
+    - source: nonisolated(unsafe)
+      style: secondary
+      start: 14
+      end: 33
+  ? |
+    struct Clock {
+        nonisolated(unsafe) static var now = Date()
+    }
+  : labels:
+    - source: nonisolated(unsafe) static var now = Date()
+      style: primary
+      start: 19
+      end: 62
+    - source: nonisolated(unsafe)
+      style: secondary
+      start: 19
+      end: 38
+    - source: nonisolated(unsafe) static
+      style: secondary
+      start: 19
+      end: 45

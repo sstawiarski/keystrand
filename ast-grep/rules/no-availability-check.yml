@@ -1,0 +1,7 @@
+id: no-availability-check
+language: swift
+severity: error
+message: Target macOS 26 APIs directly. Do not add availability fallbacks.
+note: The deployment target is macOS 26, so every API in the SDK is available.
+rule:
+  kind: availability_condition

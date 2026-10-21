@@ -1,0 +1,56 @@
+id: blank-line-after-block
+valid:
+  - if isEmpty { return }
+  - |
+    guard let value else {
+        return
+    }
+  - |
+    let label = if isEmpty {
+        "None"
+    } else {
+        "Some"
+    }
+  - |
+    for key in keys { print(key) }
+invalid:
+  - |
+    func f() {
+        if isEmpty {
+            return
+        }
+        reload()
+    }
+  - |
+    func f() {
+        for key in keys {
+            print(key)
+        }
+    }
+  - |
+    func f() {
+        switch value {
+        case 0: print("zero")
+        default: break
+        }
+    }
+  - |
+    func f() {
+        do {
+            try load()
+        } catch {
+            report(error)
+        }
+    }
+  - |
+    func f() {
+        while hasMore {
+            next()
+        }
+    }
+  - |
+    func f() {
+        repeat {
+            next()
+        } while hasMore
+    }

@@ -1,0 +1,9 @@
+id: no-cross-feature-import
+valid:
+  - import RedisUI
+  - import RedisCore
+  - import SwiftUI
+invalid:
+  - import BrowserFeature
+  - "@testable import WorkbenchFeature"
+  - import struct VectorSearchFeature.PickerKeyTree

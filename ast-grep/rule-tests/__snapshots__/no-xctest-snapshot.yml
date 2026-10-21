@@ -1,0 +1,22 @@
+id: no-xctest
+snapshots:
+  import XCTest:
+    labels:
+    - source: import XCTest
+      style: primary
+      start: 0
+      end: 13
+    - source: XCTest
+      style: secondary
+      start: 7
+      end: 13
+  import class XCTest.XCTestCase:
+    labels:
+    - source: import class XCTest.XCTestCase
+      style: primary
+      start: 0
+      end: 30
+    - source: XCTest.XCTestCase
+      style: secondary
+      start: 13
+      end: 30

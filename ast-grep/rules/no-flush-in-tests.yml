@@ -1,0 +1,19 @@
+id: no-flush-in-tests
+language: swift
+severity: error
+message: Do not send FLUSHDB or FLUSHALL from tests.
+note: >-
+  RediSearch on Redis 8 drops every index on any flush, even a flush of
+  another logical database. Delete test keys with `RedisTestServer.flush(db:)`
+  or `freshConnection(db:)`, which use SCAN and UNLINK.
+files:
+  - Tests/**
+rule:
+  kind: line_string_literal
+  regex: (?i)^"flush(db|all)(\s|")
+  inside:
+    kind: call_expression
+    stopBy: end
+    has:
+      nthChild: 1
+      regex: (^|\.)(execute|pipeline|send)$

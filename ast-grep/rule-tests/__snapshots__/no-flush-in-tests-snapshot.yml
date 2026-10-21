@@ -1,0 +1,58 @@
+id: no-flush-in-tests
+snapshots:
+  "_ = try await client.pipeline([[\"SELECT\", \"4\"], [\"FLUSHALL\", \"ASYNC\"]])\n":
+    labels:
+    - source: "\"FLUSHALL\""
+      style: primary
+      start: 49
+      end: 59
+    - source: client.pipeline
+      style: secondary
+      start: 14
+      end: 29
+    - source: client.pipeline([["SELECT", "4"], ["FLUSHALL", "ASYNC"]])
+      style: secondary
+      start: 14
+      end: 71
+  "_ = try await client.send([\"FLUSHDB\"], to: node)\n":
+    labels:
+    - source: "\"FLUSHDB\""
+      style: primary
+      start: 27
+      end: 36
+    - source: client.send
+      style: secondary
+      start: 14
+      end: 25
+    - source: "client.send([\"FLUSHDB\"], to: node)"
+      style: secondary
+      start: 14
+      end: 48
+  "_ = try await connection.execute([\"FLUSHDB\"])\n":
+    labels:
+    - source: "\"FLUSHDB\""
+      style: primary
+      start: 34
+      end: 43
+    - source: connection.execute
+      style: secondary
+      start: 14
+      end: 32
+    - source: connection.execute(["FLUSHDB"])
+      style: secondary
+      start: 14
+      end: 45
+  "_ = try await session.execute(\"flushall\")\n":
+    labels:
+    - source: "\"flushall\""
+      style: primary
+      start: 30
+      end: 40
+    - source: session.execute
+      style: secondary
+      start: 14
+      end: 29
+    - source: session.execute("flushall")
+      style: secondary
+      start: 14
+      end: 41

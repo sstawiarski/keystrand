@@ -1,0 +1,16 @@
+id: no-availability-check
+snapshots:
+  ? |
+    guard #unavailable(macOS 26) else { return }
+  : labels:
+    - source: '#unavailable(macOS 26)'
+      style: primary
+      start: 6
+      end: 28
+  ? |
+    if #available(macOS 26, *) { glass() }
+  : labels:
+    - source: '#available(macOS 26, *)'
+      style: primary
+      start: 3
+      end: 26

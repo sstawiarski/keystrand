@@ -1,0 +1,13 @@
+id: no-force-cast
+language: swift
+severity: error
+message: Do not force cast in app code.
+note: >-
+  Use `as?` with `if let` or `guard let`. Throw a typed error when the cast
+  must succeed.
+files:
+  - Sources/**
+  - Keystrand/**
+rule:
+  kind: as_operator
+  regex: ^as!$

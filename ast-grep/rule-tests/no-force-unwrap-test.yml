@@ -1,0 +1,23 @@
+id: no-force-unwrap
+valid:
+  - let name = value ?? "default"
+  - |
+    var label: NSTextField!
+  - if !isEmpty && count != 0 { run() }
+  - |
+    func create() async throws {
+        if try await exists(key) { throw KeyError.taken }
+        let replies = try await session.pipeline(commands)
+        if zip(commands, replies).contains(where: { $0.last == "NX" && $1.isNull }) {
+            throw KeyError.taken
+        }
+        if let error = replies.first {
+            _ = try? await session.execute(["DEL", .data(key)])
+            throw ClientError.server(error)
+        }
+        guard !expiry.isEmpty else { return }
+    }
+invalid:
+  - let name = value!
+  - let count = model!.count
+  - Self.pairs[previous!]

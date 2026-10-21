@@ -1,0 +1,22 @@
+id: blank-line-around-declaration
+language: swift
+severity: off
+message: Put a blank line before and after a multi-line declaration.
+note: >-
+  ast-grep cannot see blank lines, so this rule is off and matches every
+  multi-line declaration. scripts/format.sh turns it on, checks the lines
+  around each match, and inserts the missing blank lines.
+rule:
+  regex: '\n'
+  any:
+    - kind: function_declaration
+    - kind: init_declaration
+    - kind: deinit_declaration
+    - kind: subscript_declaration
+    - kind: class_declaration
+    - kind: protocol_declaration
+    - kind: property_declaration
+      has:
+        any:
+          - kind: computed_property
+          - kind: willset_didset_block

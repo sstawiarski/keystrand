@@ -1,0 +1,26 @@
+id: unsafe-sendable-needs-comment
+valid:
+  - |
+    // @unchecked: every access to `cache` happens while holding `lock`.
+    final class IdentityCache: @unchecked Sendable {}
+  - |
+    struct Clock {
+        // Written once at launch, before any task reads it.
+        nonisolated(unsafe) static var now = Date()
+    }
+  - |
+    final class Store: Sendable {}
+  - |
+    @MainActor final class Model {}
+invalid:
+  - |
+    final class IdentityCache: @unchecked Sendable {}
+  - |
+    extension Transport: @unchecked Sendable {}
+  - |
+    struct Clock {
+        nonisolated(unsafe) static var now = Date()
+    }
+  - |
+    let first = 1
+    nonisolated(unsafe) var shared = 0

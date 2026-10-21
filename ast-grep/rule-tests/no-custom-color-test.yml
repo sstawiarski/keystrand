@@ -1,0 +1,21 @@
+id: no-custom-color
+valid:
+  - let tint = Color.accentColor
+  - let text = NSColor.secondaryLabelColor
+  - |
+    let fill = Color(nsColor: .controlBackgroundColor)
+  - |
+    let line = Color(.separatorColor)
+invalid:
+  - |
+    let red = Color(red: 1, green: 0, blue: 0)
+  - |
+    let blue = Color(.sRGB, red: 0.2, green: 0.4, blue: 0.6)
+  - |
+    let red = NSColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
+  - |
+    let shade = Color(white: 0, opacity: 0.2)
+  - |
+    let brand = Color(hex: "#FF0000")
+  - |
+    let red = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)

@@ -1,0 +1,138 @@
+id: no-custom-color
+snapshots:
+  "let blue = Color(.sRGB, red: 0.2, green: 0.4, blue: 0.6)\n":
+    labels:
+    - source: "Color(.sRGB, red: 0.2, green: 0.4, blue: 0.6)"
+      style: primary
+      start: 11
+      end: 56
+    - source: Color
+      style: secondary
+      start: 11
+      end: 16
+    - source: red
+      style: secondary
+      start: 24
+      end: 27
+    - source: "red: 0.2"
+      style: secondary
+      start: 24
+      end: 32
+    - source: "(.sRGB, red: 0.2, green: 0.4, blue: 0.6)"
+      style: secondary
+      start: 16
+      end: 56
+    - source: "(.sRGB, red: 0.2, green: 0.4, blue: 0.6)"
+      style: secondary
+      start: 16
+      end: 56
+  "let brand = Color(hex: \"#FF0000\")\n":
+    labels:
+    - source: "Color(hex: \"#FF0000\")"
+      style: primary
+      start: 12
+      end: 33
+    - source: Color
+      style: secondary
+      start: 12
+      end: 17
+    - source: hex
+      style: secondary
+      start: 18
+      end: 21
+    - source: "hex: \"#FF0000\""
+      style: secondary
+      start: 18
+      end: 32
+    - source: "(hex: \"#FF0000\")"
+      style: secondary
+      start: 17
+      end: 33
+    - source: "(hex: \"#FF0000\")"
+      style: secondary
+      start: 17
+      end: 33
+  "let red = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)\n":
+    labels:
+    - source: "#colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)"
+      style: primary
+      start: 10
+      end: 60
+  "let red = Color(red: 1, green: 0, blue: 0)\n":
+    labels:
+    - source: "Color(red: 1, green: 0, blue: 0)"
+      style: primary
+      start: 10
+      end: 42
+    - source: Color
+      style: secondary
+      start: 10
+      end: 15
+    - source: red
+      style: secondary
+      start: 16
+      end: 19
+    - source: "red: 1"
+      style: secondary
+      start: 16
+      end: 22
+    - source: "(red: 1, green: 0, blue: 0)"
+      style: secondary
+      start: 15
+      end: 42
+    - source: "(red: 1, green: 0, blue: 0)"
+      style: secondary
+      start: 15
+      end: 42
+  "let red = NSColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)\n":
+    labels:
+    - source: "NSColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)"
+      style: primary
+      start: 10
+      end: 58
+    - source: NSColor
+      style: secondary
+      start: 10
+      end: 17
+    - source: srgbRed
+      style: secondary
+      start: 18
+      end: 25
+    - source: "srgbRed: 1"
+      style: secondary
+      start: 18
+      end: 28
+    - source: "(srgbRed: 1, green: 0, blue: 0, alpha: 1)"
+      style: secondary
+      start: 17
+      end: 58
+    - source: "(srgbRed: 1, green: 0, blue: 0, alpha: 1)"
+      style: secondary
+      start: 17
+      end: 58
+  "let shade = Color(white: 0, opacity: 0.2)\n":
+    labels:
+    - source: "Color(white: 0, opacity: 0.2)"
+      style: primary
+      start: 12
+      end: 41
+    - source: Color
+      style: secondary
+      start: 12
+      end: 17
+    - source: white
+      style: secondary
+      start: 18
+      end: 23
+    - source: "white: 0"
+      style: secondary
+      start: 18
+      end: 26
+    - source: "(white: 0, opacity: 0.2)"
+      style: secondary
+      start: 17
+      end: 41
+    - source: "(white: 0, opacity: 0.2)"
+      style: secondary
+      start: 17
+      end: 41

@@ -1,0 +1,14 @@
+id: no-force-cast
+snapshots:
+  "let cell = table.makeView(withIdentifier: id, owner: nil) as! NSTableCellView\n":
+    labels:
+    - source: as!
+      style: primary
+      start: 58
+      end: 61
+  let view = item as! NSView:
+    labels:
+    - source: as!
+      style: primary
+      start: 16
+      end: 19

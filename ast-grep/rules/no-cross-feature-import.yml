@@ -1,0 +1,15 @@
+id: no-cross-feature-import
+language: swift
+severity: error
+message: Features never import each other.
+note: >-
+  A feature target depends only on RedisCore and RedisUI. Move code that two
+  targets share into RedisCore, or let AppShell compose the features by
+  injecting closures and views.
+files:
+  - Sources/Features/**
+rule:
+  kind: import_declaration
+  has:
+    kind: identifier
+    regex: ^\w+Feature\b

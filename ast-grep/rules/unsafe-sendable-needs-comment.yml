@@ -1,0 +1,20 @@
+id: unsafe-sendable-needs-comment
+language: swift
+severity: error
+message: Put a one-line comment directly above this declaration that says why it is safe.
+note: Every `@unchecked Sendable` and `nonisolated(unsafe)` needs this comment.
+rule:
+  any:
+    - kind: class_declaration
+      has:
+        kind: attribute
+        regex: ^@unchecked$
+    - kind: property_declaration
+      has:
+        kind: modifiers
+        has:
+          kind: member_modifier
+          regex: ^nonisolated\(unsafe\)$
+  not:
+    follows:
+      kind: comment

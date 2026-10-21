@@ -1,0 +1,19 @@
+id: no-flush-in-tests
+valid:
+  - |
+    #expect(QuerySafety.flushVerbs(in: ["FLUSHDB"]) == ["FLUSHDB"])
+  - |
+    await page.run(commands: ["FT.SEARCH idx *", "FLUSHDB"])
+  - |
+    try await RedisTestServer.flush(db: RedisTestServer.DB.browser)
+  - |
+    _ = try await connection.execute(["DEL", "flushdb-key"])
+invalid:
+  - |
+    _ = try await connection.execute(["FLUSHDB"])
+  - |
+    _ = try await session.execute("flushall")
+  - |
+    _ = try await client.pipeline([["SELECT", "4"], ["FLUSHALL", "ASYNC"]])
+  - |
+    _ = try await client.send(["FLUSHDB"], to: node)

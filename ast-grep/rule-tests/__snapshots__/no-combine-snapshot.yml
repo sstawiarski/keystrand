@@ -1,0 +1,22 @@
+id: no-combine
+snapshots:
+  '@preconcurrency import Combine':
+    labels:
+    - source: '@preconcurrency import Combine'
+      style: primary
+      start: 0
+      end: 30
+    - source: Combine
+      style: secondary
+      start: 23
+      end: 30
+  import Combine:
+    labels:
+    - source: import Combine
+      style: primary
+      start: 0
+      end: 14
+    - source: Combine
+      style: secondary
+      start: 7
+      end: 14

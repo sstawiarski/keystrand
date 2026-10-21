@@ -1,0 +1,69 @@
+id: blank-line-around-declaration
+snapshots:
+  "@MainActor\nfinal class Model {}\n":
+    labels:
+    - source: |-
+        @MainActor
+        final class Model {}
+      style: primary
+      start: 0
+      end: 31
+  "extension Model {\n    func reload() {}\n}\n":
+    labels:
+    - source: |-
+        extension Model {
+            func reload() {}
+        }
+      style: primary
+      start: 0
+      end: 40
+  "func decode() -> Int {\n    1\n}\n":
+    labels:
+    - source: |-
+        func decode() -> Int {
+            1
+        }
+      style: primary
+      start: 0
+      end: 30
+  "init(value: Int) {\n    self.value = value\n}\n":
+    labels:
+    - source: |-
+        init(value: Int) {
+            self.value = value
+        }
+      style: primary
+      start: 0
+      end: 43
+  "var filter = \"\" {\n    didSet { reload() }\n}\n":
+    labels:
+    - source: |-
+        var filter = "" {
+            didSet { reload() }
+        }
+      style: primary
+      start: 0
+      end: 43
+    - source: |-
+        {
+            didSet { reload() }
+        }
+      style: secondary
+      start: 16
+      end: 43
+  "var isEmpty: Bool {\n    count == 0\n}\n":
+    labels:
+    - source: |-
+        var isEmpty: Bool {
+            count == 0
+        }
+      style: primary
+      start: 0
+      end: 36
+    - source: |-
+        {
+            count == 0
+        }
+      style: secondary
+      start: 18
+      end: 36

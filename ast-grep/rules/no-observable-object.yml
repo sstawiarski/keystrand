@@ -1,0 +1,14 @@
+id: no-observable-object
+language: swift
+severity: error
+message: Use `@Observable`, not `ObservableObject`.
+note: >-
+  View models are `@MainActor @Observable final class`. In views, hold them
+  with `@State`, `@Bindable`, or `@Environment`, not `@StateObject`,
+  `@ObservedObject`, or `@EnvironmentObject`.
+rule:
+  any:
+    - kind: inheritance_specifier
+      regex: (^|\.)ObservableObject$
+    - kind: attribute
+      regex: ^@(Published|StateObject|ObservedObject|EnvironmentObject)\b

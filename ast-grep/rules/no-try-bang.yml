@@ -1,0 +1,10 @@
+id: no-try-bang
+language: swift
+severity: error
+message: Do not use `try!` in app code.
+note: Throw a typed error, or handle the failure with `do`/`catch` or `try?`.
+files:
+  - Sources/**
+  - Keystrand/**
+rule:
+  pattern: try! $EXPR

@@ -1,0 +1,15 @@
+id: no-force-unwrap
+language: swift
+severity: error
+message: Do not force unwrap in app code.
+note: >-
+  Use `if let`, `guard let`, or `??`. Throw a typed error when the value is
+  required.
+files:
+  - Sources/**
+  - Keystrand/**
+rule:
+  pattern: $VALUE!
+  # A force unwrap's `!` touches its operand. A misparsed region can yield a
+  # postfix `!` after whitespace, such as the prefix `!` in `guard !flag`.
+  regex: '\S!$'

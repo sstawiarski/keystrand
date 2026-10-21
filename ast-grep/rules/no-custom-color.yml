@@ -1,0 +1,29 @@
+id: no-custom-color
+language: swift
+severity: error
+message: Use semantic system colors or the accent color, not color components.
+note: >-
+  Use colors such as `.secondary`, `Color.accentColor`, or
+  `NSColor.separatorColor`. Editors, the CLI, and the Profiler take colors
+  from `EditorAppearance`.
+files:
+  - Sources/**
+  - Keystrand/**
+rule:
+  any:
+    - kind: playground_literal
+      regex: ^#colorLiteral
+    - kind: call_expression
+      all:
+        - has:
+            kind: simple_identifier
+            regex: ^(Color|NSColor|CGColor)$
+        - has:
+            kind: call_suffix
+            has:
+              kind: value_arguments
+              has:
+                kind: value_argument
+                has:
+                  kind: value_argument_label
+                  regex: ^(red|hue|white|gray|hex|srgbRed|displayP3Red|calibratedRed|calibratedHue|calibratedWhite|deviceRed|deviceHue|deviceWhite)$

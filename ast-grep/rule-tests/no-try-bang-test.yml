@@ -1,0 +1,6 @@
+id: no-try-bang
+valid:
+  - let data = try JSONEncoder().encode(value)
+  - let data = try? JSONEncoder().encode(value)
+invalid:
+  - let data = try! JSONEncoder().encode(value)

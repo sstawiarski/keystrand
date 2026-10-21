@@ -1,0 +1,105 @@
+id: blank-line-after-block
+snapshots:
+  "func f() {\n    do {\n        try load()\n    } catch {\n        report(error)\n    }\n}\n":
+    labels:
+    - source: |-
+        do {
+                try load()
+            } catch {
+                report(error)
+            }
+      style: primary
+      start: 15
+      end: 80
+    - source: |
+        do {
+                try load()
+            } catch {
+                report(error)
+            }
+      style: secondary
+      start: 15
+      end: 81
+  "func f() {\n    for key in keys {\n        print(key)\n    }\n}\n":
+    labels:
+    - source: |-
+        for key in keys {
+                print(key)
+            }
+      style: primary
+      start: 15
+      end: 57
+    - source: |
+        for key in keys {
+                print(key)
+            }
+      style: secondary
+      start: 15
+      end: 58
+  "func f() {\n    if isEmpty {\n        return\n    }\n    reload()\n}\n":
+    labels:
+    - source: |-
+        if isEmpty {
+                return
+            }
+      style: primary
+      start: 15
+      end: 48
+    - source: |
+        if isEmpty {
+                return
+            }
+            reload()
+      style: secondary
+      start: 15
+      end: 62
+  "func f() {\n    repeat {\n        next()\n    } while hasMore\n}\n":
+    labels:
+    - source: |-
+        repeat {
+                next()
+            } while hasMore
+      style: primary
+      start: 15
+      end: 58
+    - source: |
+        repeat {
+                next()
+            } while hasMore
+      style: secondary
+      start: 15
+      end: 59
+  "func f() {\n    switch value {\n    case 0: print(\"zero\")\n    default: break\n    }\n}\n":
+    labels:
+    - source: |-
+        switch value {
+            case 0: print("zero")
+            default: break
+            }
+      style: primary
+      start: 15
+      end: 80
+    - source: |
+        switch value {
+            case 0: print("zero")
+            default: break
+            }
+      style: secondary
+      start: 15
+      end: 81
+  "func f() {\n    while hasMore {\n        next()\n    }\n}\n":
+    labels:
+    - source: |-
+        while hasMore {
+                next()
+            }
+      style: primary
+      start: 15
+      end: 51
+    - source: |
+        while hasMore {
+                next()
+            }
+      style: secondary
+      start: 15
+      end: 52

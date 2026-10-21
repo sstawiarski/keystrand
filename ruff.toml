@@ -1,0 +1,10 @@
+# Lint settings for the standard-library Python scripts in scripts/.
+# Run with: ruff check scripts
+target-version = "py312"
+line-length = 120
+
+[lint]
+# pycodestyle, Pyflakes, import order, bugbear, and pyupgrade. Long lines are allowed:
+# the generators embed sample data and command text that does not wrap well.
+select = ["E", "W", "F", "I", "B", "UP"]
+ignore = ["E501"]

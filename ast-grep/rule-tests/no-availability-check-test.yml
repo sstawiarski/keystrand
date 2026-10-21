@@ -1,0 +1,9 @@
+id: no-availability-check
+valid:
+  - |
+    @available(*, deprecated, message: "Use run(script:)") func run() {}
+invalid:
+  - |
+    if #available(macOS 26, *) { glass() }
+  - |
+    guard #unavailable(macOS 26) else { return }

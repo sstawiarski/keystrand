@@ -1,0 +1,21 @@
+id: blank-line-after-block
+language: swift
+severity: off
+message: Put a blank line after a multi-line control-flow block.
+note: >-
+  ast-grep cannot see blank lines, so this rule is off and matches every
+  multi-line block. scripts/format.sh turns it on, checks the line after each
+  match, and inserts the missing blank line.
+rule:
+  regex: '\n'
+  any:
+    - kind: if_statement
+    - kind: for_statement
+    - kind: while_statement
+    - kind: repeat_while_statement
+    - kind: switch_statement
+    - kind: do_statement
+  inside:
+    any:
+      - kind: statements
+      - kind: source_file

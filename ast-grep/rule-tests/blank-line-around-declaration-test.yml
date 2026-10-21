@@ -1,0 +1,38 @@
+id: blank-line-around-declaration
+valid:
+  - |
+    func encode(_ text: String) -> Data { Data(text.utf8) }
+  - var stored = 5
+  - |
+    let names = [
+        "first",
+        "second",
+    ]
+  - |
+    struct Empty {}
+  - |
+    protocol Codec { func decode() }
+invalid:
+  - |
+    func decode() -> Int {
+        1
+    }
+  - |
+    init(value: Int) {
+        self.value = value
+    }
+  - |
+    var isEmpty: Bool {
+        count == 0
+    }
+  - |
+    var filter = "" {
+        didSet { reload() }
+    }
+  - |
+    extension Model {
+        func reload() {}
+    }
+  - |
+    @MainActor
+    final class Model {}

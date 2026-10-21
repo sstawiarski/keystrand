@@ -1,0 +1,7 @@
+id: no-combine
+valid:
+  - import Foundation
+  - import Observation
+invalid:
+  - import Combine
+  - "@preconcurrency import Combine"

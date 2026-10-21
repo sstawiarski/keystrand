@@ -1,0 +1,10 @@
+id: no-combine
+language: swift
+severity: error
+message: Do not use Combine.
+note: Use AsyncStream for streams and `@Observable` for models.
+rule:
+  kind: import_declaration
+  has:
+    kind: identifier
+    regex: ^Combine\b

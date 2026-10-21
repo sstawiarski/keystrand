@@ -1,0 +1,8 @@
+id: no-force-cast
+valid:
+  - let view = item as? NSView
+  - let count = value as Int
+invalid:
+  - let view = item as! NSView
+  - |
+    let cell = table.makeView(withIdentifier: id, owner: nil) as! NSTableCellView
