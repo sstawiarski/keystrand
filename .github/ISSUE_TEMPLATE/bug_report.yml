@@ -1,0 +1,106 @@
+name: Bug report
+description: Something in Keystrand does not work as expected.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Search the existing issues first.
+        Report security problems privately as described in SECURITY.md, not here.
+        Remove passwords, keys, host names and private data from everything you paste.
+  - type: input
+    id: keystrand-version
+    attributes:
+      label: Keystrand version
+      description: From the About Keystrand panel, or paste the output of Help > Copy System Info (it includes the macOS version).
+      placeholder: Keystrand v1.0.0 (1), or the Copy System Info block
+    validations:
+      required: true
+  - type: input
+    id: macos-version
+    attributes:
+      label: macOS version
+      placeholder: macOS 26.6 (arm64)
+    validations:
+      required: true
+  - type: input
+    id: server
+    attributes:
+      label: Server and version
+      description: Redis or Valkey, and the version from INFO server.
+      placeholder: Redis 8.2.1, Valkey 9.0.0
+    validations:
+      required: true
+  - type: input
+    id: modules
+    attributes:
+      label: Modules loaded
+      description: From MODULE LIST, or "none".
+      placeholder: search 8.2, ReJSON 8.2, timeseries 8.2, bf 8.2
+  - type: dropdown
+    id: deployment
+    attributes:
+      label: Deployment
+      description: Select all that apply.
+      multiple: true
+      options:
+        - Standalone
+        - Cluster
+        - Sentinel
+        - SSH tunnel
+        - TLS
+        - Redis Software or cloud service
+    validations:
+      required: true
+  - type: dropdown
+    id: build
+    attributes:
+      label: How you built Keystrand
+      options:
+        - scripts/install.sh
+        - Xcode
+        - xcodebuild
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: signing
+    attributes:
+      label: Signing
+      description: Ad hoc builds can ask for Keychain access again after every rebuild, so this helps with password and Keychain bugs.
+      options:
+        - Signed with the "Keystrand Local" certificate
+        - Signed with another identity (SIGN_IDENTITY or an Xcode team)
+        - Ad hoc ("signing ad-hoc instead" from install.sh, or the Xcode default)
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open a database
+        2. Go to Browser
+        3. Select a key
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead. Add screenshots if they help.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and error messages
+      description: Error alerts, CLI output, or a crash report from Console. Remove secrets first.
+      render: text

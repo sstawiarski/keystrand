@@ -1,0 +1,40 @@
+name: Feature request
+description: Suggest an improvement or a new feature.
+labels: ["feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion. Search the existing issues first.
+        Keystrand aims to look and work like a first-party Mac app (see docs/DESIGN.md) and uses no third-party packages.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do, and what gets in the way today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How it could work in Keystrand. Mention the section (Browser, Workbench, CLI, Pub/Sub, Profiler, and so on) if it applies.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Workarounds you use now, or how other tools handle it.
+  - type: input
+    id: server
+    attributes:
+      label: Server and modules
+      description: If the feature depends on a server or module, which ones and which versions.
+      placeholder: Redis 8.2 with search, Valkey 9.0
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Contributing
+      options:
+        - label: I would like to open a pull request for this.

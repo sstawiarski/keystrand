@@ -1,0 +1,7 @@
+# replace: @OWNER with the maintainer's GitHub handle before publishing.
+# Later rules take precedence over earlier ones.
+
+* @OWNER
+
+/scripts/ @OWNER
+/.github/ @OWNER
