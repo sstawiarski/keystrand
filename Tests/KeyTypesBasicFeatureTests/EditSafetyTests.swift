@@ -14,7 +14,7 @@ struct LiveEditSafetyTests {
 
     // MARK: - Hash field TTL survives value writes
 
-    @Test func hashValueEditKeepsFieldTTL() async throws {
+    @Test(RedisTestServer.needs(.hashFieldTTL)) func hashValueEditKeepsFieldTTL() async throws {
         let h = try await LiveHarness.make("hkeep")
         defer { Task { await h.cleanup() } }
         let key = h.key("h")
@@ -36,7 +36,7 @@ struct LiveEditSafetyTests {
         #expect(try await fieldTTL(h, key, "g") == -1)
     }
 
-    @Test func hashAddExistingFieldWithoutTTLKeepsFieldTTL() async throws {
+    @Test(RedisTestServer.needs(.hashFieldTTL)) func hashAddExistingFieldWithoutTTLKeepsFieldTTL() async throws {
         let h = try await LiveHarness.make("hadd")
         defer { Task { await h.cleanup() } }
         let key = h.key("h")
@@ -55,7 +55,7 @@ struct LiveEditSafetyTests {
         #expect(try await fieldTTL(h, key, "n") == -1)
     }
 
-    @Test(arguments: [HashService.FieldTTLStrategy.keepTTL, .restoreExpireTime])
+    @Test(RedisTestServer.needs(.hashFieldTTL), arguments: [HashService.FieldTTLStrategy.keepTTL, .restoreExpireTime])
     func hashServiceStrategiesKeepFieldTTL(_ strategy: HashService.FieldTTLStrategy) async throws {
         let h = try await LiveHarness.make("hstrat")
         defer { Task { await h.cleanup() } }

@@ -178,9 +178,11 @@ The tests use Swift Testing. Helpers are in `Tests/TestSupport`.
   down or lacks a module they use:
   `@Test(.tags(.live), RedisTestServer.live(.redis, modules: .json))`
   (also `.valkey`, `.valkeyCluster`; `RedisTestServer.needs(...)` adds a
-  module to one test of a live suite). `KEYSTRAND_REQUIRE_LIVE=1` turns a
-  missing server into a failure; `KEYSTRAND_SKIP_LIVE=1` skips every live
-  test.
+  module to one test of a live suite). A test of a command newer than
+  Redis 7.2 or Valkey 8 also takes `RedisTestServer.needs(.hashFieldTTL)` or
+  `.needs(.array)`, because the nightly runs those older servers.
+  `KEYSTRAND_REQUIRE_LIVE=1` turns a missing server into a failure;
+  `KEYSTRAND_SKIP_LIVE=1` skips every live test.
 - `scripts/test-servers.sh [native] [start|stop|status] [all|redis|valkey|cluster]`
   manages `keystrand-test` (Redis 8, 6390), `keystrand-valkey` (Valkey 9
   bundle, 6392), and `keystrand-vkc-0/1/2` (Valkey 9 cluster, 7001-7003).

@@ -95,7 +95,7 @@ struct LiveTimeSeriesTests {
 }
 
 @MainActor
-@Suite(.serialized, .tags(.live), RedisTestServer.live(.redis))
+@Suite(.serialized, .tags(.live), RedisTestServer.live(.redis), RedisTestServer.needs(.array))
 struct LiveArrayTests {
     @Test func viewSearchAndAggregate() async throws {
         let h = try await LiveHarness.make("arr")

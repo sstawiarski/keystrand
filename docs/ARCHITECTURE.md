@@ -695,6 +695,7 @@ The feature target and test target names are `ConnectionsFeature`/`ConnectionsFe
 | `skipsLive` | `KEYSTRAND_SKIP_LIVE=1` is set: every live test is disabled without probing (CI's unit-test job) |
 | `live(_:modules:)` | Gate for a live suite or test: `.redis`, `.valkey`, or `.valkeyCluster` is reachable and loads `modules`; always paired with `.tags(.live)` |
 | `needs(_:on:)` | Extra gate for one test of a live suite that needs a module the rest of the suite does not |
+| `needs(_:on:)` with `Feature` / `hasFeatures(_:on:)` | Gate on a command older servers lack, probed once per process with `COMMAND INFO`; `Feature` is `.hashFieldTTL` (`HEXPIRE`), `.array` (`ARSET`) |
 | `hasModules(_:on:)` / `modules(at:)` | `MODULE LIST` of a server, probed once per process; `Module` is `.search`, `.json`, `.timeSeries`, `.bloom`, `.vectorSet` |
 | `DB.*` | Index constants (one per test target, `search = 0`) |
 | `connectionConfig(db:endpoint:)` | Connection config for a test db |
@@ -7635,10 +7636,17 @@ extension RedisTestServer
         case bloom
         case vectorSet
         var names: Set<String> { get }
+    enum Feature: CaseIterable, Equatable, Hashable, RawRepresentable, Sendable
+        case hashFieldTTL
+        case array
+        var command: String { get }
     static let skipLiveEnvironmentKey: String
     static let skipsLive: Bool
     static func live(_ server: LiveServer = .redis, modules: Module...) -> ConditionTrait
     static func needs(_ modules: Module..., on server: LiveServer = .redis) -> ConditionTrait
+    static func needs(_ features: Feature..., on server: LiveServer = .redis) -> ConditionTrait
+    static func hasFeatures(_ features: [Feature], on server: LiveServer = .redis) -> Bool
+    static func features(at endpoint: RedisEndpoint, timeoutMs: Int32 = 500) -> Set<Feature>?
     static func hasModules(_ modules: [Module], on server: LiveServer = .redis) -> Bool
     static func hasModule(_ module: Module, on server: LiveServer = .redis) -> Bool
     static func modules(at endpoint: RedisEndpoint, timeoutMs: Int32 = 500) -> Set<String>?

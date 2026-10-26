@@ -41,7 +41,7 @@ struct LiveRedisCoreTests {
         #expect(session.overviewError == nil)
         let overview = try #require(session.overview)
         #expect(overview.version == session.serverVersion)
-        #expect(overview.totalKeysPerDb?["db\(Self.db)"] == 5)
+        #expect((overview.totalKeysPerDb?["db\(Self.db)"] ?? overview.totalKeys) == 5)
         #expect(overview.cpuUsagePercentage == .some(nil))
         #expect((overview.maxCpuUsagePercentage ?? 0) >= 100)
         try await Task.sleep(for: .milliseconds(1100))
@@ -381,7 +381,8 @@ struct LiveRedisCoreTests {
         ]
     }
 
-    @Test func atomicCreateOfEveryCollectionTypeAppliesTheTTL() async throws {
+    @Test(RedisTestServer.needs(.json, .timeSeries, .vectorSet), RedisTestServer.needs(.hashFieldTTL))
+    func atomicCreateOfEveryCollectionTypeAppliesTheTTL() async throws {
         let session = try await freshSession()
         let ops = KeyOperations(session: session)
         let metadata = KeyMetadataService(session: session)
@@ -471,7 +472,7 @@ struct LiveRedisCoreTests {
         if let failure { throw failure }
     }
 
-    @Test func deniedExpireReportsAKeyCreatedWithoutTTL() async throws {
+    @Test(RedisTestServer.needs(.json)) func deniedExpireReportsAKeyCreatedWithoutTTL() async throws {
         try await withACLUser(["-expire"]) { session in
             let ops = KeyOperations(session: session)
             for draft in [

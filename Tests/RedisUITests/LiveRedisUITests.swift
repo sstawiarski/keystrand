@@ -17,7 +17,7 @@ struct LiveRedisUITests {
         let script = "set a 1\n  ex 10\njson.set k $ 1\n// note\n3 hget h f"
         let tokens = RedisSyntaxHighlighter.tokenizeRedis(script, keywords: names)
         let keywords = tokens.filter { $0.kind == .keyword }.map { (script as NSString).substring(with: $0.range) }
-        #expect(keywords == ["set", "json.set", "hget"])
+        #expect(keywords == (names.contains("JSON.SET") ? ["set", "json.set", "hget"] : ["set", "hget"]))
 
         if !CommandCatalog.shared.commands.isEmpty {
             for core in ["GET", "SET", "HSET", "ZADD", "XADD", "JSON.SET", "FT.SEARCH"] where names.contains(core) {

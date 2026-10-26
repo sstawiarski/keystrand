@@ -224,7 +224,7 @@ struct LiveEditSafetyTests {
         #expect(model.rows.first { $0.id == Data("m".utf8) }?.member.score == "1e5")
     }
 
-    @Test func arrayEditsKeepUnchangedValuesAndAskBeforeUnicodeFallback() async throws {
+    @Test(RedisTestServer.needs(.array)) func arrayEditsKeepUnchangedValuesAndAskBeforeUnicodeFallback() async throws {
         let h = try await LiveHarness.make("arre")
         defer { Task { await h.cleanup() } }
         #expect(h.session.capabilities.supportsArray)

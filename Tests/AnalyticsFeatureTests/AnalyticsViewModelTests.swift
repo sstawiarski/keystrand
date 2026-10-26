@@ -249,7 +249,7 @@ struct AnalyticsLiveTests {
         #expect(tips.hasLoaded)
         #expect(!tips.isChecking)
         #expect(tips.allTips.contains { $0.name == "setPassword" } == noPassword)
-        #expect(!tips.allTips.contains { $0.name == "redisVersion" })
+        #expect(tips.allTips.contains { $0.name == "redisVersion" } == RecommendationRules.needsRedisUpgrade(session.info))
         await session.close()
     }
 

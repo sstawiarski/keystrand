@@ -20,7 +20,7 @@ struct ValkeyFieldTTLStrategyTests {
 }
 
 @MainActor
-@Suite(.serialized, .tags(.live), RedisTestServer.live(.valkey))
+@Suite(.serialized, .tags(.live), RedisTestServer.live(.valkey), RedisTestServer.needs(.hashFieldTTL, on: .valkey))
 struct ValkeyLiveHashFieldTTLTests {
     private func fieldTTL(_ h: LiveHarness, _ key: Data, _ field: String) async throws -> Int {
         Int(try await h.run(["HTTL", .data(key), "FIELDS", "1", .string(field)]).arrayValue?.first?.intValue ?? -9)

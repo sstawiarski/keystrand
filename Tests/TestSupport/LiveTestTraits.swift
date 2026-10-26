@@ -60,6 +60,21 @@ public extension RedisTestServer {
         }
     }
 
+    /// Server features newer than the oldest server version the nightly matrix runs, detected by a command they add.
+    enum Feature: String, Sendable, CaseIterable {
+        /// Redis 7.4 and Valkey 9.
+        case hashFieldTTL
+        /// Redis 8.8.
+        case array
+
+        public var command: String {
+            switch self {
+            case .hashFieldTTL: "HEXPIRE"
+            case .array: "ARSET"
+            }
+        }
+    }
+
     /// `KEYSTRAND_SKIP_LIVE=1` disables every live test, so a run without servers neither probes nor fails.
     static let skipLiveEnvironmentKey = "KEYSTRAND_SKIP_LIVE"
 
@@ -68,17 +83,44 @@ public extension RedisTestServer {
     /// Gate for a live suite or test: the server answers, live tests are not skipped, and `modules` are loaded.
     /// Always pair it with `.tags(.live)`: `@Suite(.tags(.live), RedisTestServer.live(.redis, modules: .json))`.
     static func live(_ server: LiveServer = .redis, modules: Module...) -> ConditionTrait {
-        .enabled(if: server.isAvailable && hasModules(modules, on: server), requirement(server, modules))
+        .enabled(if: server.isAvailable && hasModules(modules, on: server), requirement(server, modules.map(\.rawValue)))
     }
 
     /// Extra gate for one test of a live suite that needs server modules the rest of the suite does not.
     static func needs(_ modules: Module..., on server: LiveServer = .redis) -> ConditionTrait {
-        .enabled(if: hasModules(modules, on: server), requirement(server, modules))
+        .enabled(if: hasModules(modules, on: server), requirement(server, modules.map(\.rawValue)))
     }
 
-    private static func requirement(_ server: LiveServer, _ modules: [Module]) -> Comment {
-        let names = modules.map(\.rawValue).joined(separator: ", ")
-        return Comment(rawValue: modules.isEmpty ? "Needs \(server.name)" : "Needs \(server.name) with \(names)")
+    /// Extra gate for a live suite or test that needs server features an older server version lacks.
+    static func needs(_ features: Feature..., on server: LiveServer = .redis) -> ConditionTrait {
+        .enabled(if: hasFeatures(features, on: server), requirement(server, features.map(\.rawValue)))
+    }
+
+    private static func requirement(_ server: LiveServer, _ names: [String]) -> Comment {
+        let list = names.joined(separator: ", ")
+        return Comment(rawValue: names.isEmpty ? "Needs \(server.name)" : "Needs \(server.name) with \(list)")
+    }
+
+    /// True when `server` has every feature in `features`. An unreachable server counts as having them only
+    /// with `KEYSTRAND_REQUIRE_LIVE=1`, as in `hasModules(_:on:)`.
+    static func hasFeatures(_ features: [Feature], on server: LiveServer = .redis) -> Bool {
+        guard !features.isEmpty else { return true }
+        guard let supported = supportedFeatures(server) else { return requiresLive }
+        return features.allSatisfy(supported.contains)
+    }
+
+    /// The features whose command the server knows, or nil when the server does not answer.
+    static func features(at endpoint: RedisEndpoint, timeoutMs: Int32 = 500) -> Set<Feature>? {
+        var supported: Set<Feature> = []
+        for feature in Feature.allCases {
+            guard let reply = inlineCommand("COMMAND INFO \(feature.command)", at: endpoint, timeoutMs: timeoutMs) else {
+                return nil
+            }
+
+            if let info = reply.arrayValue?.first, !info.isNull { supported.insert(feature) }
+        }
+
+        return supported
     }
 
     /// True when `server` loads every module in `modules`. An unreachable server counts as having them only
@@ -124,7 +166,22 @@ private enum ModuleCache {
     static let valkeyCluster = RedisTestServer.modules(at: RedisTestServer.LiveServer.valkeyCluster.endpoint)
 }
 
+private enum FeatureCache {
+    static let redis = RedisTestServer.features(at: RedisTestServer.LiveServer.redis.endpoint)
+    static let valkey = RedisTestServer.features(at: RedisTestServer.LiveServer.valkey.endpoint)
+    static let valkeyCluster = RedisTestServer.features(at: RedisTestServer.LiveServer.valkeyCluster.endpoint)
+}
+
 extension RedisTestServer {
+    /// Supported features per server, probed once per process.
+    static func supportedFeatures(_ server: LiveServer) -> Set<Feature>? {
+        switch server {
+        case .redis: FeatureCache.redis
+        case .valkey: FeatureCache.valkey
+        case .valkeyCluster: FeatureCache.valkeyCluster
+        }
+    }
+
     /// Module names per server, probed once per process.
     static func loadedModules(_ server: LiveServer) -> Set<String>? {
         switch server {

@@ -282,7 +282,7 @@ struct LiveKeyTypeTests {
         #expect(model.loadError == nil)
     }
 
-    @Test func hashEditDeleteAndAdd() async throws {
+    @Test(RedisTestServer.needs(.hashFieldTTL)) func hashEditDeleteAndAdd() async throws {
         let h = try await LiveHarness.make("hashed")
         defer { Task { await h.cleanup() } }
         let key = h.key("h")
@@ -315,7 +315,7 @@ struct LiveKeyTypeTests {
         #expect(model.rows.first { $0.field == Data("c".utf8) }.flatMap(\.expire).map { $0 > 0 } == true)
     }
 
-    @Test func hashFieldTTLEdits() async throws {
+    @Test(RedisTestServer.needs(.hashFieldTTL)) func hashFieldTTLEdits() async throws {
         let h = try await LiveHarness.make("hashttl")
         defer { Task { await h.cleanup() } }
         let key = h.key("h")
