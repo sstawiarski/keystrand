@@ -833,9 +833,9 @@ Account for these limits when you change the code:
   finishes against the previous server.
 - **Reconnects.** A dropped socket leaves session state at `.connected`.
   AppShell's `WindowConnectionModel` detects the loss after overview polling
-  and `PING` both fail. It then offers Retry. Cluster SSH tunnels do not restart
-  if their SSH processes exit. Cluster node clients do not rerun the
-  pre-connection script on reconnect.
+  and `PING` both fail. It then offers Retry. A cluster node restarts its SSH
+  tunnel on reconnect if the `ssh` process exited. Cluster node clients do not
+  rerun the pre-connection script on reconnect.
 - **Browser scroll restoration.** Each search mode keeps its scroll position
   through `ScrollViewReader.scrollTo` on a SwiftUI `List` with short delays.
   Unit tests cover only anchor bookkeeping.
@@ -927,7 +927,7 @@ ditto .build/dd/Build/Products/Release/Keystrand.app dist/Keystrand.app
 | KeyTypesBasicFeature | Header auto refresh shown as paused while a value reloads | `KeyDetailsState` has no loading flag; the type views already skip refreshes while loading |
 | KeyTypesBasicFeature | Redis 7.4 hash field-TTL path | Tested only by forcing the strategy on the 8.10 server |
 | KeyTypesAdvancedFeature | RedisJSON v1 legacy paths | Implemented; checked only against a mock client because the test server runs RedisJSON 8 |
-| KeyTypesAdvancedFeature | Paged fetch of huge JSON containers | `JSONTreeModel` has no partly loaded container node; children of a big container are summarized all at once, built 2,000 per pipeline chunk |
+| KeyTypesAdvancedFeature | Paged fetch of small JSON containers with large children | A container with at most `JSONCommands.forceRetrieveLength` (200) children is fetched whole with one `JSON.GET`, whatever its size; larger containers load 200 children per page |
 | WorkbenchFeature | Vector-embedding collapse in the editor | Needs fold or glyph support in `CodeEditorView` |
 | WorkbenchFeature | Geo visualizations (map, heatmap, geoshape) for FT.SEARCH / FT.AGGREGATE / FT.HYBRID results | Not implemented; GEO* commands have map, heatmap and details views |
 | MonitoringFeature, CLIFeature | Graceful UI reset through `SessionScopedObject.sessionConnectionDidReset()` | RedisCore force-closes dedicated connections on disconnect and on a connection edit; Pub/Sub and Profiler learn about it when their stream ends |

@@ -216,7 +216,8 @@ The following limitations apply:
   and Redis Software discovery have no end-to-end tests.
 - Sentinel connections do not use SSH tunnels.
 - If a connection drops, Keystrand detects it on the next failed status check
-  and offers **Reconnect**. It does not restart SSH tunnels for cluster nodes.
+  and offers **Reconnect**. Cluster nodes do not rerun the pre-connection script
+  when they reconnect.
 - Changes to a database's host, port, TLS, or similar settings close its Pub/Sub
   and Profiler connections. The CLI reconnects automatically.
 - On Redis 8, any `FLUSHDB` or `FLUSHALL` drops every search index. Keystrand
@@ -224,7 +225,8 @@ The following limitations apply:
 - Search query completion supports field names and APPLY functions.
   Syntax highlighting skips very large editor contents.
 - Workbench has no map view for geo results from `FT.SEARCH` or `FT.AGGREGATE`.
-- Keystrand loads very large JSON values in full instead of in pages.
+- Keystrand loads a JSON object or array with 200 or fewer children in full,
+  even if those children are very large. Larger containers load in pages.
 - ZSTD frames that need a dictionary are unsupported. Keystrand does not check
   ZSTD or Snappy checksums. It decodes only the first member of a multi-member
   GZIP value.
