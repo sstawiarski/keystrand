@@ -34,7 +34,8 @@ swift build --scratch-path .build/dev                         # package
 swift build --scratch-path .build/dev --target BrowserFeature  # one target
 
 # Tests (live tests need the Redis 8 container on 6390; Valkey tests
-# also need 6392 and the 7001-7003 cluster)
+# also need 6392 and the 7001-7003 cluster; Sentinel tests need the
+# sentinel target)
 scripts/test-servers.sh start redis   # or no argument for all containers
 swift test --scratch-path .build/dev
 swift test --scratch-path .build/dev --filter BrowserFeatureTests
@@ -177,17 +178,21 @@ The tests use Swift Testing. Helpers are in `Tests/TestSupport`.
 - Live tests carry the `live` tag and skip, not fail, when the server is
   down or lacks a module they use:
   `@Test(.tags(.live), RedisTestServer.live(.redis, modules: .json))`
-  (also `.valkey`, `.valkeyCluster`; `RedisTestServer.needs(...)` adds a
-  module to one test of a live suite). A test of a command newer than
+  (also `.valkey`, `.valkeyCluster`, `.sentinel`; `RedisTestServer.needs(...)`
+  adds a module to one test of a live suite). A test of a command newer than
   Redis 7.2 or Valkey 8 also takes `RedisTestServer.needs(.hashFieldTTL)` or
   `.needs(.array)`, because the nightly runs those older servers.
   `KEYSTRAND_REQUIRE_LIVE=1` turns a missing server into a failure;
   `KEYSTRAND_SKIP_LIVE=1` skips every live test.
-- `scripts/test-servers.sh [native] [start|stop|status] [all|redis|valkey|cluster]`
+- `scripts/test-servers.sh [native] [start|stop|status] [all|redis|valkey|cluster|sentinel]`
   manages `keystrand-test` (Redis 8, 6390), `keystrand-valkey` (Valkey 9
-  bundle, 6392), and `keystrand-vkc-0/1/2` (Valkey 9 cluster, 7001-7003).
-  `native` runs Homebrew servers instead of Docker (CI does); native Valkey
-  has no modules.
+  bundle, 6392), `keystrand-vkc-0/1/2` (Valkey 9 cluster, 7001-7003), and
+  `keystrand-sentinel{,-primary,-replica}` (Redis 8 primary 6394 and replica
+  6395, Sentinel 26394, group `keystrand-primary`). `native` runs Homebrew
+  servers instead of Docker (CI does); native Valkey has no modules.
+- Every Sentinel test is in the one serialized `SentinelLiveTests` suite,
+  because its failover test swaps the primary and the replica. Find the
+  primary through the Sentinel, never by port.
 - Use `MockRedisClient` or `RedisTestServer.mockSession(...)` when no server
   is needed, and `RedisTestServer.makeServices()` for a temp-dir
   `AppServices` with in-memory secrets.

@@ -27,7 +27,7 @@ Connection options are the same for every server version:
 | --- | --- | --- |
 | Standalone | Yes, against every server above | Mock sessions |
 | Cluster | Valkey 9 cluster on 7001-7003: numbered databases, scans, `MOVED` | Redis cluster routing with `MockRedisClient` only |
-| Sentinel | No | Parser tests only |
+| Sentinel | Redis Sentinel on 26394 watching a primary and replica on 6394-6395: discovery, primary resolution, sessions, failover | Parser tests and a failover against scripted fake servers |
 | SSH tunnel | No | Unit tests of the `ssh` arguments and port selection |
 | TLS | No real TLS server | An in-process Network framework TLS server: CA checks, host name checks, client certificates |
 
@@ -98,8 +98,8 @@ every entry runs native processes through `scripts/test-servers.sh native`.
 
 | Entry | Server | Source | Modules | Servers started |
 | --- | --- | --- | --- | --- |
-| `redis-7.2` | Redis 7.2.16 | Source build | None | Redis on 6390 |
-| `redis-8` | Redis 8.x, newest | Homebrew `redis` | Search, JSON, TimeSeries, Bloom, vector sets | Redis on 6390 |
+| `redis-7.2` | Redis 7.2.16 | Source build | None | Redis on 6390, Sentinel group on 6394, 6395 and 26394 |
+| `redis-8` | Redis 8.x, newest | Homebrew `redis` | Search, JSON, TimeSeries, Bloom, vector sets | Redis on 6390, Sentinel group on 6394, 6395 and 26394 |
 | `valkey-8` | Valkey 8.1.10 | Source build | None | Valkey on 6392 |
 | `valkey-9` | Valkey 9.x, newest | Homebrew `valkey` | None | Valkey on 6392, cluster on 7001-7003 |
 
@@ -144,8 +144,9 @@ fails when it is not the entry's version.
 - `valkey-8` starts no cluster. `scripts/test-servers.sh` starts cluster
   nodes with `--cluster-databases`, which Valkey 8 does not accept, and the
   cluster tests rely on numbered databases in cluster mode.
-- Redis cluster, Sentinel and SSH tunnels have no live tests. TLS is tested
-  only against an in-process TLS server, not a Redis or Valkey TLS port.
+- Redis cluster and SSH tunnels have no live tests. Sentinel is tested live
+  only with Redis, not with Valkey Sentinel. TLS is tested only against an
+  in-process TLS server, not a Redis or Valkey TLS port.
 - Redis 6 and 7.0 have no live tests.
 - GitHub can regenerate a tag's source tarball. If a pinned SHA-256 stops
   matching, rerun `scripts/build-server.sh` without `--sha256`, check the

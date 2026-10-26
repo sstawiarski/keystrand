@@ -77,10 +77,18 @@ The test containers use these ports:
 - `keystrand-test` runs Redis 8 on port 6390.
 - `keystrand-valkey` runs the Valkey 9 bundle on port 6392.
 - The three-node Valkey 9 cluster uses ports 7001–7003.
+- `keystrand-sentinel-primary` and `keystrand-sentinel-replica` run a Redis 8
+  primary on port 6394 and its replica on port 6395. `keystrand-sentinel`
+  watches them as the group `keystrand-primary` on port 26394.
 
-The cluster requires host networking. Enable it in Docker Desktop.
+The cluster and the Sentinel group require host networking. Enable it in
+Docker Desktop.
 
-`scripts/test-servers.sh native [start|stop|status] [all|redis|valkey|cluster]`
+A Sentinel test fails the group over, so the replica on 6395 can be the
+primary afterwards. Each time the script starts the Sentinel, it makes 6394
+the primary again.
+
+`scripts/test-servers.sh native [start|stop|status] [all|redis|valkey|cluster|sentinel]`
 runs Homebrew server processes. It stores PID files and logs in
 `.build/test-servers/`. CI uses this mode. Homebrew's `redis` and `valkey`
 formulae conflict. Install Redis unlinked so both can coexist:

@@ -182,9 +182,13 @@ The tests use Swift Testing. Unit tests need no server. Live tests carry the
 - Redis 8 with modules on port 6390.
 - Valkey 9 on port 6392.
 - A three-node Valkey 9 cluster on ports 7001–7003.
+- A Redis 8 primary on port 6394 and its replica on port 6395, watched by a
+  Sentinel on port 26394.
 
 `scripts/test-servers.sh` starts the Docker containers `keystrand-test`,
-`keystrand-valkey` with the Valkey bundle modules, and `keystrand-vkc-0/1/2`.
+`keystrand-valkey` with the Valkey bundle modules, `keystrand-vkc-0/1/2`, and
+`keystrand-sentinel`, `keystrand-sentinel-primary`, and
+`keystrand-sentinel-replica`.
 Use `native` to start Homebrew `redis-server` and `valkey-server` processes.
 CI uses native mode.
 
@@ -212,8 +216,8 @@ The suite contains about 1,600 tests in 17 test targets.
 The following limitations apply:
 
 - Pub/Sub has no jump-to-latest button.
-- Cluster tests use a Valkey cluster and mock clients. Sentinel, SSH tunnels,
-  and Redis Software discovery have no end-to-end tests.
+- Cluster tests use a Valkey cluster and mock clients. SSH tunnels and Redis
+  Software discovery have no end-to-end tests.
 - Sentinel connections do not use SSH tunnels.
 - If a connection drops, Keystrand detects it on the next failed status check
   and offers **Reconnect**. Cluster nodes do not rerun the pre-connection script
