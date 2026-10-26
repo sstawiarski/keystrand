@@ -693,7 +693,7 @@ The feature target and test target names are `ConnectionsFeature`/`ConnectionsFe
 | `isAvailable` | One TCP probe per process (always true with `KEYSTRAND_REQUIRE_LIVE=1`, always false with `KEYSTRAND_SKIP_LIVE=1`) |
 | `requiresLive` | `KEYSTRAND_REQUIRE_LIVE=1` is set: every `is…Available` flag is true, so a missing server fails its tests instead of skipping them |
 | `skipsLive` | `KEYSTRAND_SKIP_LIVE=1` is set: every live test is disabled without probing (CI's unit-test job) |
-| `live(_:modules:)` | Gate for a live suite or test: `.redis`, `.valkey`, or `.valkeyCluster` is reachable and loads `modules`; always paired with `.tags(.live)` |
+| `live(_:modules:)` | Gate for a live suite or test: `.redis`, `.valkey`, `.valkeyCluster`, or `.sentinel` is reachable and loads `modules`; always paired with `.tags(.live)` |
 | `needs(_:on:)` | Extra gate for one test of a live suite that needs a module the rest of the suite does not |
 | `needs(_:on:)` with `Feature` / `hasFeatures(_:on:)` | Gate on a command older servers lack, probed once per process with `COMMAND INFO`; `Feature` is `.hashFieldTTL` (`HEXPIRE`), `.array` (`ARSET`) |
 | `hasModules(_:on:)` / `modules(at:)` | `MODULE LIST` of a server, probed once per process; `Module` is `.search`, `.json`, `.timeSeries`, `.bloom`, `.vectorSet` |
@@ -711,6 +711,7 @@ The feature target and test target names are `ConnectionsFeature`/`ConnectionsFe
 | `valkey` / `isValkeyAvailable` | Valkey 9 bundle at `127.0.0.1:6392` (container `keystrand-valkey`) and its probe; pass `endpoint: RedisTestServer.valkey` to the helpers, with the same `DB.*` indexes |
 | `valkeyCluster` / `isValkeyClusterAvailable` | Valkey 9 cluster at `127.0.0.1:7001-7003` (`cluster-databases 4`, containers `keystrand-vkc-0/1/2`); the probe checks `CLUSTER INFO` for `cluster_state:ok` |
 | `valkeyClusterDatabaseConfig(db:)` | Saved cluster config on that cluster (only DBs 0-3 exist); open it with `liveSession(config:)` |
+| `sentinel` / `sentinelGroup` / `sentinelNodes` / `isSentinelAvailable` | Sentinel at `127.0.0.1:26394` watching the group `keystrand-primary`, whose Redis 8 primary and replica are `127.0.0.1:6394` and `6395` (containers `keystrand-sentinel{,-primary,-replica}`); the probe asks the Sentinel for the group's primary address |
 | `liveSession(config:)` | Real connected `DatabaseSession` for any saved config |
 | `ValkeyFixtures.serverInfo` / `.capabilities` | Valkey 9.1.2 INFO lines and capabilities (json, bf, search modules) for scripted tests |
 | `emptyDatabase(_:)` | SCAN + UNLINK every key of a client's current database |
@@ -735,9 +736,13 @@ by tag, so `RedisTestServer.live(...)` also honors `KEYSTRAND_SKIP_LIVE=1`; CI c
 Use `MockRedisClient` for logic that does not need a server. Do not connect to `127.0.0.1:6379`. A developer's local Redis can use that address.
 
 `scripts/test-servers.sh` starts every container the live tests expect: `keystrand-test` (Redis 8, 6390),
-`keystrand-valkey` (Valkey 9 bundle, 6392) and the Valkey cluster `keystrand-vkc-0/1/2` (7001-7003, host networking,
-created with `valkey-cli --cluster create` on first start). `scripts/test-servers.sh stop valkey` and
-`stop cluster` stop the extras again; `status` lists all five. `scripts/test-servers.sh native` runs the
+`keystrand-valkey` (Valkey 9 bundle, 6392), the Valkey cluster `keystrand-vkc-0/1/2` (7001-7003, host networking,
+created with `valkey-cli --cluster create` on first start), and the Sentinel group (host networking):
+`keystrand-sentinel-primary` (Redis 8, 6394), `keystrand-sentinel-replica` (6395), and `keystrand-sentinel` (26394).
+Starting the Sentinel makes 6394 the primary again and writes it a fresh config, because a failover test swaps the
+roles. Every Sentinel test is in the serialized `SentinelLiveTests` suite of RedisCoreTests, so the failover cannot run
+next to another Sentinel test. `scripts/test-servers.sh stop valkey`, `stop cluster`, and `stop sentinel` stop the
+extras again; `status` lists all eight. `scripts/test-servers.sh native` runs the
 same servers as Homebrew `redis-server` (with the modules from Homebrew's `opt/redis`) and `valkey-server` processes
 (no modules), with pid files and logs in `.build/test-servers/`; CI uses it because GitHub's macOS runners have no
 Docker. `KEYSTRAND_REDIS_SERVER`, `KEYSTRAND_VALKEY_SERVER`, `KEYSTRAND_REDIS_CLI`, `KEYSTRAND_VALKEY_CLI`, and
@@ -797,7 +802,9 @@ Account for these limits when you change the code:
 - **Sentinel over SSH.** The factory connects directly to Sentinel nodes.
   It does not tunnel those connections.
 - **Live topology coverage.** Redis cluster routing uses `MockRedisClient`
-  tests. Sentinel has parser tests only. The optional Valkey 9 cluster,
+  tests. `SentinelLiveTests` covers Sentinel discovery, primary resolution,
+  sessions, and a failover against a Redis Sentinel; Valkey Sentinel has no
+  live test. The optional Valkey 9 cluster,
   `RedisTestServer.valkeyCluster`, covers numbered databases, scans, and `MOVED`.
   Its tests skip if the cluster is unavailable. SSH tunnels have no end-to-end
   test. The cluster-only Analytics Overview tab was checked only against
@@ -833,9 +840,9 @@ Account for these limits when you change the code:
   finishes against the previous server.
 - **Reconnects.** A dropped socket leaves session state at `.connected`.
   AppShell's `WindowConnectionModel` detects the loss after overview polling
-  and `PING` both fail. It then offers Retry. Cluster SSH tunnels do not restart
-  if their SSH processes exit. Cluster node clients do not rerun the
-  pre-connection script on reconnect.
+  and `PING` both fail. It then offers Retry. A cluster node restarts its SSH
+  tunnel on reconnect if the `ssh` process exited. Cluster node clients do not
+  rerun the pre-connection script on reconnect.
 - **Browser scroll restoration.** Each search mode keeps its scroll position
   through `ScrollViewReader.scrollTo` on a SwiftUI `List` with short delays.
   Unit tests cover only anchor bookkeeping.
@@ -916,7 +923,7 @@ ditto .build/dd/Build/Products/Release/Keystrand.app dist/Keystrand.app
 | Pub/Sub | No jump-to-latest button | Not built; the CLI and Profiler have `JumpToLatestButton` |
 | Tables | Column descriptions are tooltips on cells, not headers | SwiftUI `TableColumn` headers cannot carry their own tooltips |
 | Vector Search | Save Query failures surface as an error alert from the status center, not inline in the sheet | The sheet keeps its fields; the error is not wired to `SheetForm.errorMessage` |
-| QA | No screenshots or live tests of Cluster, Sentinel, SSH or Redis Software | No such server is available |
+| QA | No screenshots of Cluster, Sentinel, SSH or Redis Software; no live tests of Redis cluster, SSH or Redis Software | No such server is available |
 | Database window | The bottom panel is a SwiftUI stack with a `DragGesture` divider (`DrawerDivider`), not a `VSplitView` (§2.3.5, §4.5) | An AppKit split view in the detail column lays out under the floating sidebar |
 
 ### Not implemented or partly implemented
@@ -927,7 +934,7 @@ ditto .build/dd/Build/Products/Release/Keystrand.app dist/Keystrand.app
 | KeyTypesBasicFeature | Header auto refresh shown as paused while a value reloads | `KeyDetailsState` has no loading flag; the type views already skip refreshes while loading |
 | KeyTypesBasicFeature | Redis 7.4 hash field-TTL path | Tested only by forcing the strategy on the 8.10 server |
 | KeyTypesAdvancedFeature | RedisJSON v1 legacy paths | Implemented; checked only against a mock client because the test server runs RedisJSON 8 |
-| KeyTypesAdvancedFeature | Paged fetch of huge JSON containers | `JSONTreeModel` has no partly loaded container node; children of a big container are summarized all at once, built 2,000 per pipeline chunk |
+| KeyTypesAdvancedFeature | Paged fetch of small JSON containers with large children | A container with at most `JSONCommands.forceRetrieveLength` (200) children is fetched whole with one `JSON.GET`, whatever its size; larger containers load 200 children per page |
 | WorkbenchFeature | Vector-embedding collapse in the editor | Needs fold or glyph support in `CodeEditorView` |
 | WorkbenchFeature | Geo visualizations (map, heatmap, geoshape) for FT.SEARCH / FT.AGGREGATE / FT.HYBRID results | Not implemented; GEO* commands have map, heatmap and details views |
 | MonitoringFeature, CLIFeature | Graceful UI reset through `SessionScopedObject.sessionConnectionDidReset()` | RedisCore force-closes dedicated connections on disconnect and on a connection edit; Pub/Sub and Profiler learn about it when their stream ends |
@@ -7626,6 +7633,7 @@ extension RedisTestServer
         case redis
         case valkey
         case valkeyCluster
+        case sentinel
         var endpoint: RedisEndpoint { get }
         var name: String { get }
         var isAvailable: Bool { get }
@@ -7684,6 +7692,10 @@ enum RedisTestServer
     static let isValkeyAvailable: Bool
     static let valkeyCluster: [RedisEndpoint]
     static let isValkeyClusterAvailable: Bool
+    static let sentinel: RedisEndpoint
+    static let sentinelGroup: String
+    static let sentinelNodes: [RedisEndpoint]
+    static let isSentinelAvailable: Bool
     static func valkeyClusterDatabaseConfig(db: Int, name: String = "Test Valkey Cluster") -> DatabaseConfig
     static func databaseConfig(db: Int, name: String = "Test DB", endpoint: RedisEndpoint = RedisTestServer.endpoint) -> DatabaseConfig
     static func makeConnection(db: Int, endpoint: RedisEndpoint = RedisTestServer.endpoint) async throws -> RedisConnection

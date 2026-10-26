@@ -62,6 +62,20 @@ public enum RedisTestServer {
     public static let isValkeyClusterAvailable: Bool = !skipsLive
         && (requiresLive || probeClusterState(valkeyCluster[0], timeoutMs: 500))
 
+    /// Sentinel watching the primary group `sentinelGroup`, container `keystrand-sentinel`.
+    public static let sentinel = RedisEndpoint(host: "127.0.0.1", port: 26394)
+
+    public static let sentinelGroup = "keystrand-primary"
+
+    /// The Redis 8 primary and replica of `sentinelGroup`, containers `keystrand-sentinel-primary` and
+    /// `keystrand-sentinel-replica`. A failover swaps their roles, so ask the Sentinel which one is the primary.
+    public static let sentinelNodes = [6394, 6395].map { RedisEndpoint(host: "127.0.0.1", port: $0) }
+
+    /// True when the Sentinel answers with the address of the `sentinelGroup` primary (checked once per process).
+    /// Gate Sentinel tests with `.tags(.live), RedisTestServer.live(.sentinel)`.
+    public static let isSentinelAvailable: Bool = !skipsLive
+        && (requiresLive || probeSentinel(sentinel, group: sentinelGroup, timeoutMs: 500))
+
     /// Saved-database model for the Valkey cluster (connection type already detected).
     public static func valkeyClusterDatabaseConfig(db: Int, name: String = "Test Valkey Cluster") -> DatabaseConfig {
         var config = DatabaseConfig(name: name, host: valkeyCluster[0].host, port: valkeyCluster[0].port, db: db,
@@ -136,6 +150,11 @@ public enum RedisTestServer {
     /// Sends an inline `CLUSTER INFO` and checks the `cluster_state` line.
     static func probeClusterState(_ endpoint: RedisEndpoint, timeoutMs: Int32) -> Bool {
         inlineCommand("CLUSTER INFO", at: endpoint, timeoutMs: timeoutMs)?.stringValue?.contains("cluster_state:ok") == true
+    }
+
+    /// Sends an inline `SENTINEL GET-MASTER-ADDR-BY-NAME` and checks that the reply is an address.
+    static func probeSentinel(_ endpoint: RedisEndpoint, group: String, timeoutMs: Int32) -> Bool {
+        inlineCommand("SENTINEL GET-MASTER-ADDR-BY-NAME \(group)", at: endpoint, timeoutMs: timeoutMs)?.arrayValue?.count == 2
     }
 
     /// A connected TCP socket (non-blocking), or nil when nothing accepts within `timeoutMs`. The caller closes it.

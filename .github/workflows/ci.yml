@@ -19,10 +19,10 @@ name: CI
 # package build and in the Xcode app build.
 #
 # Live tests: GitHub's macOS runners have no Docker, so the live-tests job
-# runs Homebrew's Redis 8 (with its modules) and Valkey 9 (no modules)
-# through `scripts/test-servers.sh native`. Tests that need a module the
-# server lacks skip themselves; KEYSTRAND_REQUIRE_LIVE=1 turns a missing
-# server into a failure.
+# runs Homebrew's Redis 8 (with its modules), a Redis 8 Sentinel group, and
+# Valkey 9 (no modules) through `scripts/test-servers.sh native`. Tests that
+# need a module the server lacks skip themselves; KEYSTRAND_REQUIRE_LIVE=1
+# turns a missing server into a failure.
 
 on:
   pull_request:

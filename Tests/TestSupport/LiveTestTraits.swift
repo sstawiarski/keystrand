@@ -14,12 +14,14 @@ public extension RedisTestServer {
         case redis
         case valkey
         case valkeyCluster
+        case sentinel
 
         public var endpoint: RedisEndpoint {
             switch self {
             case .redis: RedisTestServer.endpoint
             case .valkey: RedisTestServer.valkey
             case .valkeyCluster: RedisTestServer.valkeyCluster[0]
+            case .sentinel: RedisTestServer.sentinel
             }
         }
 
@@ -28,6 +30,7 @@ public extension RedisTestServer {
             case .redis: "Redis"
             case .valkey: "Valkey"
             case .valkeyCluster: "the Valkey cluster"
+            case .sentinel: "the Sentinel"
             }
         }
 
@@ -36,6 +39,7 @@ public extension RedisTestServer {
             case .redis: RedisTestServer.isAvailable
             case .valkey: RedisTestServer.isValkeyAvailable
             case .valkeyCluster: RedisTestServer.isValkeyClusterAvailable
+            case .sentinel: RedisTestServer.isSentinelAvailable
             }
         }
     }
@@ -160,16 +164,19 @@ public extension RedisTestServer {
     }
 }
 
+/// A Sentinel loads no modules, so the `.sentinel` entries probe a data node of its group.
 private enum ModuleCache {
     static let redis = RedisTestServer.modules(at: RedisTestServer.LiveServer.redis.endpoint)
     static let valkey = RedisTestServer.modules(at: RedisTestServer.LiveServer.valkey.endpoint)
     static let valkeyCluster = RedisTestServer.modules(at: RedisTestServer.LiveServer.valkeyCluster.endpoint)
+    static let sentinel = RedisTestServer.modules(at: RedisTestServer.sentinelNodes[0])
 }
 
 private enum FeatureCache {
     static let redis = RedisTestServer.features(at: RedisTestServer.LiveServer.redis.endpoint)
     static let valkey = RedisTestServer.features(at: RedisTestServer.LiveServer.valkey.endpoint)
     static let valkeyCluster = RedisTestServer.features(at: RedisTestServer.LiveServer.valkeyCluster.endpoint)
+    static let sentinel = RedisTestServer.features(at: RedisTestServer.sentinelNodes[0])
 }
 
 extension RedisTestServer {
@@ -179,6 +186,7 @@ extension RedisTestServer {
         case .redis: FeatureCache.redis
         case .valkey: FeatureCache.valkey
         case .valkeyCluster: FeatureCache.valkeyCluster
+        case .sentinel: FeatureCache.sentinel
         }
     }
 
@@ -188,6 +196,7 @@ extension RedisTestServer {
         case .redis: ModuleCache.redis
         case .valkey: ModuleCache.valkey
         case .valkeyCluster: ModuleCache.valkeyCluster
+        case .sentinel: ModuleCache.sentinel
         }
     }
 

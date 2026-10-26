@@ -13,8 +13,9 @@ The app implements this contract with the following exceptions:
 - Save Query failures appear in an alert instead of inline.
 - The bottom panel uses a SwiftUI stack with a `DragGesture` divider. An AppKit
   `VSplitView` extends under the floating sidebar.
-- Live Cluster, Sentinel, SSH, and Redis Software screenshots and tests are
-  unavailable. Read `ARCHITECTURE.md` section 10 for the recorded limits.
+- Live Cluster, Sentinel, SSH, and Redis Software screenshots are unavailable.
+  Redis cluster, SSH, and Redis Software also have no live tests. Read
+  `ARCHITECTURE.md` section 10 for the recorded limits.
 
 Check each rule through a screenshot or source search. Requirements use **must**
 and **must not**. Source checks use `grep -rn '<pattern>' <path>` with an

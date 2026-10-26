@@ -8,8 +8,9 @@ name: Nightly
 # newest Redis and Valkey, so redis-7.2 and valkey-8 are core builds from
 # source (scripts/build-server.sh, pinned tag and SHA-256, cached), without
 # modules. redis-8 is Homebrew's redis with its modules; valkey-9 is
-# Homebrew's valkey, without modules. Redis entries start Redis on 6390;
-# valkey-9 starts Valkey on 6392 and the cluster on 7001-7003. valkey-8 starts
+# Homebrew's valkey, without modules. Redis entries start Redis on 6390 and
+# the Sentinel group (primary 6394, replica 6395, Sentinel 26394); valkey-9
+# starts Valkey on 6392 and the cluster on 7001-7003. valkey-8 starts
 # only Valkey, because Valkey 8 has no numbered databases in cluster mode.
 #
 # Skips: KEYSTRAND_REQUIRE_LIVE=1 would fail every test of the servers an
@@ -48,12 +49,12 @@ jobs:
             version: "7.2.16"
             sha256: 65fa69e66187cb5a4cf625bd587c743507e518749c5a0eec29c4f086495c8a7e
             expect: "7.2."
-            targets: redis
+            targets: redis sentinel
           - name: redis-8
             server: redis
             source: brew
             expect: "8."
-            targets: redis
+            targets: redis sentinel
           - name: valkey-8
             server: valkey
             source: build
@@ -132,6 +133,7 @@ jobs:
               redis) port=6390 ;;
               valkey) port=6392 ;;
               cluster) port=7001 ;;
+              sentinel) port=26394 ;;
             esac
             reply="$("$SERVER_CLI" -h 127.0.0.1 -p "$port" PING)"
             if [[ "$reply" != PONG ]]; then
@@ -139,11 +141,18 @@ jobs:
               exit 1
             fi
             echo "$target on port $port: PONG"
-            "$SERVER_CLI" -h 127.0.0.1 -p "$port" MODULE LIST
+            # A Sentinel has no MODULE command.
+            if [[ "$target" != sentinel ]]; then "$SERVER_CLI" -h 127.0.0.1 -p "$port" MODULE LIST; fi
           done
           if [[ " $TARGETS " == *" cluster "* ]]; then
             "$SERVER_CLI" -h 127.0.0.1 -p 7001 CLUSTER INFO | grep -q 'cluster_state:ok' || {
               echo "::error title=$ENTRY::The cluster is not in cluster_state:ok"
+              exit 1
+            }
+          fi
+          if [[ " $TARGETS " == *" sentinel "* ]]; then
+            "$SERVER_CLI" -h 127.0.0.1 -p 26394 SENTINEL GET-MASTER-ADDR-BY-NAME keystrand-primary | grep -qx 6394 || {
+              echo "::error title=$ENTRY::The Sentinel does not report 6394 as the keystrand-primary primary"
               exit 1
             }
           fi
